@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Border -->
+    <solid android:color="@android:color/white"/>
+    <stroke android:color="#C2C2C2" android:width="1dp"/> <!-- Border 1px -->
+    <corners android:radius="16dp"/> <!-- Corner radius, bisa disesuaikan -->
+
+    <!-- Shadow -->
+    <padding android:left="2dp" android:top="2dp" android:right="2dp" android:bottom="2dp"/> <!-- optional padding -->
+</shape>
