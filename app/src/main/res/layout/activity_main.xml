@@ -1,161 +1,256 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#FFFFFF"
-    tools:context=".productcatalog.MainActivity">
+    android:background="@android:color/white">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:fillViewport="true"
+        android:background="@android:color/white">
 
-        <EditText
-            android:drawableLeft="@drawable/ic_search"
-            android:text="Cari Produk"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </EditText>
+            android:layout_height="wrap_content"
+            android:paddingBottom="72dp"
+            android:orientation="vertical"
+            android:background="@android:color/white">
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Kategori"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </TextView>
-
-        <ScrollView
-            android:scrollbars="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            
+            <!-- Pencarian -->
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
 
-                <LinearLayout
-                    android:layout_marginRight="16dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:hint="Cari produk..."
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/black"
+                    android:background="@drawable/search_background"
+                    android:paddingStart="16dp"
+                    android:drawableStart="@drawable/ic_search" />
 
-                    <ImageView
-                        android:background="@drawable/ic_gallery"
-                        android:layout_width="48dp"
-                        android:layout_height="50dp">
-                    </ImageView>
-
-                    <TextView
-                        android:text="Makanan dan Minuman"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginRight="16dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:background="@drawable/ic_gallery"
-                        android:layout_width="48dp"
-                        android:layout_height="50dp">
-                    </ImageView>
-
-                    <TextView
-                        android:text="Perawatan Rumah"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginRight="16dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:background="@drawable/ic_gallery"
-                        android:layout_width="48dp"
-                        android:layout_height="50dp">
-                    </ImageView>
-
-                    <TextView
-                        android:text="Perlengkapan Mandi"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_marginRight="16dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:background="@drawable/ic_gallery"
-                        android:layout_width="48dp"
-                        android:layout_height="50dp">
-                    </ImageView>
-
-                    <TextView
-                        android:text="Gas dan Air"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:background="@drawable/ic_gallery"
-                        android:layout_width="48dp"
-                        android:layout_height="50dp">
-                    </ImageView>
-
-                    <TextView
-                        android:text="Perawatan Wajah"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content">
-
-                    </TextView>
-
-                </LinearLayout>
-
-
+                <ImageView
+                    android:id="@+id/icon_notification"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_notification" />
             </LinearLayout>
 
-        </ScrollView>
+            <!-- Kategori -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:scrollbars="none">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
 
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
 
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/category1"
+                            app:shapeAppearanceOverlay="@style/CircleImageView" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Makanan dan Minuman"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/black"
+                            android:gravity="center"
+                            android:textAlignment="center" />
+                    </LinearLayout>
 
-</RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/category2"
+                            app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Perawatan Rumah"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/black"
+                            android:gravity="center"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/category3"
+                            app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Perawatan Rumah"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/black"
+                            android:gravity="center"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/category4"
+                            app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Perawatan Rumah"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/black"
+                            android:gravity="center"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Banner Promo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Banner Promo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingVertical="8dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Banner 1 -->
+                    <FrameLayout
+                        android:layout_width="400dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/banner1"
+                            app:shapeAppearanceOverlay="@style/RoundedImage" />
+                    </FrameLayout>
+
+                    <!-- Banner 2 -->
+                    <FrameLayout
+                        android:layout_width="400dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/banner2"
+                            app:shapeAppearanceOverlay="@style/RoundedImage" />
+                    </FrameLayout>
+
+                    <!-- Banner 3 -->
+                    <FrameLayout
+                        android:layout_width="400dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/banner3"
+                            app:shapeAppearanceOverlay="@style/RoundedImage" />
+                    </FrameLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Pilihan Produk -->
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Pilihan Produk"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Ulangi sesuai jumlah produk -->
+                <include layout="@layout/item_produk" />
+                <include layout="@layout/item_produk" />
+                <include layout="@layout/item_produk" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

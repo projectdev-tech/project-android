@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.project.projectnew">
 
     <application
         android:allowBackup="true"
@@ -12,30 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectNew"
         tools:targetApi="31">
+
+        <!-- Main activity -->
         <activity
-            android:name=".splashcreen.Splashscreen"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ordercreation.MenuKeranjang"
-            android:exported="false" />
-        <activity
-            android:name=".ordercreation.MenuCekout"
-            android:exported="false" />
-        <activity
-            android:name=".productcatalog.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!-- Tambahkan ini untuk halaman notifikasi -->
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+
     </application>
-
 </manifest>
