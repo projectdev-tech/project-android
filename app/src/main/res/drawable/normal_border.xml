@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Shadow Layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#66000000" /> <!-- #00000040 = 25% opacity -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+    <!-- Foreground Layer (content box) -->
+    <item android:left="0dp" android:top="0dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+</layer-list>
