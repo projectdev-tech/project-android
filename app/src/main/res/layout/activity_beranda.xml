@@ -6,12 +6,42 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_border"
+            android:queryHint="Cari Produk" />
+
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@null"
+            android:contentDescription="Notifikasi"
+            android:src="@drawable/notification" />
+
+    </LinearLayout>
+
     <ScrollView
+
         android:layout_width="match_parent"
         android:scrollbars="none"
-
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/header"
+    app:layout_constraintBottom_toTopOf="@id/bottom_nav">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,54 +55,18 @@
                 android:layout_marginBottom="8dp"
                 android:background="#ffffff"
                 android:orientation="vertical"
-                android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center|fill_horizontal"
-                    android:orientation="horizontal"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp">
-
-                    <SearchView
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/rounded_border"
-                        android:queryHint="Cari Produk" />
-
-                    <ImageButton
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@null"
-                        android:contentDescription="Notifikasi"
-                        android:src="@drawable/notification" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:gravity="center|left"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:gravity="center|left"
-                        android:text="Kategori"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                    android:paddingBottom="8dp"
+                    android:text="Kategori"
+                    android:textStyle="bold" />
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -223,23 +217,16 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:gravity="center|left"
-                        android:text="Banner Promo"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+                    android:paddingBottom="8dp"
+                    android:text="Banner Promo"
+                    android:textStyle="bold" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -298,26 +285,21 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:gravity="center|left"
                     android:paddingLeft="16dp"
                     android:paddingTop="8dp"
                     android:paddingRight="16dp"
-                    android:paddingBottom="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:gravity="center|left"
-                        android:text="Pilihan Produk"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                    android:paddingBottom="8dp"
+                    android:text="Pilihan Produk"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:elevation="4dp"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -692,7 +674,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/normal_border"
-        android:elevation="8dp"
         android:orientation="horizontal"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
