@@ -18,14 +18,14 @@ public class activity_checkout extends AppCompatActivity {
         setContentView(R.layout.activity_checkout);
 
         txtQty = findViewById(R.id.txtQty);
+        int qty = 5;
+        int subtotal = 50000;
+
         txtSubtotal = findViewById(R.id.txtSubtotal);
         txtDiskon = findViewById(R.id.txtDiskon);
         txtPengiriman = findViewById(R.id.txtPengiriman);
         txtTotal = findViewById(R.id.txtTotal);
         btnLanjut = findViewById(R.id.btnLanjut);
-
-        int qty = 5;
-        int subtotal = 50000;
         int diskon = 0;
         int pengiriman = 0;
         int total = subtotal - diskon + pengiriman;
