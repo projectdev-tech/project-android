@@ -58,7 +58,8 @@
                 android:layout_marginBottom="8dp"
                 android:background="#fff"
                 android:orientation="vertical"
-                android:paddingTop="8dp">
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -318,7 +319,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="16dp"
                         android:background="@drawable/rounded_border"
                         android:orientation="horizontal"
                         android:padding="16dp">
@@ -399,144 +399,151 @@
                 android:layout_height="match_parent"
                 android:background="#fff"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:paddingBottom="16dp">
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/rounded_border"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/rounded_border"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/textView15"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:text="Tujuan Pengiriman"
-                            android:textSize="12dp"
-                            android:textStyle="bold" />
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                        <TextView
-                            android:id="@+id/textView10"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:text="(Alamat Toko)"
-                            android:textSize="12dp" />
+                            <TextView
+                                android:id="@+id/textView15"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="2dp"
+                                android:text="Tujuan Pengiriman"
+                                android:textSize="12dp"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/textView12"
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="2dp"
+                                android:text="(Alamat Toko)"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Jl. Diklat Pemda No.184, Bojong Nangka, Kec. Klp. Dua, Tangerang, Banten 15810"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Jl. Diklat Pemda No.184, Bojong Nangka, Kec. Klp. Dua, Tangerang, Banten 15810"
-                            android:textSize="12dp" />
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bottom_corners_radius"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="8dp">
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="8dp"
+                                app:srcCompat="@drawable/info_circle" />
+
+                            <TextView
+                                android:id="@+id/textView16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Gratis Biaya Pengiriman"
+                                android:textColor="#35C759" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bottom_corners_radius"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/rounded_border"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:paddingLeft="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="16dp"
-                        android:paddingBottom="8dp">
+                        android:padding="16dp">
 
                         <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/imageView4"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:layout_marginRight="8dp"
-                            app:srcCompat="@drawable/info_circle" />
+                            app:srcCompat="@drawable/ticket_discount" />
 
                         <TextView
-                            android:id="@+id/textView16"
+                            android:id="@+id/textView17"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Gratis Biaya Pengiriman"
-                            android:textColor="#35C759" />
+                            android:text="Gunakan Kupon" />
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:tint="#C2C2C2"
+                            app:srcCompat="@drawable/arrow_right" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_border"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginRight="8dp"
+                            app:srcCompat="@drawable/usd_coin__usdc_" />
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:text="Metode Pembayaran" />
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:text="Transfer - QRIS" />
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:tint="#C2C2C2"
+                            app:srcCompat="@drawable/arrow_right" />
+                    </LinearLayout>
+
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/rounded_border"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:id="@+id/imageView4"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginRight="8dp"
-                        app:srcCompat="@drawable/ticket_discount" />
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Gunakan Kupon" />
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:tint="#C2C2C2"
-                        app:srcCompat="@drawable/arrow_right" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_border"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:id="@+id/imageView4"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginRight="8dp"
-                        app:srcCompat="@drawable/usd_coin__usdc_" />
-
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:text="Metode Pembayaran" />
-
-                    <TextView
-                        android:id="@+id/textView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:text="Transfer - QRIS" />
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:tint="#C2C2C2"
-                        app:srcCompat="@drawable/arrow_right" />
-                </LinearLayout>
-
             </LinearLayout>
 
         </LinearLayout>

@@ -279,7 +279,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="Rp 10.000"
+                                android:text="Rp 20.000"
                                 android:textColor="#FF9502"
                                 android:textStyle="bold" />
 
@@ -395,7 +395,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="Rp 10.000"
+                                android:text="Rp 40.000"
                                 android:textColor="#FF9502"
                                 android:textStyle="bold" />
 
@@ -510,7 +510,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
-                                android:text="Rp 10.000"
+                                android:text="Rp 80.000"
                                 android:textColor="#FF9502"
                                 android:textStyle="bold" />
 
