@@ -224,51 +224,19 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Bottom Navigation -->
-    <LinearLayout
-        android:id="@+id/bottomNav"
+    <!-- Adding BottomNavigationView -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="#FFFFFF"
-        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/navHome"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/icon_home"
-            android:contentDescription="Home" />
-
-
-        <ImageView
-            android:id="@+id/navOrder"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/icon_shoping"
-            android:contentDescription="Order" />
-
-        <ImageView
-            android:id="@+id/navChat"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/icon_messages"
-            android:contentDescription="Chat" />
-
-        <ImageView
-            android:id="@+id/navProfile"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_weight="1"
-            android:src="@drawable/icon_profile"
-            android:contentDescription="Profile" />
-    </LinearLayout>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemIconTint="@drawable/bottom_nav_item_color"
+        app:itemTextColor="@drawable/bottom_nav_item_color"
+        app:elevation="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

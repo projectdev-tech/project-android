@@ -1,3 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProjectNew</string>
+    <string name="app_name"></string>
+    <string name="title_home">Beranda</string>
+    <string name="title_orders">Pesanan</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_profile">Profil</string>
 </resources>
