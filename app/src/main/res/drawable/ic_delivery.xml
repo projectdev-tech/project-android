@@ -1,0 +1,31 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFC107">
+
+    <!-- Badan mobil -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M3,13L3,17c0,0.55 0.45,1 1,1h1c0,0.83 0.67,1.5 1.5,1.5S8,18.83 8,18h8c0,0.83 0.67,1.5 1.5,1.5S19,18.83 19,18h1c0.55,0 1,-0.45 1,-1v-4c0,-0.39 -0.23,-0.74 -0.58,-0.9L17,10H6l-2.42,2.1C3.23,12.26 3,12.61 3,13z"/>
+
+    <!-- Roda kiri -->
+    <circle
+        android:fillColor="#FF000000"
+        android:cx="6.5"
+        android:cy="18"
+        android:r="1.5"/>
+
+    <!-- Roda kanan -->
+    <circle
+        android:fillColor="#FF000000"
+        android:cx="17.5"
+        android:cy="18"
+        android:r="1.5"/>
+
+    <!-- Kotak pengiriman / box di atas mobil -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M7,7h10v4H7z"/>
+</vector>
