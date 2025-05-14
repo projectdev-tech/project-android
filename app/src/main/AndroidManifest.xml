@@ -36,6 +36,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ordercreation.MenuNotifikasi" />
+        <activity android:name=".ordercreation.DetailPromoActivity"/>
+        <activity android:name=".ordercreation.DetailInfoActivity" />
+        <activity android:name=".ordercreation.DetailTransaksiActivity" />
     </application>
 
 </manifest>

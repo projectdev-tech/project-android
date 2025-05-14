@@ -2,14 +2,20 @@ package com.project.projectnew.productcatalog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import android.content.Intent;
+import android.widget.ImageView;
+
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.projectnew.R;
+import com.project.projectnew.ordercreation.MenuNotifikasi;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,3 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
                 });
     }
+
+        ImageView notificationIcon = findViewById(R.id.notificationIcon);
+        notificationIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MenuNotifikasi.class);
+            startActivity(intent);
+        });
+    }
+
