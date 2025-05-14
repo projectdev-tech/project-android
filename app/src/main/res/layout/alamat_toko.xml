@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".addressFormActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_kiri"
+            android:contentDescription="Back button" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alamat Toko"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alamat Toko"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/edtAlamatToko"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Masukkan Alamat Toko"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Provinsi"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spinnerProvinsi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/spinner_background"
+        android:padding="12dp"
+        android:hint="Pilih Provinsi" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kota"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spinnerKota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/spinner_background"
+        android:padding="12dp"
+        android:hint="Pilih Kota" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kecamatan"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spinnerKecamatan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/spinner_background"
+        android:hint="Pilih Kecamatan"
+        android:minHeight="48dp"
+        android:padding="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kelurahan"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spinnerKelurahan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/spinner_background"
+        android:hint="Pilih Kelurahan"
+        android:minHeight="48dp"
+        android:padding="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kode Pos"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/edtKodePos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Masukkan Kode Pos"
+        android:inputType="number"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lokasi Mapping"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="8dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.google.android.gms.maps.SupportMapFragment" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btnSimpan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#FF9800"
+        android:padding="12dp"
+        android:text="Simpan"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+</LinearLayout>

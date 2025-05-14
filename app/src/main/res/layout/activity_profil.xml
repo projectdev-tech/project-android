@@ -33,7 +33,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/akun2"
+                        android:src="@drawable/icon_profile_circle__1_"
                          />
 
                     <LinearLayout
@@ -245,7 +245,7 @@
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="45dp"
-                            android:src="@drawable/inventory"
+                            android:src="@drawable/icon_convert"
                             android:contentDescription="Ikon Inventory"
                             android:layout_marginEnd="16dp" />
 
@@ -284,7 +284,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/analytics"
+                        android:src="@drawable/graph"
                         android:contentDescription="Ikon Analytics"
                         android:layout_marginEnd="16dp" />
 
@@ -323,7 +323,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="70dp"
-                        android:src="@drawable/logout"
+                        android:src="@drawable/icon_logout"
                         android:layout_marginEnd="16dp"
                         android:contentDescription="Logout" />
 
