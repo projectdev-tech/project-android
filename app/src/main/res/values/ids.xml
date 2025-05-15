@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="battom_navigation_orders" type="id" />
+    <item name="navigation_orders" type="id" />
+    <item name="view_more_section" type="id">view_more_section</item>
+    <item name="tab_process" type="id" />
+    <item name="tab_sent" type="id" />
+    <item name="tab_completed" type="id" />
+    <item name="details_section" type="id" />
+    <item name="expand_icon" type="id" />
+    <item name="navigation_profile" type="id" />
+    <item name="navigation_home" type="id" />
+</resources>

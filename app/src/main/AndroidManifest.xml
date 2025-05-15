@@ -12,6 +12,7 @@
         android:theme="@style/Theme.ProjectNew"
         tools:targetApi="31">
 
+        <!-- Launcher Activity -->
         <activity
             android:name=".splashcreen.Splashscreen"
             android:exported="true">
@@ -21,6 +22,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Other Activities -->
         <activity android:name=".ordercreation.MenuKeranjang" android:exported="false" />
         <activity android:name=".ordercreation.MenuCekout" android:exported="false" />
         <activity android:name=".productcatalog.MainActivity" android:exported="true" />
@@ -28,5 +30,6 @@
         <activity android:name=".ordercreation.DetailPromoActivity"/>
         <activity android:name=".ordercreation.DetailInfoActivity" />
         <activity android:name=".ordercreation.DetailTransaksiActivity" />
+
     </application>
 </manifest>
