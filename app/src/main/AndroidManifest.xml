@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -13,6 +12,7 @@
         android:theme="@style/Theme.ProjectNew"
         tools:targetApi="31">
 
+        <!-- Launcher Activity -->
         <activity
             android:name=".splashcreen.Splashscreen"
             android:exported="true">
@@ -22,20 +22,14 @@
             </intent-filter>
         </activity>
 
+        <!-- Other Activities -->
         <activity android:name=".ordercreation.MenuKeranjang" android:exported="false" />
         <activity android:name=".ordercreation.MenuCekout" android:exported="false" />
-
-        <activity android:name=".productcatalog.MainActivity" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity
+        <activity android:name=".productcatalog.MainActivity" android:exported="true" />
         <activity android:name=".ordercreation.MenuNotifikasi" />
         <activity android:name=".ordercreation.DetailPromoActivity"/>
         <activity android:name=".ordercreation.DetailInfoActivity" />
         <activity android:name=".ordercreation.DetailTransaksiActivity" />
 
     </application>
-
 </manifest>

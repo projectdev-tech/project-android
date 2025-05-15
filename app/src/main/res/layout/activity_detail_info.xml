@@ -25,7 +25,7 @@
             android:layout_height="180dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_info_placeholder"
+            android:src="@drawable/dummy_info_detail"
         android:background="#F2F2F2" />
 
         <!-- Judul Info -->

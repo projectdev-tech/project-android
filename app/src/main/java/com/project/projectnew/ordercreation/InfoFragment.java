@@ -25,8 +25,6 @@ public class InfoFragment extends Fragment {
 
         // Pastikan ID sesuai dengan yang ada di fragment_info.xml
         TextView textJudul1 = view.findViewById(R.id.textJudulInfo1);
-        // TextView textJudul2 = view.findViewById(R.id.textJudulInfo2); // Uncomment jika ada item ke-2
-
         if (textJudul1 != null) {
             textJudul1.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), DetailInfoActivity.class);
@@ -34,12 +32,29 @@ public class InfoFragment extends Fragment {
             });
         }
 
-        // if (textJudul2 != null) {
-        //     textJudul2.setOnClickListener(v -> {
-        //         Intent intent = new Intent(getActivity(), DetailInfoActivity.class);
-        //         startActivity(intent);
-        //     });
-        // }
+        TextView textJudul2 = view.findViewById(R.id.textJudulInfo2);
+        if (textJudul2 != null) {
+             textJudul2.setOnClickListener(v -> {
+                 Intent intent = new Intent(getActivity(), DetailInfoActivity.class);
+                 startActivity(intent);
+             });
+         }
+
+        TextView textJudul3 = view.findViewById(R.id.textJudulInfo2);
+        if (textJudul3 != null) {
+            textJudul3.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), DetailInfoActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        TextView textJudul4 = view.findViewById(R.id.textJudulInfo2);
+        if (textJudul4 != null) {
+            textJudul4.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), DetailInfoActivity.class);
+                startActivity(intent);
+            });
+        }
 
         return view;
     }

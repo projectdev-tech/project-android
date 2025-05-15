@@ -22,8 +22,6 @@ public class PromoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_promo, container, false);
 
         TextView textJudul1 = view.findViewById(R.id.textJudulPromo1);
-        TextView textJudul2 = view.findViewById(R.id.textJudulPromo2);
-
         if (textJudul1 != null) {
             textJudul1.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), DetailPromoActivity.class);
@@ -31,8 +29,25 @@ public class PromoFragment extends Fragment {
             });
         }
 
+        TextView textJudul2 = view.findViewById(R.id.textJudulPromo2);
         if (textJudul2 != null) {
             textJudul2.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), DetailPromoActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        TextView textJudul3 = view.findViewById(R.id.textJudulPromo2);
+        if (textJudul3 != null) {
+            textJudul3.setOnClickListener(v -> {
+                Intent intent = new Intent(getActivity(), DetailPromoActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        TextView textJudul4 = view.findViewById(R.id.textJudulPromo2);
+        if (textJudul4 != null) {
+            textJudul4.setOnClickListener(v -> {
                 Intent intent = new Intent(getActivity(), DetailPromoActivity.class);
                 startActivity(intent);
             });
