@@ -41,6 +41,7 @@
     <ScrollView
 
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:background="#fff"
         android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
@@ -245,7 +246,7 @@
                             android:id="@+id/imageView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/Banner1" />
+                            app:srcCompat="@drawable/banner1" />
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -706,6 +707,9 @@
 
         <!-- Item 2 - Pesanan -->
         <LinearLayout
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/btnPesanan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
