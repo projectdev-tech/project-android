@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="title_home">Beranda</string>
+    <string name="title_orders">Pesanan</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_profile">Profil</string>
     <string name="app_name">ProjectNew</string>
+    <string name="notifikasi_kosong">Notifikasi Kosong</string>
+
 </resources>

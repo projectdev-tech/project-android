@@ -24,10 +24,26 @@
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
         <!-- Tambahkan ini -->
         <activity
             android:name=".ordercreation.KeranjangActivity"
             android:exported="false" />
+=======
+        <activity android:name=".ordercreation.MenuKeranjang" android:exported="false" />
+        <activity android:name=".ordercreation.MenuCekout" android:exported="false" />
+
+        <activity android:name=".productcatalog.MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity
+        <activity android:name=".ordercreation.MenuNotifikasi" />
+        <activity android:name=".ordercreation.DetailPromoActivity"/>
+        <activity android:name=".ordercreation.DetailInfoActivity" />
+        <activity android:name=".ordercreation.DetailTransaksiActivity" />
+>>>>>>> eede1ad27bc0536e1c659f604731544602a27cf1
 
     </application>
 
