@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,67 +16,56 @@ import androidx.fragment.app.Fragment;
 import com.project.projectnew.R;
 
 public class TransaksiFragment extends Fragment {
+
+    private boolean hasTransactions = true; // toggle state
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_transaksi, container, false);
 
-//        Button btnBuatNotifikasi = view.findViewById(R.id.btn_buat_notifikasi);
-//        btnBuatNotifikasi.setOnClickListener(v -> {
-//            Toast.makeText(getContext(), "Fitur buat notifikasi belum tersedia", Toast.LENGTH_SHORT).show();
-//        });
-//
-        TextView textJudul1 = view.findViewById(R.id.textJudulTransaksi1);
-        if (textJudul1 != null) {
-            textJudul1.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
-                startActivity(intent);
-            });
-        }
+        FrameLayout contentContainer = view.findViewById(R.id.containerTransaksiContent);
+        Button switchButton = view.findViewById(R.id.btnSwitchTransaksi);
 
-        TextView textJudul2 = view.findViewById(R.id.textJudulTransaksi2);
-        if (textJudul2 != null) {
-            textJudul2.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
-                startActivity(intent);
-            });
-        }
+        updateTransaksiContent(inflater, contentContainer);
 
-        TextView textJudul3 = view.findViewById(R.id.textJudulTransaksi3);
-        if (textJudul3 != null) {
-            textJudul3.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
-                startActivity(intent);
-            });
-        }
-
-        TextView textJudul4 = view.findViewById(R.id.textJudulTransaksi4);
-        if (textJudul4 != null) {
-            textJudul4.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
-                startActivity(intent);
-            });
-        }
-
-        TextView textJudul5 = view.findViewById(R.id.textJudulTransaksi5);
-        if (textJudul5 != null) {
-            textJudul5.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
-                startActivity(intent);
-            });
-        }
-
-        TextView textJudul6 = view.findViewById(R.id.textJudulTransaksi6);
-        if (textJudul6 != null) {
-            textJudul6.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
-                startActivity(intent);
-            });
-        }
-
+        switchButton.setOnClickListener(v -> {
+            hasTransactions = !hasTransactions;
+            updateTransaksiContent(inflater, contentContainer);
+        });
 
         return view;
+    }
+
+    private void updateTransaksiContent(LayoutInflater inflater, FrameLayout container) {
+        container.removeAllViews();
+        View contentView;
+        if (hasTransactions) {
+            contentView = inflater.inflate(R.layout.fragment_transaksi_items, container, false);
+
+            int[] textIds = {
+                    R.id.textJudulTransaksi1, R.id.textJudulTransaksi2,
+                    R.id.textJudulTransaksi3, R.id.textJudulTransaksi4,
+                    R.id.textJudulTransaksi5, R.id.textJudulTransaksi6
+            };
+
+            for (int id : textIds) {
+                TextView textView = contentView.findViewById(id);
+                if (textView != null) {
+                    textView.setOnClickListener(v -> {
+                        Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
+                        startActivity(intent);
+                    });
+                }
+            }
+
+        } else {
+            contentView = inflater.inflate(R.layout.fragment_transaksi_empty, container, false);
+        }
+
+        container.addView(contentView);
     }
 }

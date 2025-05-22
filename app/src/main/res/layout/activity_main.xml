@@ -82,7 +82,8 @@
         android:layout_below="@id/searchBellContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:paddingBottom="80dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -251,6 +252,7 @@
             </HorizontalScrollView>
 
             <!-- Banner Promo Section -->
+            <!-- Banner Promo Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -261,18 +263,45 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="12dp" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPagerDummy"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="#EEEEEE"
-                android:layout_marginBottom="12dp"
-                android:clipToPadding="false"
-                android:clipChildren="false"
                 android:padding="16dp"
-                tools:background="@android:color/darker_gray"
-                tools:itemCount="3"
-                tools:layout="@layout/item_banner_dummy" />
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                android:background="@color/white"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+
+                    <ImageView
+                        android:layout_width="300dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/banner1" />
+
+                    <ImageView
+                        android:layout_width="300dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/banner2" />
+
+                    <ImageView
+                        android:layout_width="300dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/banner3" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -282,7 +311,7 @@
                 android:gravity="center">
 
                 <View
-                    android:layout_width="24dp"
+                    android:layout_width="8dp"
                     android:layout_height="8dp"
                     android:layout_margin="4dp"
                     android:background="@drawable/indicator_selected" />
