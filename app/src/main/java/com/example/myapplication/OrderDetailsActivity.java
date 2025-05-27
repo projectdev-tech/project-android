@@ -73,4 +73,4 @@ public class OrderDetailsActivity extends AppCompatActivity {
         tvDeliveryAddress.setText("Jl. Letnan Purnata No. 195, Gunung Nangka, Kec. Kib. Duk, Tangerang, Banten 15810");
     }
 }
-}
+
