@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.project.projectnew.R;
 
+
 public class DetailPromoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,15 +1,13 @@
 package com.project.projectnew.ordercreation;
 
 import android.os.Bundle;
-import android.view.View;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import androidx.viewpager2.widget.ViewPager2;
-
 import com.project.projectnew.R;
 
 public class MenuNotifikasi extends AppCompatActivity {

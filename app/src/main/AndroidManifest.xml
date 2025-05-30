@@ -1,32 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    package="com.project.projectnew">
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ProjectNew"
-        tools:targetApi="31">
+        android:theme="@style/Theme.ProjectNew">
 
+        <!-- Hanya BerandaActivity yang dijalankan pertama -->
         <activity
-            android:name=".splashcreen.Splashscreen"
+            android:name=".ordercreation.BerandaActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ordercreation.MenuKeranjang" android:exported="false" />
-        <activity android:name=".ordercreation.MenuCekout" android:exported="false" />
-        <activity android:name=".productcatalog.MainActivity" android:exported="true" />
+        <activity android:name=".ordercreation.KeranjangActivity" android:exported="false" />
+        <activity android:name=".ordercreation.Keranjang2Activity" android:exported="false" />
+        <activity android:name=".ordercreation.CheckoutActivity" />
+        <activity android:name=".ordercreation.PesananSuksesActivity" />
+        <activity android:name=".ordercreation.PembayaranActivity" />
         <activity android:name=".ordercreation.MenuNotifikasi" />
         <activity android:name=".ordercreation.DetailPromoActivity"/>
         <activity android:name=".ordercreation.DetailInfoActivity" />
         <activity android:name=".ordercreation.DetailTransaksiActivity" />
     </application>
+
 </manifest>
