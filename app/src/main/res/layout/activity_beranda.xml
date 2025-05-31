@@ -420,9 +420,8 @@
                 android:textSize="10sp" />
         </LinearLayout>
 
-        <!-- Item 2 - Keranjang -->
         <LinearLayout
-            android:id="@+id/btnKeranjang"
+            android:id="@+id/btnPesanan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -443,7 +442,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Keranjang"
+                android:text="Pesanan"
                 android:textColor="#9E9E9E"
                 android:textSize="10sp" />
         </LinearLayout>

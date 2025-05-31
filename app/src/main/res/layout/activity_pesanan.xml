@@ -87,7 +87,7 @@
 
         <!-- Item 2 - Keranjang -->
         <LinearLayout
-            android:id="@+id/btnKeranjang"
+            android:id="@+id/btnPesanan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"

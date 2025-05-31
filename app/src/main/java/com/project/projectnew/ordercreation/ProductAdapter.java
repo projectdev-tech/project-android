@@ -18,14 +18,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> productList;
     private final TotalUpdateListener totalUpdateListener;
+    private boolean isKeranjangMode;
 
     // Interface untuk callback update total ke activity
     public interface TotalUpdateListener {
         void updateTotal(List<Product> products);
     }
 
-    public ProductAdapter(List<Product> list, TotalUpdateListener listener) {
+    public ProductAdapter(List<Product> list, boolean isKeranjangMode, TotalUpdateListener listener) {
         this.productList = list;
+        this.isKeranjangMode = isKeranjangMode;
         this.totalUpdateListener = listener;
     }
 
@@ -89,8 +91,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         });
 
         holder.btnTrash.setOnClickListener(v -> {
-            product.setQuantity(0);
-            notifyItemChanged(position);
+            if (isKeranjangMode) {
+                productList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, productList.size());
+            } else {
+                product.setQuantity(0);
+                notifyItemChanged(position);
+            }
             totalUpdateListener.updateTotal(productList);
         });
     }
@@ -98,6 +106,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public int getItemCount() {
         return productList.size();
+    }
+
+    public void updateSelectedProducts(List<Product> updatedList) {
+        for (Product item : productList) {
+            item.setQuantity(0); // Reset semua quantity
+        }
+
+        for (Product updated : updatedList) {
+            for (Product item : productList) {
+                if (item.getId().equals(updated.getId())) {
+                    item.setQuantity(updated.getQuantity());
+                    break;
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+        totalUpdateListener.updateTotal(productList);
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {

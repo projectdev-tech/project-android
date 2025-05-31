@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ordercreation.KeranjangActivity" android:exported="false" />
-        <activity android:name=".ordercreation.Keranjang2Activity" android:exported="false" />
+        <activity android:name=".ordercreation.PesananActivity" android:exported="false" />
         <activity android:name=".ordercreation.CheckoutActivity" />
         <activity android:name=".ordercreation.PesananSuksesActivity" />
         <activity android:name=".ordercreation.PembayaranActivity" />

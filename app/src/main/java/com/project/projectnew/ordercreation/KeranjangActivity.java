@@ -3,6 +3,7 @@ package com.project.projectnew.ordercreation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +22,10 @@ public class KeranjangActivity extends AppCompatActivity {
     private RecyclerView rvProducts;
     private TextView tvTotalQtyValue, tvTotalPriceValue;
     private Button btnLanjutkan;
+    private ImageView btnBack;
 
     private List<Product> selectedProducts;
-    private int totalQty = 0;
-    private int totalHarga = 0;
+    private CartAdapter cartAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +35,19 @@ public class KeranjangActivity extends AppCompatActivity {
         rvProducts = findViewById(R.id.rvProducts);
         tvTotalQtyValue = findViewById(R.id.tvTotalQtyValue);
         tvTotalPriceValue = findViewById(R.id.tvTotalPriceValue);
-        btnLanjutkan = findViewById(R.id.btnLanjutkan); // Tambah referensi tombol
+        btnLanjutkan = findViewById(R.id.btnLanjutkan);
+        btnBack = findViewById(R.id.btnBack);
 
         selectedProducts = (ArrayList<Product>) getIntent().getSerializableExtra("selected_products");
+        if (selectedProducts == null) selectedProducts = new ArrayList<>();
+
+        cartAdapter = new CartAdapter(selectedProducts, updatedList -> {
+            selectedProducts = updatedList;
+            updateTotalDisplay(selectedProducts);
+        });
 
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
-        rvProducts.setAdapter(new ProductAdapter(selectedProducts, updatedList -> {
-            updateTotalDisplay(updatedList);
-        }));
+        rvProducts.setAdapter(cartAdapter);
 
         updateTotalDisplay(selectedProducts);
 
@@ -51,11 +57,12 @@ public class KeranjangActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        btnBack.setOnClickListener(v -> returnUpdatedData());
     }
 
     private void updateTotalDisplay(List<Product> productList) {
-        totalQty = 0;
-        totalHarga = 0;
+        int totalQty = 0;
+        int totalHarga = 0;
 
         for (Product p : productList) {
             totalQty += p.getQuantity();
@@ -68,13 +75,22 @@ public class KeranjangActivity extends AppCompatActivity {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(localeID);
         formatter.setMaximumFractionDigits(0);
         tvTotalPriceValue.setText(formatter.format(totalHarga));
+
+        // ➤ Disable tombol jika tidak ada produk
+        btnLanjutkan.setEnabled(totalQty > 0);
+        btnLanjutkan.setAlpha(totalQty > 0 ? 1f : 0.5f);  // transparan kalau disabled
     }
 
     @Override
     public void onBackPressed() {
+        returnUpdatedData();
+        super.onBackPressed();
+    }
+
+    private void returnUpdatedData() {
         Intent resultIntent = new Intent();
         resultIntent.putExtra("updated_products", new ArrayList<>(selectedProducts));
         setResult(RESULT_OK, resultIntent);
-        super.onBackPressed();
+        finish();
     }
 }

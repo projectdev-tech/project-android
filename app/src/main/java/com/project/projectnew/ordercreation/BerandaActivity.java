@@ -29,7 +29,7 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
 
     private static final int REQUEST_CODE_KERANJANG = 100;
 
-    LinearLayout btnKeranjang;
+    LinearLayout btnPesanan;
     RecyclerView rvProducts;
     ProductAdapter productAdapter;
     List<Product> productList;
@@ -56,6 +56,7 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beranda);
 
+        // Inisialisasi view
         lnPilihanProduk = findViewById(R.id.lnPilihanProduk);
         carouselViewPager = findViewById(R.id.carouselViewPager);
         carouselDots = findViewById(R.id.carouselDots);
@@ -63,8 +64,9 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         tvTotal = findViewById(R.id.tvTotal);
         tvQty = findViewById(R.id.tvQty);
         rvProducts = findViewById(R.id.rvProducts);
-        btnKeranjang = findViewById(R.id.btnKeranjang);
+        btnPesanan = findViewById(R.id.btnPesanan);
 
+        // Carousel setup
         carouselViewPager.setAdapter(new ImageSliderAdapter(imageList));
         carouselViewPager.post(() -> addDots(0));
 
@@ -80,23 +82,27 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
 
         autoSlideImages();
 
+        // Produk setup
         productList = ProductManager.getInstance().getProducts();
-        productAdapter = new ProductAdapter(productList, this);
+        productAdapter = new ProductAdapter(productList, false, this);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         rvProducts.setAdapter(productAdapter);
 
-        btnKeranjang.setOnClickListener(v -> {
-            Intent intent = new Intent(BerandaActivity.this, Keranjang2Activity.class);
-            intent.putExtra("selected_products", new ArrayList<>(getSelectedProducts()));
-            startActivityForResult(intent, REQUEST_CODE_KERANJANG);
-        });
-
+        // Klik ke keranjang via fmTotal (popup total)
         fmTotal.setOnClickListener(v -> {
             Intent intent = new Intent(BerandaActivity.this, KeranjangActivity.class);
             intent.putExtra("selected_products", new ArrayList<>(getSelectedProducts()));
             startActivityForResult(intent, REQUEST_CODE_KERANJANG);
         });
 
+        // Klik ke keranjang via tombol
+        btnPesanan.setOnClickListener(v -> {
+            Intent intent = new Intent(BerandaActivity.this, PesananActivity.class);
+            intent.putExtra("selected_products", new ArrayList<>(getSelectedProducts()));
+            startActivityForResult(intent, REQUEST_CODE_KERANJANG);
+        });
+
+        // Hitung total awal
         updateTotal(productList);
     }
 
@@ -185,20 +191,13 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         if (requestCode == REQUEST_CODE_KERANJANG && resultCode == RESULT_OK && data != null) {
             ArrayList<Product> updatedList = (ArrayList<Product>) data.getSerializableExtra("updated_products");
             if (updatedList != null) {
-                for (Product updated : updatedList) {
-                    for (Product original : productList) {
-                        if (updated.getId().equals(original.getId())) {
-                            original.setQuantity(updated.getQuantity());
-                            break;
-                        }
-                    }
-                }
-                productAdapter.notifyDataSetChanged();
+                productAdapter.updateSelectedProducts(updatedList);
                 updateTotal(productList);
             }
         }
     }
 
+    // Adapter carousel banner
     private static class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder> {
         private final List<Integer> images;
 
