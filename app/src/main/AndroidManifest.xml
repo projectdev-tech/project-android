@@ -25,7 +25,10 @@
         <activity android:name=".ordercreation.PesananSuksesActivity" />
         <activity android:name=".ordercreation.PembayaranActivity" />
         <activity android:name=".ordercreation.RincianPesananActivity" />
-
+        <activity android:name=".ordercreation.MenuNotifikasi" />
+        <activity android:name=".ordercreation.DetailPromoActivity"/>
+        <activity android:name=".ordercreation.DetailInfoActivity" />
+        <activity android:name=".ordercreation.DetailTransaksiActivity" />
     </application>
 
 </manifest>
