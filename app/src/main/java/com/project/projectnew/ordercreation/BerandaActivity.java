@@ -66,6 +66,18 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beranda);
 
+        ImageView notificationIcon = findViewById(R.id.notificationIcon);
+        LinearLayout notificationIconNavbar = findViewById(R.id.notificationIconNavbar);
+
+        notificationIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(BerandaActivity.this, MenuNotifikasi.class);
+            startActivity(intent);
+        });
+        notificationIconNavbar.setOnClickListener(v -> {
+            Intent intent = new Intent(BerandaActivity.this, MenuNotifikasi.class);
+            startActivity(intent);
+        });
+
         initViews();
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 

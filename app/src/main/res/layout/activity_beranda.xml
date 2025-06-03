@@ -29,8 +29,9 @@
             android:queryHint="Cari Produk" />
 
         <ImageButton
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:id="@+id/notificationIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@null"
             android:contentDescription="Notifikasi"
             android:src="@drawable/notification" />
@@ -449,6 +450,7 @@
 
         <!-- Item 3 - Notifikasi -->
         <LinearLayout
+            android:id="@+id/notificationIconNavbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"

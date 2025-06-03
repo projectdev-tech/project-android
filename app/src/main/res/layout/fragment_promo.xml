@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Konten utama -->
+    <FrameLayout
+        android:id="@+id/containerPromoContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp" /> <!-- beri ruang agar tombol tidak tertimpa -->
+
+    <Button
+        android:id="@+id/btnSwitchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ganti Tampilan"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp" />
+</FrameLayout>
