@@ -18,17 +18,30 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> productList;
     private final TotalUpdateListener totalUpdateListener;
+    private final OnCartChangedListener cartChangedListener;
     private boolean isKeranjangMode;
 
-    // Interface untuk callback update total ke activity
+    // Interface untuk update total qty dan harga
     public interface TotalUpdateListener {
         void updateTotal(List<Product> products);
     }
 
+    // Interface untuk menyimpan data keranjang ke SharedPreferences
+    public interface OnCartChangedListener {
+        void onCartChanged(List<Product> updatedProducts);
+    }
+
+    // Constructor biasa (untuk BerandaActivity)
     public ProductAdapter(List<Product> list, boolean isKeranjangMode, TotalUpdateListener listener) {
+        this(list, isKeranjangMode, listener, null);
+    }
+
+    // Constructor lengkap (untuk KeranjangActivity)
+    public ProductAdapter(List<Product> list, boolean isKeranjangMode, TotalUpdateListener listener, OnCartChangedListener cartChangedListener) {
         this.productList = list;
         this.isKeranjangMode = isKeranjangMode;
         this.totalUpdateListener = listener;
+        this.cartChangedListener = cartChangedListener;
     }
 
     @NonNull
@@ -70,7 +83,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             if (product.getQuantity() < product.getStock()) {
                 product.setQuantity(product.getQuantity() + 1);
                 notifyItemChanged(position);
-                totalUpdateListener.updateTotal(productList);
+                triggerUpdate();
             }
         });
 
@@ -78,7 +91,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             if (product.getQuantity() < product.getStock()) {
                 product.setQuantity(product.getQuantity() + 1);
                 notifyItemChanged(position);
-                totalUpdateListener.updateTotal(productList);
+                triggerUpdate();
             }
         });
 
@@ -86,7 +99,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             if (product.getQuantity() > 1) {
                 product.setQuantity(product.getQuantity() - 1);
                 notifyItemChanged(position);
-                totalUpdateListener.updateTotal(productList);
+                triggerUpdate();
             }
         });
 
@@ -99,8 +112,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 product.setQuantity(0);
                 notifyItemChanged(position);
             }
-            totalUpdateListener.updateTotal(productList);
+            triggerUpdate();
         });
+    }
+
+    private void triggerUpdate() {
+        if (totalUpdateListener != null) {
+            totalUpdateListener.updateTotal(productList);
+        }
+        if (isKeranjangMode && cartChangedListener != null) {
+            cartChangedListener.onCartChanged(productList);
+        }
     }
 
     @Override
@@ -108,9 +130,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productList.size();
     }
 
+    // Digunakan untuk update data dari SharedPreferences (jika perlu)
     public void updateSelectedProducts(List<Product> updatedList) {
         for (Product item : productList) {
-            item.setQuantity(0); // Reset semua quantity
+            item.setQuantity(0);
         }
 
         for (Product updated : updatedList) {
@@ -123,7 +146,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         notifyDataSetChanged();
-        totalUpdateListener.updateTotal(productList);
+        triggerUpdate();
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
@@ -135,19 +158,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvName = itemView.findViewById(R.id.tvName);
             tvUnit = itemView.findViewById(R.id.tvUnit);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvStock = itemView.findViewById(R.id.tvStock);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
-
             btnTambah = itemView.findViewById(R.id.btnTambah);
-
             btnPlus = itemView.findViewById(R.id.btnPlus);
             btnMinus = itemView.findViewById(R.id.btnMinus);
             btnTrash = itemView.findViewById(R.id.btnTrash);
-
             layoutJumlah = itemView.findViewById(R.id.layoutJumlah);
         }
     }

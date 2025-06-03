@@ -26,7 +26,7 @@ import java.util.Locale;
 public class CheckoutActivity extends AppCompatActivity {
 
     private RecyclerView rvCheckoutProducts;
-    private TextView tvqtyorder, tvsubtotal, tvtotal;
+    private TextView tvQtyOrder, tvSubtotal, tvTotal;
     private Button btnLanjutkan;
     private ImageView btnBack;
 
@@ -40,9 +40,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Inisialisasi view
         rvCheckoutProducts = findViewById(R.id.rvCheckoutProducts);
-        tvqtyorder = findViewById(R.id.tvqtyorder);
-        tvsubtotal = findViewById(R.id.tvsubtotal);
-        tvtotal = findViewById(R.id.tvtotal);
+        tvQtyOrder = findViewById(R.id.tvqtyorder);
+        tvSubtotal = findViewById(R.id.tvsubtotal);
+        tvTotal = findViewById(R.id.tvtotal);
         btnLanjutkan = findViewById(R.id.btnlanjutkan);
         btnBack = findViewById(R.id.btnBack);
 
@@ -50,25 +50,36 @@ public class CheckoutActivity extends AppCompatActivity {
         productList = (ArrayList<Product>) getIntent().getSerializableExtra("checkout_products");
         if (productList == null) productList = new ArrayList<>();
 
-        // Set up RecyclerView
+        // Set RecyclerView
         rvCheckoutProducts.setLayoutManager(new LinearLayoutManager(this));
         rvCheckoutProducts.setAdapter(new CheckoutAdapter(productList));
 
-        // Tampilkan ringkasan qty dan harga
+        // Hitung dan tampilkan total qty & harga
         updateSummary();
 
-        // Tombol lanjut ke PesananSukses
+        // Tombol lanjutkan checkout
         btnLanjutkan.setOnClickListener(v -> {
+            // 1. Simpan ke riwayat pesanan
             saveOrderToHistory(productList, formattedTotal);
+
+            // 2. Hapus data produk terpilih dari SharedPreferences
+            SharedPreferences prefs = getSharedPreferences("SelectedProductsPref", MODE_PRIVATE);
+            prefs.edit().remove("selected_products").apply();
+
+            // 3. Reset quantity produk ke 0
+            List<Product> allProducts = ProductManager.getInstance().getProducts();
+            for (Product p : allProducts) {
+                p.setQuantity(0);
+            }
+
+            // 4. Navigasi ke halaman Pesanan Sukses
             Intent intent = new Intent(CheckoutActivity.this, PesananSuksesActivity.class);
             intent.putExtra("total_harga", formattedTotal);
             startActivity(intent);
         });
 
         // Tombol kembali
-        btnBack.setOnClickListener(v -> {
-            finish();
-        });
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void updateSummary() {
@@ -83,15 +94,17 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         }
 
-        tvqtyorder.setText(String.valueOf(totalQty));
+        tvQtyOrder.setText(String.valueOf(totalQty));
 
+        // Format harga dengan locale Indonesia
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(localeID);
         formatter.setMaximumFractionDigits(0);
 
-        formattedTotal = formatter.format(totalHarga);
-        tvsubtotal.setText(formattedTotal);
-        tvtotal.setText(formattedTotal);
+        formattedTotal = formatter.format(totalHarga);  // Tanpa tambahan "Rp " manual
+
+        tvSubtotal.setText(formattedTotal);
+        tvTotal.setText(formattedTotal);
     }
 
     private void saveOrderToHistory(List<Product> productList, String totalHarga) {
@@ -102,24 +115,27 @@ public class CheckoutActivity extends AppCompatActivity {
         Type listType = new TypeToken<List<Order>>() {}.getType();
         List<Order> orderHistory = existing != null ? gson.fromJson(existing, listType) : new ArrayList<>();
 
-        // Generate No Order: 306-YYYY-MM-DD-00001
+        // Buat nomor order: 306-YYYY-MM-DD-00001
         String datePart = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         int orderNumber = orderHistory.size() + 1;
         String noOrder = String.format("306-%s-%05d", datePart, orderNumber);
 
-        // Format tanggal pembelian: dd MMMM yyyy, HH.mm.ss
-        String tanggalPembelian = new SimpleDateFormat("dd MMMM yyyy, HH.mm.ss", new Locale("in", "ID")).format(new Date());
+        // Tanggal pembelian
+        String tanggalPembelian = new SimpleDateFormat("dd MMMM yyyy, HH.mm.ss", new Locale("in", "ID"))
+                .format(new Date());
 
-        // Simpan timestamp waktu sekarang (waktu mulai hitung mundur)
+        // Simpan timestamp waktu mulai pembayaran
         long startTimeMillis = System.currentTimeMillis();
         prefs.edit().putLong("start_time_millis", startTimeMillis).apply();
 
-        // Status
+        // Status default
         String status = "Menunggu Pembayaran";
 
-        Order newOrder = new Order(noOrder, productList, totalHarga, "", tanggalPembelian, status);
+        // Simpan order baru (WAKTU PEMBAYARAN SEKARANG LONG)
+        Order newOrder = new Order(noOrder, productList, totalHarga, startTimeMillis, tanggalPembelian, status);
         orderHistory.add(newOrder);
 
+        // Simpan kembali ke SharedPreferences
         String json = gson.toJson(orderHistory);
         prefs.edit().putString("order_history", json).apply();
     }

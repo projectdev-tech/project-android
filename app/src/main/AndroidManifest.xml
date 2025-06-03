@@ -24,6 +24,8 @@
         <activity android:name=".ordercreation.CheckoutActivity" />
         <activity android:name=".ordercreation.PesananSuksesActivity" />
         <activity android:name=".ordercreation.PembayaranActivity" />
+        <activity android:name=".ordercreation.RincianPesananActivity" />
+
     </application>
 
 </manifest>

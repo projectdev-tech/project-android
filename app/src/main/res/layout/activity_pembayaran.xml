@@ -20,7 +20,7 @@
         tools:layout_editor_absoluteX="1dp">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/imgbtnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="16dp"

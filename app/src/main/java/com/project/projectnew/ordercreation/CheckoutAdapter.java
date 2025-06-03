@@ -39,15 +39,17 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
         holder.tvProductUnit.setText(product.getUnit());
         holder.tvProductQty.setText("Qty " + product.getQuantity() + " x");
 
-        // Format harga sesuai lokal Indonesia
+        // Format harga satuan (tanpa dobel "Rp")
         Locale localeID = new Locale("in", "ID");
         NumberFormat format = NumberFormat.getCurrencyInstance(localeID);
         format.setMaximumFractionDigits(0);
-        int hargaSatuan = Integer.parseInt(product.getPrice().replaceAll("[^\\d]", ""));
+
+        String cleanPrice = product.getPrice().replaceAll("[^\\d]", "");
+        int hargaSatuan = cleanPrice.isEmpty() ? 0 : Integer.parseInt(cleanPrice);
         holder.tvProductPrice.setText(format.format(hargaSatuan));
 
-        // Gambar default
-        holder.ivProductImage.setImageResource(R.drawable.product); // gunakan gambar placeholder kamu
+        // Gambar placeholder
+        holder.ivProductImage.setImageResource(R.drawable.product);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivProductImage = itemView.findViewById(R.id.imageView); // pastikan ID sesuai di XML
+            ivProductImage = itemView.findViewById(R.id.imageView); // Pastikan ID ini cocok di XML
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvProductUnit = itemView.findViewById(R.id.tvProductUnit);
             tvProductPrice = itemView.findViewById(R.id.tvProductPrice);

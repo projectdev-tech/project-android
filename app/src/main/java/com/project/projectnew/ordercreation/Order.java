@@ -7,11 +7,11 @@ public class Order implements Serializable {
     private String noOrder;
     private List<Product> productList;
     private String totalHarga;
-    private String waktuPembayaran;
+    private long waktuPembayaran; // ubah jadi long
     private String tanggalPembelian;
     private String status;
 
-    public Order(String noOrder, List<Product> productList, String totalHarga, String waktuPembayaran, String tanggalPembelian, String status) {
+    public Order(String noOrder, List<Product> productList, String totalHarga, long waktuPembayaran, String tanggalPembelian, String status) {
         this.noOrder = noOrder;
         this.productList = productList;
         this.totalHarga = totalHarga;
@@ -46,11 +46,11 @@ public class Order implements Serializable {
         this.totalHarga = totalHarga;
     }
 
-    public String getWaktuPembayaran() {
+    public long getWaktuPembayaran() {
         return waktuPembayaran;
     }
 
-    public void setWaktuPembayaran(String waktuPembayaran) {
+    public void setWaktuPembayaran(long waktuPembayaran) {
         this.waktuPembayaran = waktuPembayaran;
     }
 

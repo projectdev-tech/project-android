@@ -21,10 +21,12 @@ public class ProductManager {
         return instance;
     }
 
+    // Mengembalikan semua produk
     public List<Product> getProducts() {
         return productList;
     }
 
+    // Mengembalikan hanya produk yang quantity > 0 (produk yang ada di keranjang)
     public List<Product> getSelectedProducts() {
         List<Product> selected = new ArrayList<>();
         for (Product p : productList) {

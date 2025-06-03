@@ -20,7 +20,7 @@ public class PesananSuksesActivity extends AppCompatActivity {
     private Button btnLanjutPembayaran;
     private ImageButton btnClose;
     private String totalHarga;
-    private String waktuBayar;
+    private long waktuBayar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class PesananSuksesActivity extends AppCompatActivity {
             List<Order> orderHistory = gson.fromJson(json, listType);
 
             if (!orderHistory.isEmpty()) {
-                Order lastOrder = orderHistory.get(orderHistory.size() - 1); // Ambil pesanan terakhir
+                Order lastOrder = orderHistory.get(orderHistory.size() - 1);
                 totalHarga = lastOrder.getTotalHarga();
                 waktuBayar = lastOrder.getWaktuPembayaran();
 
@@ -57,5 +57,12 @@ public class PesananSuksesActivity extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PesananSuksesActivity.this, BerandaActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

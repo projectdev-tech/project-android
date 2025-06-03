@@ -6,11 +6,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.annotation.Nullable;
 
-public class KeranjangPagerAdapter extends FragmentPagerAdapter {
+public class PesananPagerAdapter extends FragmentPagerAdapter {
 
-    private final String[] tabTitles = new String[]{"Dalam Proses", "Riwayat Pesanan"};
+    private final String[] tabTitles = new String[]{"Belum Bayar","Dalam Proses", "Riwayat Pesanan"};
 
-    public KeranjangPagerAdapter(@NonNull FragmentManager fm) {
+    public PesananPagerAdapter(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
@@ -19,8 +19,10 @@ public class KeranjangPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new DalamProsesFragment();
+                return new BelumBayarFragment();
             case 1:
+                return new DalamProsesFragment();
+            case 2:
                 return new RiwayatPesananFragment();
             default:
                 return null;

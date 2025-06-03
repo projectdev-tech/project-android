@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ public class PembayaranActivity extends AppCompatActivity {
 
     private TextView tvTotalHargaPembayaran, tvBayarDalam;
     private Button btnMenungguPembayaran;
+    private ImageView imgbtnBack;
     private CountDownTimer countDownTimer;
 
     @Override
@@ -24,9 +26,11 @@ public class PembayaranActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pembayaran);
 
+        // Inisialisasi view
         tvTotalHargaPembayaran = findViewById(R.id.tvtotalpembayaran);
         tvBayarDalam = findViewById(R.id.tvBayarDalam);
         btnMenungguPembayaran = findViewById(R.id.btnMenungguPembayaran);
+        imgbtnBack = findViewById(R.id.imgbtnBack);
 
         // Ambil total harga dari intent
         String totalHarga = getIntent().getStringExtra("total_harga");
@@ -34,12 +38,12 @@ public class PembayaranActivity extends AppCompatActivity {
             tvTotalHargaPembayaran.setText(totalHarga);
         }
 
-        // Ambil start_time_millis dari SharedPreferences
+        // Ambil waktu mulai dari SharedPreferences
         SharedPreferences prefs = getSharedPreferences("checkout_data", MODE_PRIVATE);
         long startTime = prefs.getLong("start_time_millis", 0);
 
         if (startTime != 0) {
-            long endTime = startTime + TimeUnit.HOURS.toMillis(24); // 24 jam dari waktu start
+            long endTime = startTime + TimeUnit.HOURS.toMillis(24);
             long remainingTime = endTime - System.currentTimeMillis();
 
             if (remainingTime > 0) {
@@ -51,10 +55,19 @@ public class PembayaranActivity extends AppCompatActivity {
             tvBayarDalam.setText("Waktu tidak tersedia");
         }
 
-        btnMenungguPembayaran.setOnClickListener(v -> {
-            Intent intent = new Intent(PembayaranActivity.this, PesananActivity.class);
+        // Tombol kembali: hanya kembali ke PesananSuksesActivity
+        imgbtnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(PembayaranActivity.this, PesananSuksesActivity.class);
             startActivity(intent);
             finish();
+        });
+
+        // Tombol lanjutkan: ke PesananActivity, dan hapus semua back stack (tidak bisa kembali lagi)
+        btnMenungguPembayaran.setOnClickListener(v -> {
+            Intent intent = new Intent(PembayaranActivity.this, PesananActivity.class);
+            intent.putExtra("fragment", "belum_bayar"); // buka fragment belum bayar
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // hapus backstack
+            startActivity(intent);
         });
     }
 
@@ -80,7 +93,7 @@ public class PembayaranActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (countDownTimer != null) countDownTimer.cancel();
+        super.onDestroy();
     }
 }

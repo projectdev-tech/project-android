@@ -18,8 +18,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private List<Product> productList;
     private final ProductAdapter.TotalUpdateListener totalUpdateListener;
 
-    public CartAdapter(List<Product> productList, ProductAdapter.TotalUpdateListener listener) {
-        this.productList = productList;
+    public CartAdapter(ProductAdapter.TotalUpdateListener listener) {
+        // Ambil produk yang quantity-nya > 0 dari ProductManager
+        this.productList = ProductManager.getInstance().getSelectedProducts();
         this.totalUpdateListener = listener;
     }
 
@@ -61,7 +62,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         });
 
         holder.btnTrash.setOnClickListener(v -> {
-            productList.remove(position); // 🔥 HAPUS dari list
+            // Set quantity = 0 di list global ProductManager
+            for (Product p : ProductManager.getInstance().getProducts()) {
+                if (p.getId().equals(product.getId())) {
+                    p.setQuantity(0);
+                    break;
+                }
+            }
+
+            // Hapus dari list lokal cart
+            productList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, productList.size());
             totalUpdateListener.updateTotal(productList);
