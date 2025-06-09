@@ -1,23 +1,27 @@
 package com.project.projectnew.ordercreation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.projectnew.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PromoFragment extends Fragment {
 
-    private boolean hasItems = true; // toggle state
+    private boolean hasItems = true;
+    private RecyclerView recyclerView;
+    private ViewGroup containerPromo;
 
     @Nullable
     @Override
@@ -25,60 +29,39 @@ public class PromoFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_promo, container, false);
-
-        FrameLayout contentContainer = view.findViewById(R.id.containerPromoContent);
+        containerPromo = view.findViewById(R.id.containerPromoContent);
         Button switchButton = view.findViewById(R.id.btnSwitchView);
 
-        // First Load
-        updatePromoContent(inflater, contentContainer);
+        updateView(inflater);
 
-        // Button to switch
         switchButton.setOnClickListener(v -> {
-            hasItems = !hasItems; // toggle state
-            updatePromoContent(inflater, contentContainer);
+            hasItems = !hasItems;
+            updateView(inflater);
         });
 
         return view;
     }
 
-    private void updatePromoContent(LayoutInflater inflater, FrameLayout container) {
-        container.removeAllViews();
-        View contentView;
+    private void updateView(LayoutInflater inflater) {
+        containerPromo.removeAllViews();
+
         if (hasItems) {
-            contentView = inflater.inflate(R.layout.fragment_promo_items, container, false);
-
-            TextView textJudul1 = contentView.findViewById(R.id.textJudulPromo1);
-            if (textJudul1 != null) {
-                textJudul1.setOnClickListener(v -> {
-                    startActivity(new Intent(getActivity(), DetailPromoActivity.class));
-                });
-            }
-
-            TextView textJudul2 = contentView.findViewById(R.id.textJudulPromo2);
-            if (textJudul2 != null) {
-                textJudul2.setOnClickListener(v -> {
-                    startActivity(new Intent(getActivity(), DetailPromoActivity.class));
-                });
-            }
-
-            TextView textJudul3 = contentView.findViewById(R.id.textJudulPromo3);
-            if (textJudul3 != null) {
-                textJudul3.setOnClickListener(v -> {
-                    startActivity(new Intent(getActivity(), DetailPromoActivity.class));
-                });
-            }
-
-            TextView textJudul4 = contentView.findViewById(R.id.textJudulPromo4);
-            if (textJudul4 != null) {
-                textJudul4.setOnClickListener(v -> {
-                    startActivity(new Intent(getActivity(), DetailPromoActivity.class));
-                });
-            }
-
+            View listView = inflater.inflate(R.layout.fragment_promo_items, containerPromo, false);
+            recyclerView = listView.findViewById(R.id.recyclerViewPromo);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(new PromoAdapter(getContext(), generateDummyPromos()));
+            containerPromo.addView(listView);
         } else {
-            contentView = inflater.inflate(R.layout.fragment_promo_empty, container, false);
+            View emptyView = inflater.inflate(R.layout.fragment_promo_empty, containerPromo, false);
+            containerPromo.addView(emptyView);
         }
+    }
 
-        container.addView(contentView);
+    private List<PromoModel> generateDummyPromos() {
+        List<PromoModel> list = new ArrayList<>();
+        list.add(new PromoModel("Promo A", "Diskon 50%", "10:00"));
+        list.add(new PromoModel("Promo B", "Gratis Ongkir", "12:00"));
+        list.add(new PromoModel("Promo C", "Buy 1 Get 1", "14:00"));
+        return list;
     }
 }
