@@ -1,23 +1,26 @@
 package com.project.projectnew.ordercreation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.projectnew.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class InfoFragment extends Fragment {
 
-    private boolean hasItems = true; // toggle state
+    private boolean hasItems = true;
 
     @Nullable
     @Override
@@ -29,10 +32,8 @@ public class InfoFragment extends Fragment {
         FrameLayout contentContainer = view.findViewById(R.id.containerInfoContent);
         Button switchButton = view.findViewById(R.id.btnSwitchInfoView);
 
-        // First Load
         updateInfoContent(inflater, contentContainer);
 
-        // Button toggle listener
         switchButton.setOnClickListener(v -> {
             hasItems = !hasItems;
             updateInfoContent(inflater, contentContainer);
@@ -43,29 +44,24 @@ public class InfoFragment extends Fragment {
 
     private void updateInfoContent(LayoutInflater inflater, FrameLayout container) {
         container.removeAllViews();
-        View contentView;
+
         if (hasItems) {
-            contentView = inflater.inflate(R.layout.fragment_info_items, container, false);
+            View contentView = inflater.inflate(R.layout.fragment_info_items, container, false);
+            RecyclerView recyclerView = contentView.findViewById(R.id.recyclerViewInfo);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            TextView textJudul1 = contentView.findViewById(R.id.textJudulInfo1);
-            TextView textJudul2 = contentView.findViewById(R.id.textJudulInfo2);
-            TextView textJudul3 = contentView.findViewById(R.id.textJudulInfo3);
-            TextView textJudul4 = contentView.findViewById(R.id.textJudulInfo4);
+            List<InfoItem> dummyList = new ArrayList<>();
+            dummyList.add(new InfoItem("Judul 1", "Deskripsi 1", "12:00:00"));
+            dummyList.add(new InfoItem("Judul 2", "Deskripsi 2", "13:30:00"));
+            dummyList.add(new InfoItem("Judul 3", "Deskripsi 3", "15:15:00"));
 
-            View.OnClickListener listener = v -> {
-                Intent intent = new Intent(getActivity(), DetailInfoActivity.class);
-                startActivity(intent);
-            };
+            InfoAdapter adapter = new InfoAdapter(requireContext(), dummyList);
+            recyclerView.setAdapter(adapter);
 
-            if (textJudul1 != null) textJudul1.setOnClickListener(listener);
-            if (textJudul2 != null) textJudul2.setOnClickListener(listener);
-            if (textJudul3 != null) textJudul3.setOnClickListener(listener);
-            if (textJudul4 != null) textJudul4.setOnClickListener(listener);
-
+            container.addView(contentView);
         } else {
-            contentView = inflater.inflate(R.layout.fragment_info_empty, container, false);
+            View emptyView = inflater.inflate(R.layout.fragment_info_empty, container, false);
+            container.addView(emptyView);
         }
-
-        container.addView(contentView);
     }
 }

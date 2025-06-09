@@ -1,23 +1,26 @@
 package com.project.projectnew.ordercreation;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.projectnew.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TransaksiFragment extends Fragment {
 
-    private boolean hasTransactions = true; // toggle state
+    private boolean hasTransactions = true;
 
     @Nullable
     @Override
@@ -26,47 +29,38 @@ public class TransaksiFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_transaksi, container, false);
-
-        FrameLayout contentContainer = view.findViewById(R.id.containerTransaksiContent);
+        FrameLayout containerContent = view.findViewById(R.id.containerTransaksiContent);
         Button switchButton = view.findViewById(R.id.btnSwitchTransaksi);
-
-        updateTransaksiContent(inflater, contentContainer);
 
         switchButton.setOnClickListener(v -> {
             hasTransactions = !hasTransactions;
-            updateTransaksiContent(inflater, contentContainer);
+            updateContent(inflater, containerContent);
         });
 
+        updateContent(inflater, containerContent);
         return view;
     }
-// recycle view ~~
-//    Poli -> api/ci3
-    private void updateTransaksiContent(LayoutInflater inflater, FrameLayout container) {
+
+    private void updateContent(LayoutInflater inflater, FrameLayout container) {
         container.removeAllViews();
-        View contentView;
+
         if (hasTransactions) {
-            contentView = inflater.inflate(R.layout.fragment_transaksi_items, container, false);
+            View content = inflater.inflate(R.layout.fragment_transaksi_items, container, false);
+            RecyclerView recyclerView = content.findViewById(R.id.recyclerViewTransaksi);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            int[] textIds = {
-                    R.id.textJudulTransaksi1, R.id.textJudulTransaksi2,
-                    R.id.textJudulTransaksi3, R.id.textJudulTransaksi4,
-                    R.id.textJudulTransaksi5, R.id.textJudulTransaksi6
-            };
+            List<TransaksiModel> dummyList = new ArrayList<>();
+            dummyList.add(new TransaksiModel("Transaksi A", "Pembayaran A", "12:00:00"));
+            dummyList.add(new TransaksiModel("Transaksi B", "Pembayaran B", "13:00:00"));
+            dummyList.add(new TransaksiModel("Transaksi C", "Pembayaran C", "14:00:00"));
 
-            for (int id : textIds) {
-                TextView textView = contentView.findViewById(id);
-                if (textView != null) {
-                    textView.setOnClickListener(v -> {
-                        Intent intent = new Intent(getActivity(), DetailTransaksiActivity.class);
-                        startActivity(intent);
-                    });
-                }
-            }
+            TransaksiAdapter adapter = new TransaksiAdapter(requireContext(), dummyList);
+            recyclerView.setAdapter(adapter);
 
+            container.addView(content);
         } else {
-            contentView = inflater.inflate(R.layout.fragment_transaksi_empty, container, false);
+            View emptyView = inflater.inflate(R.layout.fragment_transaksi_empty, container, false);
+            container.addView(emptyView);
         }
-
-        container.addView(contentView);
     }
 }
