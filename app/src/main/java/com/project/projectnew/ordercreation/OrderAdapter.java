@@ -2,16 +2,17 @@ package com.project.projectnew.ordercreation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.project.projectnew.R;
 
 import java.util.ArrayList;
@@ -28,17 +29,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         this.orderList = orderList;
         this.expandStates = new ArrayList<>();
         for (int i = 0; i < orderList.size(); i++) {
-            expandStates.add(false); // default collapsed
+            expandStates.add(false);
         }
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvNoOrder, tvTanggalPembelian, tvStatus, tvTotalHarga;
         RecyclerView rvProducts;
-        LinearLayout btnLihatLainnya;
+        LinearLayout btnLihatLainnya, layoutRincianPesanan;
         TextView tvLihatLainnya;
         ImageView icLihatLainnya;
-        TextView btnRincianPesanan;
+        Button btnRincianPesanan;
+        View dividerRincian;
 
         public OrderViewHolder(View itemView) {
             super(itemView);
@@ -51,17 +53,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             tvLihatLainnya = itemView.findViewById(R.id.tvLihatLainnya);
             icLihatLainnya = itemView.findViewById(R.id.icLihatLainnya);
             btnRincianPesanan = itemView.findViewById(R.id.btnRincianPesanan);
+            layoutRincianPesanan = itemView.findViewById(R.id.layoutRincianPesanan);
+            dividerRincian = itemView.findViewById(R.id.dividerRincian);
         }
     }
 
+    @NonNull
     @Override
-    public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_order, parent, false);
         return new OrderViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(OrderViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         Order order = orderList.get(position);
         boolean isExpanded = expandStates.get(position);
 
@@ -70,11 +75,27 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvStatus.setText(order.getStatus());
         holder.tvTotalHarga.setText(order.getTotalHarga());
 
-        List<Product> productList = order.getProductList();
-        List<Product> displayList = isExpanded
-                ? productList
-                : productList.subList(0, Math.min(1, productList.size()));
+        String status = order.getStatus();
+        if ("Menunggu Konfirmasi".equalsIgnoreCase(status)) {
+            holder.tvStatus.setTextColor(Color.parseColor("#FF9305"));
+            holder.layoutRincianPesanan.setVisibility(View.GONE);
+            holder.dividerRincian.setVisibility(View.GONE);
+        } else if ("Menunggu Pembayaran".equalsIgnoreCase(status)) {
+            holder.tvStatus.setTextColor(Color.parseColor("#FF3B31"));
+            holder.layoutRincianPesanan.setVisibility(View.VISIBLE);
+            holder.dividerRincian.setVisibility(View.VISIBLE);
+        } else if ("Pesanan Diterima".equalsIgnoreCase(status)) {
+            holder.tvStatus.setTextColor(Color.parseColor("#35C759"));
+            holder.layoutRincianPesanan.setVisibility(View.VISIBLE);
+            holder.dividerRincian.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvStatus.setTextColor(Color.parseColor("#404040"));
+            holder.layoutRincianPesanan.setVisibility(View.VISIBLE);
+            holder.dividerRincian.setVisibility(View.VISIBLE);
+        }
 
+        List<Product> productList = order.getProductList();
+        List<Product> displayList = isExpanded ? productList : productList.subList(0, Math.min(1, productList.size()));
         holder.rvProducts.setLayoutManager(new LinearLayoutManager(context));
         holder.rvProducts.setAdapter(new ProductInOrderAdapter(displayList));
 
@@ -82,12 +103,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.btnLihatLainnya.setVisibility(View.VISIBLE);
             holder.tvLihatLainnya.setText(isExpanded ? "Lihat Lebih Sedikit" : "Lihat Lainnya");
             holder.icLihatLainnya.setImageResource(isExpanded ? R.drawable.arrow_up : R.drawable.arrow_down);
-
             holder.btnLihatLainnya.setOnClickListener(v -> {
                 int currentPos = holder.getAdapterPosition();
                 if (currentPos != RecyclerView.NO_POSITION) {
-                    boolean currentExpanded = expandStates.get(currentPos);
-                    expandStates.set(currentPos, !currentExpanded);
+                    expandStates.set(currentPos, !expandStates.get(currentPos));
                     notifyItemChanged(currentPos);
                 }
             });
@@ -95,17 +114,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.btnLihatLainnya.setVisibility(View.GONE);
         }
 
-        // Handle klik rincian pesanan
+        // === PERUBAHAN UTAMA DI SINI ===
         holder.btnRincianPesanan.setOnClickListener(v -> {
-            Intent intent = new Intent(context, RincianPesananActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // wajib jika dari fragment
-
-            // Kirim data order lewat intent
-            intent.putExtra("total_harga", order.getTotalHarga());
-
-            // Pastikan waktu_pembayaran dalam long, bukan String
-            intent.putExtra("waktu_pembayaran", order.getWaktuPembayaran());
-
+            Intent intent;
+            if ("Pesanan Diterima".equalsIgnoreCase(order.getStatus())) {
+                // Jika pesanan selesai, buka PesananDiterimaActivity
+                intent = new Intent(context, PesananDiterimaActivity.class);
+                intent.putExtra("ORDER_DETAIL", order); // Mengirim seluruh objek Order
+            } else {
+                // Jika belum bayar, buka RincianPesananActivity (Pembayaran)
+                intent = new Intent(context, RincianPesananActivity.class);
+                intent.putExtra("total_harga", order.getTotalHarga());
+                intent.putExtra("waktu_pembayaran", order.getWaktuPembayaran());
+            }
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
     }

@@ -27,27 +27,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DalamProsesFragment extends Fragment {
+public class SelesaiFragment extends Fragment {
 
-    private RecyclerView rvDalamProsesOrders;
+    private RecyclerView rvSelesaiOrders;
     private OrderAdapter orderAdapter;
-    private List<Order> inProcessOrders;
+    private List<Order> completedOrders;
 
-    public DalamProsesFragment() {
+    public SelesaiFragment() {
         // Required empty public constructor
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_dalam_proses, container, false);
-        rvDalamProsesOrders = view.findViewById(R.id.rvDalamProsesOrders);
+        View view = inflater.inflate(R.layout.fragment_selesai, container, false);
+        rvSelesaiOrders = view.findViewById(R.id.rvSelesaiOrders);
+        rvSelesaiOrders.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        rvDalamProsesOrders.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        rvDalamProsesOrders.addItemDecoration(new RecyclerView.ItemDecoration() {
+        // Menambahkan jarak di atas item pertama
+        rvSelesaiOrders.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
                                        @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -57,10 +58,12 @@ public class DalamProsesFragment extends Fragment {
             }
         });
 
+        // Memuat pesanan
         loadOrders();
 
-        orderAdapter = new OrderAdapter(getContext(), inProcessOrders);
-        rvDalamProsesOrders.setAdapter(orderAdapter);
+        // Mengatur adapter
+        orderAdapter = new OrderAdapter(getContext(), completedOrders);
+        rvSelesaiOrders.setAdapter(orderAdapter);
 
         return view;
     }
@@ -68,24 +71,24 @@ public class DalamProsesFragment extends Fragment {
     private void loadOrders() {
         SharedPreferences prefs = getActivity().getSharedPreferences("checkout_data", Context.MODE_PRIVATE);
         String json = prefs.getString("order_history", null);
-
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Order>>() {}.getType();
         List<Order> allOrders = json != null ? gson.fromJson(json, listType) : new ArrayList<>();
 
-        inProcessOrders = new ArrayList<>();
+        completedOrders = new ArrayList<>();
         for (Order order : allOrders) {
-            if ("Menunggu Konfirmasi".equalsIgnoreCase(order.getStatus())) {
-                inProcessOrders.add(order);
+            // Filter untuk pesanan yang sudah selesai
+            if ("Pesanan Diterima".equalsIgnoreCase(order.getStatus())) {
+                completedOrders.add(order);
             }
         }
 
-        // Menambahkan data dummy
+        // Tambahkan data dummy
         addDummyOrders();
 
-        Collections.reverse(inProcessOrders);
+        Collections.reverse(completedOrders);
 
-        Log.d("DalamProsesFragment", "Jumlah order dalam proses: " + inProcessOrders.size());
+        Log.d("SelesaiFragment", "Jumlah order selesai: " + completedOrders.size());
     }
 
     private void addDummyOrders() {
@@ -93,40 +96,41 @@ public class DalamProsesFragment extends Fragment {
         String tanggalPembelian = new SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", new Locale("in", "ID"))
                 .format(new Date());
 
-        // === Dummy Order 1 ===
+        // Dummy Order Selesai 1
         List<Product> dummyProducts1 = new ArrayList<>();
-        Product product1A = new Product("p001", "Produk Dummy A", "Satuan", "Rp 50.000", 10);
-        product1A.setQuantity(2);
-        dummyProducts1.add(product1A);
-        Product product1B = new Product("p002", "Produk Dummy B", "Satuan", "Rp 30.000", 5);
-        product1B.setQuantity(3);
-        dummyProducts1.add(product1B);
+        Product product1 = new Product("p004", "Produk Dummy Selesai 1", "Satuan", "Rp 80.000", 20);
+        product1.setQuantity(1);
+        dummyProducts1.add(product1);
 
         Order dummyOrder1 = new Order(
-                String.format("306-%s-DUMMY1", datePart),
+                String.format("306-%s-DUMMY-S1", datePart),
                 dummyProducts1,
-                "Rp 190.000",
-                System.currentTimeMillis(),
+                "Rp 80.000",
+                System.currentTimeMillis() - (2 * 24 * 60 * 60 * 1000), // 2 hari yang lalu
                 tanggalPembelian,
-                "Menunggu Konfirmasi"
+                "Pesanan Diterima"
         );
-        inProcessOrders.add(dummyOrder1);
+        completedOrders.add(dummyOrder1);
 
-        // === Dummy Order 2 ===
+        // Dummy Order Selesai 2
         List<Product> dummyProducts2 = new ArrayList<>();
-        Product product2A = new Product("p003", "Produk Dummy C", "Satuan", "Rp 120.000", 8);
-        product2A.setQuantity(1);
+        Product product2A = new Product("p005", "Produk Dummy Selesai 2A", "Satuan", "Rp 25.000", 15);
+        product2A.setQuantity(4);
         dummyProducts2.add(product2A);
+        Product product2B = new Product("p006", "Produk Dummy Selesai 2B", "Satuan", "Rp 15.000", 30);
+        product2B.setQuantity(2);
+        dummyProducts2.add(product2B);
+
 
         Order dummyOrder2 = new Order(
-                String.format("306-%s-DUMMY2", datePart),
+                String.format("306-%s-DUMMY-S2", datePart),
                 dummyProducts2,
-                "Rp 120.000",
-                System.currentTimeMillis() - 60000, // Waktu sedikit berbeda
-                new SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", new Locale("in", "ID")).format(new Date(System.currentTimeMillis() - 60000)),
-                "Menunggu Konfirmasi"
+                "Rp 130.000",
+                System.currentTimeMillis() - (3 * 24 * 60 * 60 * 1000), // 3 hari yang lalu
+                new SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", new Locale("in", "ID")).format(new Date(System.currentTimeMillis() - (3 * 24 * 60 * 60 * 1000))),
+                "Pesanan Diterima"
         );
-        inProcessOrders.add(dummyOrder2);
+        completedOrders.add(dummyOrder2);
     }
 
     private int dpToPx(int dp, Context context) {

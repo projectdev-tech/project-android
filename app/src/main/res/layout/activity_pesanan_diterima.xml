@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="14dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="14dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/imgbtnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/arrow_left" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rincian Pesanan"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Order Info -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/rounded_border"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="No Order"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvNoOrder"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="306-2025-04-22-00001"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/truck_time" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#e0e0e0" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tvInvoiceNumber"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            tools:text="INV-306-2025-04-22-00001"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btnLihatInvoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:backgroundTint="#00FFFFFF"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="Lihat Invoice"
+                            android:textColor="#FF9502"
+                            android:textSize="12sp"
+                            app:icon="@drawable/arrow_right"
+                            app:iconGravity="end"
+                            app:iconTint="#FF9502" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Tanggal Pembelian"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvTanggalPembelian"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="22 April 2025, 13.18.00"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Status"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:minWidth="68dp"
+                            tools:text="Pesanan Diterima"
+                            android:textColor="#35C759"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Shipping Info (DITAMBAHKAN KEMBALI) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/rounded_border"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="Tujuan Pengiriman"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="(Alamat Toko)"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jl. Diklat Pemda No.184, Bojong Nangka, Kec. Klp. Dua, Tangerang, Banten 15810"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bottom_corners_radius"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            app:srcCompat="@drawable/info_circle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Gratis Biaya Pengiriman"
+                            android:textColor="#35C759" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Product List -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingBottom="8dp"
+                android:text="Pesanan"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+
+            <!-- Order Total -->
+            <LinearLayout
+                android:id="@+id/ProdukOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_border"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="Total Pesanan"
+                    android:textColor="#0A0A0A"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Qty Order"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvqtyorder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="3"
+                        android:textColor="#0A0A0A"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sub Total"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvsubtotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Rp. 30.000"
+                        android:textColor="#0A0A0A"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Diskon Order"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:textColor="#0A0A0A"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Biaya Pengiriman"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:textColor="#0A0A0A"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#e0e0e0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Total"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvtotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Rp. 30.000"
+                        android:textColor="#0A0A0A"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

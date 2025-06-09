@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class PesananPagerAdapter extends FragmentPagerAdapter {
 
-    private final String[] tabTitles = new String[]{"Belum Bayar","Dalam Proses", "Riwayat Pesanan"};
+    private final String[] tabTitles = new String[]{"Belum Bayar","Dalam Proses", "Selesai"};
 
     public PesananPagerAdapter(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -23,7 +23,8 @@ public class PesananPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new DalamProsesFragment();
             case 2:
-                return new RiwayatPesananFragment();
+                // Menggunakan SelesaiFragment yang baru
+                return new SelesaiFragment();
             default:
                 return null;
         }
@@ -34,7 +35,6 @@ public class PesananPagerAdapter extends FragmentPagerAdapter {
         return tabTitles.length;
     }
 
-    // Untuk judul tab
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
