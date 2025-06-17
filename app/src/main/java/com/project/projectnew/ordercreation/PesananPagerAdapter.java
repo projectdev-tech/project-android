@@ -8,7 +8,8 @@ import androidx.annotation.Nullable;
 
 public class PesananPagerAdapter extends FragmentPagerAdapter {
 
-    private final String[] tabTitles = new String[]{"Belum Bayar","Dalam Proses", "Selesai"};
+    // Menambahkan "Dikirim" ke dalam judul tab
+    private final String[] tabTitles = new String[]{"Belum Bayar", "Dalam Proses", "Dikirim", "Selesai"};
 
     public PesananPagerAdapter(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -17,13 +18,15 @@ public class PesananPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        // Menambahkan case untuk DikirimFragment
         switch (position){
             case 0:
                 return new BelumBayarFragment();
             case 1:
                 return new DalamProsesFragment();
             case 2:
-                // Menggunakan SelesaiFragment yang baru
+                return new DikirimFragment(); // Fragment baru
+            case 3:
                 return new SelesaiFragment();
             default:
                 return null;

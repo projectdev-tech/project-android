@@ -131,6 +131,8 @@
                             android:backgroundTint="#00FFFFFF"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
+                            android:minWidth="0dp"
+                            android:paddingRight="0dp"
                             android:text="Lihat Invoice"
                             android:textColor="#FF9502"
                             android:textSize="12sp"
