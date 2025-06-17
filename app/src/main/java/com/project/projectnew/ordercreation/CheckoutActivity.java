@@ -1,21 +1,15 @@
 package com.project.projectnew.ordercreation;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.project.projectnew.R;
 
-import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,12 +53,12 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Tombol lanjutkan checkout
         btnLanjutkan.setOnClickListener(v -> {
-            // 1. Simpan ke riwayat pesanan
+            // 1. Simpan ke riwayat pesanan (SEKARANG DIAKTIFKAN KEMBALI)
             saveOrderToHistory(productList, formattedTotal);
 
             // 2. Hapus data produk terpilih dari SharedPreferences
-            SharedPreferences prefs = getSharedPreferences("SelectedProductsPref", MODE_PRIVATE);
-            prefs.edit().remove("selected_products").apply();
+            getSharedPreferences("SelectedProductsPref", MODE_PRIVATE)
+                    .edit().remove("selected_products").apply();
 
             // 3. Reset quantity produk ke 0
             List<Product> allProducts = ProductManager.getInstance().getProducts();
@@ -96,48 +90,36 @@ public class CheckoutActivity extends AppCompatActivity {
 
         tvQtyOrder.setText(String.valueOf(totalQty));
 
-        // Format harga dengan locale Indonesia
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(localeID);
         formatter.setMaximumFractionDigits(0);
-
-        formattedTotal = formatter.format(totalHarga);  // Tanpa tambahan "Rp " manual
+        formattedTotal = formatter.format(totalHarga);
 
         tvSubtotal.setText(formattedTotal);
         tvTotal.setText(formattedTotal);
     }
 
     private void saveOrderToHistory(List<Product> productList, String totalHarga) {
-        SharedPreferences prefs = getSharedPreferences("checkout_data", MODE_PRIVATE);
-        Gson gson = new Gson();
-
-        String existing = prefs.getString("order_history", null);
-        Type listType = new TypeToken<List<Order>>() {}.getType();
-        List<Order> orderHistory = existing != null ? gson.fromJson(existing, listType) : new ArrayList<>();
-
-        // Buat nomor order: 306-YYYY-MM-DD-00001
+        // Buat nomor order unik berdasarkan waktu
         String datePart = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        int orderNumber = orderHistory.size() + 1;
-        String noOrder = String.format("306-%s-%05d", datePart, orderNumber);
+        // Gunakan timestamp untuk membuat nomor lebih unik untuk sesi ini
+        String noOrder = String.format("306-%s-%s", datePart, System.currentTimeMillis() % 10000);
 
         // Tanggal pembelian
         String tanggalPembelian = new SimpleDateFormat("dd MMMM yyyy, HH.mm.ss", new Locale("in", "ID"))
                 .format(new Date());
 
-        // Simpan timestamp waktu mulai pembayaran
+        // Waktu mulai pembayaran
         long startTimeMillis = System.currentTimeMillis();
-        prefs.edit().putLong("start_time_millis", startTimeMillis).apply();
 
         // Status default
         String status = "Menunggu Pembayaran";
 
-        // Simpan order baru (WAKTU PEMBAYARAN SEKARANG LONG)
-        Order newOrder = new Order(noOrder, productList, totalHarga, startTimeMillis, tanggalPembelian, status);
-        orderHistory.add(newOrder);
+        // Buat objek Order baru
+        Order newOrder = new Order(noOrder, new ArrayList<>(productList), totalHarga, startTimeMillis, tanggalPembelian, status);
 
-        // Simpan kembali ke SharedPreferences
-        String json = gson.toJson(orderHistory);
-        prefs.edit().putString("order_history", json).apply();
+        // Panggil metode baru untuk menambahkan order ke daftar runtime
+        DummyDataGenerator.addOrder(newOrder);
     }
 
     @Override

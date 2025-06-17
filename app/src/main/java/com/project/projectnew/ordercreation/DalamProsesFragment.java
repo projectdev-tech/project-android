@@ -1,132 +1,56 @@
 package com.project.projectnew.ordercreation;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.project.projectnew.R;
-
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class DalamProsesFragment extends Fragment {
 
-    private RecyclerView rvDalamProsesOrders;
-    private OrderAdapter orderAdapter;
-    private List<Order> inProcessOrders;
-
-    public DalamProsesFragment() {
-        // Required empty public constructor
-    }
-
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dalam_proses, container, false);
-        rvDalamProsesOrders = view.findViewById(R.id.rvDalamProsesOrders);
-
+        RecyclerView rvDalamProsesOrders = view.findViewById(R.id.rvDalamProsesOrders);
         rvDalamProsesOrders.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Menambahkan jarak di atas item pertama
         rvDalamProsesOrders.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
-                                       @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 if (parent.getChildAdapterPosition(view) == 0) {
                     outRect.top = dpToPx(16, view.getContext());
                 }
             }
         });
 
-        loadOrders();
-
-        orderAdapter = new OrderAdapter(getContext(), inProcessOrders);
-        rvDalamProsesOrders.setAdapter(orderAdapter);
-
-        return view;
-    }
-
-    private void loadOrders() {
-        SharedPreferences prefs = getActivity().getSharedPreferences("checkout_data", Context.MODE_PRIVATE);
-        String json = prefs.getString("order_history", null);
-
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Order>>() {}.getType();
-        List<Order> allOrders = json != null ? gson.fromJson(json, listType) : new ArrayList<>();
-
-        inProcessOrders = new ArrayList<>();
+        // Ambil data dari DummyDataGenerator dan filter berdasarkan status
+        List<Order> allOrders = DummyDataGenerator.getOrders();
+        List<Order> inProcessOrders = new ArrayList<>();
         for (Order order : allOrders) {
             if ("Menunggu Konfirmasi".equalsIgnoreCase(order.getStatus())) {
                 inProcessOrders.add(order);
             }
         }
 
-        // Menambahkan data dummy
-        addDummyOrders();
+        Collections.reverse(inProcessOrders); // Menampilkan yang terbaru di atas
 
-        Collections.reverse(inProcessOrders);
+        // Set adapter
+        OrderAdapter orderAdapter = new OrderAdapter(getContext(), inProcessOrders);
+        rvDalamProsesOrders.setAdapter(orderAdapter);
 
-        Log.d("DalamProsesFragment", "Jumlah order dalam proses: " + inProcessOrders.size());
-    }
-
-    private void addDummyOrders() {
-        String datePart = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String tanggalPembelian = new SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", new Locale("in", "ID"))
-                .format(new Date());
-
-        // === Dummy Order 1 ===
-        List<Product> dummyProducts1 = new ArrayList<>();
-        Product product1A = new Product("p001", "Produk Dummy A", "Satuan", "Rp 50.000", 10);
-        product1A.setQuantity(2);
-        dummyProducts1.add(product1A);
-        Product product1B = new Product("p002", "Produk Dummy B", "Satuan", "Rp 30.000", 5);
-        product1B.setQuantity(3);
-        dummyProducts1.add(product1B);
-
-        Order dummyOrder1 = new Order(
-                String.format("306-%s-DUMMY1", datePart),
-                dummyProducts1,
-                "Rp 190.000",
-                System.currentTimeMillis(),
-                tanggalPembelian,
-                "Menunggu Konfirmasi"
-        );
-        inProcessOrders.add(dummyOrder1);
-
-        // === Dummy Order 2 ===
-        List<Product> dummyProducts2 = new ArrayList<>();
-        Product product2A = new Product("p003", "Produk Dummy C", "Satuan", "Rp 120.000", 8);
-        product2A.setQuantity(1);
-        dummyProducts2.add(product2A);
-
-        Order dummyOrder2 = new Order(
-                String.format("306-%s-DUMMY2", datePart),
-                dummyProducts2,
-                "Rp 120.000",
-                System.currentTimeMillis() - 60000, // Waktu sedikit berbeda
-                new SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", new Locale("in", "ID")).format(new Date(System.currentTimeMillis() - 60000)),
-                "Menunggu Konfirmasi"
-        );
-        inProcessOrders.add(dummyOrder2);
+        return view;
     }
 
     private int dpToPx(int dp, Context context) {
