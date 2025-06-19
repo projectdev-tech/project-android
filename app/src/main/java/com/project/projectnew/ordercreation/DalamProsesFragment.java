@@ -3,6 +3,8 @@ package com.project.projectnew.ordercreation;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +15,34 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.project.projectnew.R;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DalamProsesFragment extends Fragment {
+
+    private OrderAdapter orderAdapter;
+    private List<Order> orderList = new ArrayList<>();
+    private AppDatabase db;
+    private ExecutorService executorService;
+    private Handler handler;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dalam_proses, container, false);
-        RecyclerView rvDalamProsesOrders = view.findViewById(R.id.rvDalamProsesOrders);
-        rvDalamProsesOrders.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Menambahkan jarak di atas item pertama
+        // PERBAIKAN: Pindahkan inisialisasi ke onCreateView
+        Context context = getContext();
+        if (context != null) {
+            db = AppDatabase.getDatabase(context);
+            executorService = Executors.newSingleThreadExecutor();
+            handler = new Handler(Looper.getMainLooper());
+        }
+
+        RecyclerView rvDalamProsesOrders = view.findViewById(R.id.rvDalamProsesOrders);
+        rvDalamProsesOrders.setLayoutManager(new LinearLayoutManager(context));
+
         rvDalamProsesOrders.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -35,25 +52,33 @@ public class DalamProsesFragment extends Fragment {
             }
         });
 
-        // Ambil data dari DummyDataGenerator dan filter berdasarkan status
-        List<Order> allOrders = DummyDataGenerator.getOrders();
-        List<Order> inProcessOrders = new ArrayList<>();
-        for (Order order : allOrders) {
-            if ("Menunggu Konfirmasi".equalsIgnoreCase(order.getStatus())) {
-                inProcessOrders.add(order);
-            }
-        }
-
-        Collections.reverse(inProcessOrders); // Menampilkan yang terbaru di atas
-
-        // Set adapter
-        OrderAdapter orderAdapter = new OrderAdapter(getContext(), inProcessOrders);
+        orderAdapter = new OrderAdapter(orderList);
         rvDalamProsesOrders.setAdapter(orderAdapter);
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadOrdersFromDb();
+    }
+
+    private void loadOrdersFromDb() {
+        if (executorService != null && db != null) {
+            executorService.execute(() -> {
+                List<Order> ordersFromDb = db.orderDao().getOrdersByStatus("Menunggu Konfirmasi");
+                handler.post(() -> {
+                    orderList.clear();
+                    orderList.addAll(ordersFromDb);
+                    orderAdapter.notifyDataSetChanged();
+                });
+            });
+        }
+    }
+
     private int dpToPx(int dp, Context context) {
+        if (context == null) return dp;
         float density = context.getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }

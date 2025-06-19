@@ -21,70 +21,18 @@ import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final Context context;
     private final List<Order> orderList;
     private final List<Boolean> expandStates;
 
     private static final int VIEW_TYPE_NORMAL = 1;
     private static final int VIEW_TYPE_DIKIRIM = 2;
 
-    public OrderAdapter(Context context, List<Order> orderList) {
-        this.context = context;
+    public OrderAdapter(List<Order> orderList) {
         this.orderList = orderList;
         this.expandStates = new ArrayList<>();
+        // Inisialisasi awal, akan disinkronkan lagi nanti
         for (int i = 0; i < orderList.size(); i++) {
             expandStates.add(false);
-        }
-    }
-
-    public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNoOrder, tvTanggalPembelian, tvStatus, tvTotalHarga;
-        RecyclerView rvProducts;
-        LinearLayout btnLihatLainnya, layoutRincianPesanan;
-        TextView tvLihatLainnya;
-        ImageView icLihatLainnya;
-        Button btnRincianPesanan;
-        View dividerRincian;
-
-        public OrderViewHolder(View itemView) {
-            super(itemView);
-            tvNoOrder = itemView.findViewById(R.id.tvNoOrder);
-            tvTanggalPembelian = itemView.findViewById(R.id.tvTanggalPembelian);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
-            tvTotalHarga = itemView.findViewById(R.id.tvTotalHarga);
-            rvProducts = itemView.findViewById(R.id.rvProducts);
-            btnLihatLainnya = itemView.findViewById(R.id.btnLihatLainnya);
-            tvLihatLainnya = itemView.findViewById(R.id.tvLihatLainnya);
-            icLihatLainnya = itemView.findViewById(R.id.icLihatLainnya);
-            btnRincianPesanan = itemView.findViewById(R.id.btnRincianPesanan);
-            layoutRincianPesanan = itemView.findViewById(R.id.layoutRincianPesanan);
-            dividerRincian = itemView.findViewById(R.id.dividerRincian);
-        }
-    }
-
-    public static class DikirimOrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNoOrder, tvTanggalPembelian, tvStatus, tvTotalHarga;
-        TextView tvNoTracking, tvTanggalPengiriman, tvEstimasiTiba, tvPembeli;
-        RecyclerView rvProducts;
-        LinearLayout btnLihatLainnya, layoutShippingStatus;
-        TextView tvLihatLainnya;
-        ImageView icLihatLainnya;
-
-        public DikirimOrderViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvNoOrder = itemView.findViewById(R.id.tvNoOrder);
-            tvTanggalPembelian = itemView.findViewById(R.id.tvTanggalPembelian);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
-            tvTotalHarga = itemView.findViewById(R.id.tvTotalHarga);
-            rvProducts = itemView.findViewById(R.id.rvProducts);
-            btnLihatLainnya = itemView.findViewById(R.id.btnLihatLainnya);
-            tvLihatLainnya = itemView.findViewById(R.id.tvLihatLainnya);
-            icLihatLainnya = itemView.findViewById(R.id.icLihatLainnya);
-            tvNoTracking = itemView.findViewById(R.id.tvNoTracking);
-            tvTanggalPengiriman = itemView.findViewById(R.id.tvTanggalPengiriman);
-            tvEstimasiTiba = itemView.findViewById(R.id.tvEstimasiTiba);
-            tvPembeli = itemView.findViewById(R.id.tvPembeli);
-            layoutShippingStatus = itemView.findViewById(R.id.layoutShippingStatus);
         }
     }
 
@@ -99,6 +47,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == VIEW_TYPE_DIKIRIM) {
             View view = inflater.inflate(R.layout.item_dikirim_order, parent, false);
@@ -111,10 +60,18 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        // --- PERBAIKAN UTAMA DI SINI ---
+        // Memastikan 'expandStates' memiliki ukuran yang sama dengan 'orderList'
+        while (expandStates.size() <= position) {
+            expandStates.add(false);
+        }
+        // --------------------------------
+
         Order order = orderList.get(position);
         boolean isExpanded = expandStates.get(position);
         List<Product> productList = order.getProductList();
-        List<Product> displayList = isExpanded ? productList : productList.subList(0, Math.min(1, productList.size()));
+
+        List<Product> displayList = isExpanded ? productList : (productList.isEmpty() ? new ArrayList<>() : productList.subList(0, 1));
 
         if (holder.getItemViewType() == VIEW_TYPE_DIKIRIM) {
             bindDikirimViewHolder((DikirimOrderViewHolder) holder, order, displayList, isExpanded, position);
@@ -124,6 +81,8 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     private void bindNormalViewHolder(OrderViewHolder holder, Order order, List<Product> displayList, boolean isExpanded, int position) {
+        Context context = holder.itemView.getContext();
+
         holder.tvNoOrder.setText(order.getNoOrder());
         holder.tvTanggalPembelian.setText(order.getTanggalPembelian());
         holder.tvStatus.setText(order.getStatus());
@@ -159,13 +118,14 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     intent.putExtra("total_harga", order.getTotalHarga());
                     intent.putExtra("waktu_pembayaran", order.getWaktuPembayaran());
                 }
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             });
         }
     }
 
     private void bindDikirimViewHolder(DikirimOrderViewHolder holder, Order order, List<Product> displayList, boolean isExpanded, int position) {
+        Context context = holder.itemView.getContext();
+
         holder.tvNoOrder.setText(order.getNoOrder());
         holder.tvTanggalPembelian.setText(order.getTanggalPembelian());
         holder.tvStatus.setText(order.getStatus());
@@ -179,26 +139,19 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.rvProducts.setAdapter(new ProductInOrderAdapter(displayList));
         setupExpandCollapse(holder.btnLihatLainnya, holder.tvLihatLainnya, holder.icLihatLainnya, order.getProductList().size(), isExpanded, position);
 
-        // **PERBAIKAN UTAMA DI SINI**
-        // Logika untuk mengisi riwayat pengiriman secara dinamis
         populateShippingStatus(holder.layoutShippingStatus, order.getShippingStatusList());
     }
 
-    /**
-     * Metode ini yang akan mengisi bagian status pengiriman.
-     * Metode ini menghapus semua view lama, lalu membuat dan menambahkan view baru
-     * untuk setiap item dalam daftar riwayat pengiriman.
-     */
     private void populateShippingStatus(LinearLayout layout, List<ShippingStatus> statusList) {
-        layout.removeAllViews(); // Bersihkan view lama untuk mencegah duplikasi
+        Context context = layout.getContext();
+        layout.removeAllViews();
         if (statusList == null || statusList.isEmpty()) {
-            return; // Jika tidak ada data, jangan lakukan apa-apa
+            return;
         }
 
         LayoutInflater inflater = LayoutInflater.from(context);
         for (int i = 0; i < statusList.size(); i++) {
             ShippingStatus status = statusList.get(i);
-            // Inflate layout 'item_shipping_status.xml' untuk setiap baris
             View statusView = inflater.inflate(R.layout.item_shipping_status, layout, false);
 
             TextView tvDate = statusView.findViewById(R.id.tvStatusDate);
@@ -211,19 +164,15 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvTime.setText(status.getStatusTime());
             tvDesc.setText(status.getStatusDescription());
 
-            // Atur ikon dan warna berdasarkan status aktif
             if (status.isActive()) {
                 ivIcon.setImageResource(R.drawable.tick_circle_active);
-                tvDate.setTextColor(ContextCompat.getColor(context, R.color.black));
+                tvDate.setTextColor(ContextCompat.getColor(context, android.R.color.black));
             } else {
                 ivIcon.setImageResource(R.drawable.tick_circle);
                 tvDate.setTextColor(Color.GRAY);
             }
 
-            // Sembunyikan garis vertikal untuk item terakhir
             line.setVisibility(i == statusList.size() - 1 ? View.GONE : View.VISIBLE);
-
-            // Tambahkan view yang sudah diisi data ke dalam LinearLayout
             layout.addView(statusView);
         }
     }
@@ -234,7 +183,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvLihatLainnya.setText(isExpanded ? "Lihat Lebih Sedikit" : "Lihat Lainnya");
             icLihatLainnya.setImageResource(isExpanded ? R.drawable.arrow_up : R.drawable.arrow_down);
             btnLihatLainnya.setOnClickListener(v -> {
-                expandStates.set(position, !expandStates.get(position));
+                expandStates.set(position, !isExpanded);
                 notifyItemChanged(position);
             });
         } else {
@@ -244,6 +193,52 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return orderList.size();
+        return orderList != null ? orderList.size() : 0;
+    }
+
+    public static class OrderViewHolder extends RecyclerView.ViewHolder {
+        TextView tvNoOrder, tvTanggalPembelian, tvStatus, tvTotalHarga, tvLihatLainnya;
+        RecyclerView rvProducts;
+        LinearLayout btnLihatLainnya, layoutRincianPesanan;
+        ImageView icLihatLainnya;
+        Button btnRincianPesanan;
+        View dividerRincian;
+        public OrderViewHolder(View itemView) {
+            super(itemView);
+            tvNoOrder = itemView.findViewById(R.id.tvNoOrder);
+            tvTanggalPembelian = itemView.findViewById(R.id.tvTanggalPembelian);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
+            tvTotalHarga = itemView.findViewById(R.id.tvTotalHarga);
+            rvProducts = itemView.findViewById(R.id.rvProducts);
+            btnLihatLainnya = itemView.findViewById(R.id.btnLihatLainnya);
+            tvLihatLainnya = itemView.findViewById(R.id.tvLihatLainnya);
+            icLihatLainnya = itemView.findViewById(R.id.icLihatLainnya);
+            btnRincianPesanan = itemView.findViewById(R.id.btnRincianPesanan);
+            layoutRincianPesanan = itemView.findViewById(R.id.layoutRincianPesanan);
+            dividerRincian = itemView.findViewById(R.id.dividerRincian);
+        }
+    }
+
+    public static class DikirimOrderViewHolder extends RecyclerView.ViewHolder {
+        TextView tvNoOrder, tvTanggalPembelian, tvStatus, tvTotalHarga, tvNoTracking, tvTanggalPengiriman, tvEstimasiTiba, tvPembeli, tvLihatLainnya;
+        RecyclerView rvProducts;
+        LinearLayout btnLihatLainnya, layoutShippingStatus;
+        ImageView icLihatLainnya;
+        public DikirimOrderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvNoOrder = itemView.findViewById(R.id.tvNoOrder);
+            tvTanggalPembelian = itemView.findViewById(R.id.tvTanggalPembelian);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
+            tvTotalHarga = itemView.findViewById(R.id.tvTotalHarga);
+            rvProducts = itemView.findViewById(R.id.rvProducts);
+            btnLihatLainnya = itemView.findViewById(R.id.btnLihatLainnya);
+            tvLihatLainnya = itemView.findViewById(R.id.tvLihatLainnya);
+            icLihatLainnya = itemView.findViewById(R.id.icLihatLainnya);
+            tvNoTracking = itemView.findViewById(R.id.tvNoTracking);
+            tvTanggalPengiriman = itemView.findViewById(R.id.tvTanggalPengiriman);
+            tvEstimasiTiba = itemView.findViewById(R.id.tvEstimasiTiba);
+            tvPembeli = itemView.findViewById(R.id.tvPembeli);
+            layoutShippingStatus = itemView.findViewById(R.id.layoutShippingStatus);
+        }
     }
 }

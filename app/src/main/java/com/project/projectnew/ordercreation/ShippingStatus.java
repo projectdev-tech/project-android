@@ -2,12 +2,11 @@ package com.project.projectnew.ordercreation;
 
 import java.io.Serializable;
 
-// Kelas ini berfungsi sebagai model data untuk satu entri status pengiriman.
 public class ShippingStatus implements Serializable {
     private String statusDate;
     private String statusTime;
     private String statusDescription;
-    private boolean isActive; // Untuk menentukan ikon mana yang digunakan (aktif atau tidak)
+    private boolean isActive;
 
     public ShippingStatus(String statusDate, String statusTime, String statusDescription, boolean isActive) {
         this.statusDate = statusDate;

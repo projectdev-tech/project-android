@@ -9,121 +9,91 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.project.projectnew.R;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CheckoutActivity extends AppCompatActivity {
 
-    private RecyclerView rvCheckoutProducts;
-    private TextView tvQtyOrder, tvSubtotal, tvTotal;
-    private Button btnLanjutkan;
-    private ImageView btnBack;
-
     private List<Product> productList;
     private String formattedTotal = "Rp0";
+    private AppDatabase db;
+    private ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-        // Inisialisasi view
-        rvCheckoutProducts = findViewById(R.id.rvCheckoutProducts);
-        tvQtyOrder = findViewById(R.id.tvqtyorder);
-        tvSubtotal = findViewById(R.id.tvsubtotal);
-        tvTotal = findViewById(R.id.tvtotal);
-        btnLanjutkan = findViewById(R.id.btnlanjutkan);
-        btnBack = findViewById(R.id.btnBack);
+        db = AppDatabase.getDatabase(this);
+        executorService = Executors.newSingleThreadExecutor();
 
-        // Ambil data produk dari intent
+        RecyclerView rvCheckoutProducts = findViewById(R.id.rvCheckoutProducts);
+        TextView tvQtyOrder = findViewById(R.id.tvqtyorder);
+        TextView tvSubtotal = findViewById(R.id.tvsubtotal);
+        TextView tvTotal = findViewById(R.id.tvtotal);
+        Button btnLanjutkan = findViewById(R.id.btnlanjutkan);
+        ImageView btnBack = findViewById(R.id.btnBack);
+
         productList = (ArrayList<Product>) getIntent().getSerializableExtra("checkout_products");
         if (productList == null) productList = new ArrayList<>();
 
-        // Set RecyclerView
         rvCheckoutProducts.setLayoutManager(new LinearLayoutManager(this));
         rvCheckoutProducts.setAdapter(new CheckoutAdapter(productList));
 
-        // Hitung dan tampilkan total qty & harga
-        updateSummary();
+        updateSummary(tvQtyOrder, tvSubtotal, tvTotal);
 
-        // Tombol lanjutkan checkout
         btnLanjutkan.setOnClickListener(v -> {
-            // 1. Simpan ke riwayat pesanan (SEKARANG DIAKTIFKAN KEMBALI)
-            saveOrderToHistory(productList, formattedTotal);
-
-            // 2. Hapus data produk terpilih dari SharedPreferences
-            getSharedPreferences("SelectedProductsPref", MODE_PRIVATE)
-                    .edit().remove("selected_products").apply();
-
-            // 3. Reset quantity produk ke 0
-            List<Product> allProducts = ProductManager.getInstance().getProducts();
-            for (Product p : allProducts) {
-                p.setQuantity(0);
-            }
-
-            // 4. Navigasi ke halaman Pesanan Sukses
+            saveOrderToDb();
             Intent intent = new Intent(CheckoutActivity.this, PesananSuksesActivity.class);
             intent.putExtra("total_harga", formattedTotal);
+            // Hapus backstack agar tidak bisa kembali ke checkout setelah order dibuat
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
         });
 
-        // Tombol kembali
         btnBack.setOnClickListener(v -> finish());
     }
 
-    private void updateSummary() {
+    private void updateSummary(TextView tvQtyOrder, TextView tvSubtotal, TextView tvTotal) {
         int totalQty = 0;
         int totalHarga = 0;
-
         for (Product p : productList) {
             totalQty += p.getQuantity();
-            String cleanPrice = p.getPrice().replaceAll("[^\\d]", "");
-            if (!cleanPrice.isEmpty()) {
-                totalHarga += p.getQuantity() * Integer.parseInt(cleanPrice);
-            }
+            try {
+                totalHarga += Integer.parseInt(p.getPrice().replaceAll("[^\\d]", "")) * p.getQuantity();
+            } catch (NumberFormatException ignored) {}
         }
-
         tvQtyOrder.setText(String.valueOf(totalQty));
-
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatter = NumberFormat.getCurrencyInstance(localeID);
         formatter.setMaximumFractionDigits(0);
         formattedTotal = formatter.format(totalHarga);
-
         tvSubtotal.setText(formattedTotal);
         tvTotal.setText(formattedTotal);
     }
 
-    private void saveOrderToHistory(List<Product> productList, String totalHarga) {
-        // Buat nomor order unik berdasarkan waktu
-        String datePart = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        // Gunakan timestamp untuk membuat nomor lebih unik untuk sesi ini
-        String noOrder = String.format("306-%s-%s", datePart, System.currentTimeMillis() % 10000);
+    private void saveOrderToDb() {
+        executorService.execute(() -> {
+            // Buat order baru
+            String datePart = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            String noOrder = String.format("306-%s-%s", datePart, System.currentTimeMillis() % 10000);
+            String tanggalPembelian = new SimpleDateFormat("dd MMMM yyyy, HH.mm.ss", new Locale("in", "ID")).format(new Date());
+            long startTimeMillis = System.currentTimeMillis();
+            String status = "Menunggu Pembayaran";
+            Order newOrder = new Order(noOrder, new ArrayList<>(productList), formattedTotal, startTimeMillis, tanggalPembelian, status);
 
-        // Tanggal pembelian
-        String tanggalPembelian = new SimpleDateFormat("dd MMMM yyyy, HH.mm.ss", new Locale("in", "ID"))
-                .format(new Date());
+            // Simpan order baru ke database
+            db.orderDao().insertOrder(newOrder);
 
-        // Waktu mulai pembayaran
-        long startTimeMillis = System.currentTimeMillis();
-
-        // Status default
-        String status = "Menunggu Pembayaran";
-
-        // Buat objek Order baru
-        Order newOrder = new Order(noOrder, new ArrayList<>(productList), totalHarga, startTimeMillis, tanggalPembelian, status);
-
-        // Panggil metode baru untuk menambahkan order ke daftar runtime
-        DummyDataGenerator.addOrder(newOrder);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
+            // Reset kuantitas semua produk di keranjang menjadi 0
+            db.productDao().resetAllQuantities();
+        });
     }
 }

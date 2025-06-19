@@ -1,27 +1,25 @@
 package com.project.projectnew.ordercreation;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
+@Entity(tableName = "products")
 public class Product implements Serializable {
 
+    @PrimaryKey
+    @NonNull
     private String id;
+
     private String name;
     private String unit;
     private String price;
     private int stock;
-    private int quantity;
+    private int quantity; // Kuantitas di keranjang
 
-    public Product(String id, String name, String unit, String price, int stock) {
-        this.id = id;
-        this.name = name;
-        this.unit = unit;
-        this.price = price;
-        this.stock = stock;
-        this.quantity = 0;
-    }
-
-    // Konstruktor baru untuk memudahkan pembuatan data dummy
-    public Product(String id, String name, String unit, String price, int stock, int quantity) {
+    // Konstruktor harus ada untuk Room
+    public Product(@NonNull String id, String name, String unit, String price, int stock, int quantity) {
         this.id = id;
         this.name = name;
         this.unit = unit;
@@ -31,6 +29,7 @@ public class Product implements Serializable {
     }
 
     // Getters
+    @NonNull
     public String getId() { return id; }
     public String getName() { return name; }
     public String getUnit() { return unit; }
