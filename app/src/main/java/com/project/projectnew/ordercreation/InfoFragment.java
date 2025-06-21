@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.project.projectnew.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +30,7 @@ import java.util.List;
 public class InfoFragment extends Fragment {
 
     private boolean hasItems = true;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -47,21 +57,51 @@ public class InfoFragment extends Fragment {
 
         if (hasItems) {
             View contentView = inflater.inflate(R.layout.fragment_info_items, container, false);
-            RecyclerView recyclerView = contentView.findViewById(R.id.recyclerViewInfo);
+            recyclerView = contentView.findViewById(R.id.recyclerViewInfo);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            List<InfoItem> dummyList = new ArrayList<>();
-            dummyList.add(new InfoItem("Judul 1", "Deskripsi 1", "12:00:00"));
-            dummyList.add(new InfoItem("Judul 2", "Deskripsi 2", "13:30:00"));
-            dummyList.add(new InfoItem("Judul 3", "Deskripsi 3", "15:15:00"));
-
-            InfoAdapter adapter = new InfoAdapter(requireContext(), dummyList);
-            recyclerView.setAdapter(adapter);
+            // Ambil data info dengan Volley
+            fetchInfoWithVolley();
 
             container.addView(contentView);
         } else {
             View emptyView = inflater.inflate(R.layout.fragment_info_empty, container, false);
             container.addView(emptyView);
         }
+    }
+
+    private void fetchInfoWithVolley() {
+        if (getContext() == null) return;
+
+        RequestQueue queue = ApiClient.getVolleyQueue(getContext());
+        String url = ApiClient.getBaseUrl() + "api/infos";
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    List<InfoItem> infoList = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            InfoItem info = new InfoItem(
+                                    obj.getString("title"),
+                                    obj.getString("description"),
+                                    obj.getString("time")
+                            );
+                            infoList.add(info);
+                        }
+                        recyclerView.setAdapter(new InfoAdapter(getContext(), infoList));
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "Parsing error", Toast.LENGTH_SHORT).show();
+                        Log.e("InfoFragment", "Parsing error", e);
+                    }
+                },
+                error -> {
+                    Toast.makeText(getContext(), "Volley error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("InfoFragment", "Volley error", error);
+                }
+        );
+
+        queue.add(request);
     }
 }

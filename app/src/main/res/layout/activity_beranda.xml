@@ -475,7 +475,9 @@
         </LinearLayout>
 
         <!-- Item 4 - Profil -->
+        <!-- Item 4 - Profil -->
         <LinearLayout
+            android:id="@+id/profileIconNavbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -498,6 +500,7 @@
                 android:textColor="#9E9E9E"
                 android:textSize="10sp" />
         </LinearLayout>
+
     </LinearLayout>
 
 

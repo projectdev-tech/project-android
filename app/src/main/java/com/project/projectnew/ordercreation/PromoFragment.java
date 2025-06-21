@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,7 +13,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.project.projectnew.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +57,10 @@ public class PromoFragment extends Fragment {
             View listView = inflater.inflate(R.layout.fragment_promo_items, containerPromo, false);
             recyclerView = listView.findViewById(R.id.recyclerViewPromo);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(new PromoAdapter(getContext(), generateDummyPromos()));
+
+            // Ambil data dari API menggunakan Volley
+            fetchPromoWithVolley();
+
             containerPromo.addView(listView);
         } else {
             View emptyView = inflater.inflate(R.layout.fragment_promo_empty, containerPromo, false);
@@ -57,11 +68,40 @@ public class PromoFragment extends Fragment {
         }
     }
 
-    private List<PromoModel> generateDummyPromos() {
-        List<PromoModel> list = new ArrayList<>();
-        list.add(new PromoModel("Promo A", "Diskon 50%", "10:00"));
-        list.add(new PromoModel("Promo B", "Gratis Ongkir", "12:00"));
-        list.add(new PromoModel("Promo C", "Buy 1 Get 1", "14:00"));
-        return list;
+    private void fetchPromoWithVolley() {
+        if (getContext() == null) return;
+
+        RequestQueue queue = ApiClient.getVolleyQueue(getContext());
+        String url = ApiClient.getBaseUrl() + "api/promos";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null,
+                response -> {
+                    List<PromoModel> promoList = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            PromoModel promo = new PromoModel(
+                                    obj.getString("title"),
+                                    obj.getString("description"),
+                                    obj.getString("time")
+                            );
+                            promoList.add(promo);
+                        }
+
+                        recyclerView.setAdapter(new PromoAdapter(getContext(), promoList));
+
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "Parsing error", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Toast.makeText(getContext(), "Volley Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    error.printStackTrace();
+                }
+        );
+
+        queue.add(jsonArrayRequest);
     }
 }

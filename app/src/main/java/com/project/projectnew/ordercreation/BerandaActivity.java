@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import com.project.projectnew.profile.ProfileActivity;
 
 public class BerandaActivity extends AppCompatActivity implements ProductAdapter.TotalUpdateListener {
 
@@ -77,6 +78,19 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
             Intent intent = new Intent(BerandaActivity.this, MenuNotifikasi.class);
             startActivity(intent);
         });
+
+//        ImageView profileIcon = findViewById(R.id.profileIcon);
+        LinearLayout profileIconNavbar = findViewById(R.id.profileIconNavbar);
+
+//        profileIcon.setOnClickListener(v -> {
+//            Intent intent = new Intent(BerandaActivity.this, ProfileActivity.class);
+//            startActivity(intent);
+//        });
+        profileIconNavbar.setOnClickListener(v -> {
+            Intent intent = new Intent(BerandaActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+
 
         initViews();
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);

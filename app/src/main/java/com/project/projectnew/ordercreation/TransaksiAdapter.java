@@ -34,9 +34,9 @@ public class TransaksiAdapter extends RecyclerView.Adapter<TransaksiAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TransaksiModel transaksi = transaksiList.get(position);
-        holder.textJudul.setText(transaksi.getJudul());
-        holder.textDeskripsi.setText(transaksi.getDeskripsi());
-        holder.textWaktu.setText(transaksi.getWaktu());
+        holder.textJudul.setText(transaksi.getTitle());        // Perbaikan di sini
+        holder.textDeskripsi.setText(transaksi.getDescription()); // Perbaikan di sini
+        holder.textWaktu.setText(transaksi.getTime());          // Perbaikan di sini
 
         holder.textJudul.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailTransaksiActivity.class);
