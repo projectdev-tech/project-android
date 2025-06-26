@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar; // Import Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -22,15 +23,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class BerandaActivity extends AppCompatActivity implements ProductAdapter.TotalUpdateListener {
 
-    private LinearLayout btnPesanan, lnPilihanProduk;
+    private LinearLayout btnPesanan;
     private RecyclerView rvProducts;
     private FrameLayout fmTotal;
     private TextView tvTotal, tvQty;
+    private Toolbar toolbar; // Tambahkan variabel Toolbar
 
     private List<Product> productList = new ArrayList<>();
     private ProductAdapter productAdapter;
@@ -56,6 +59,12 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         setContentView(R.layout.activity_beranda);
 
         initViews();
+        // Setup Toolbar sebagai Action Bar aplikasi
+        setSupportActionBar(toolbar);
+        // Hapus judul default dari Toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         db = AppDatabase.getDatabase(this);
         executorService = Executors.newSingleThreadExecutor();
@@ -76,18 +85,20 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
     protected void onResume() {
         super.onResume();
         loadProductsFromDb();
-        startAutoSlide(); // Mulai lagi carousel
+        startAutoSlide();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        carouselHandler.removeCallbacks(carouselRunnable); // Hentikan carousel saat tidak terlihat
+        if (carouselRunnable != null) {
+            carouselHandler.removeCallbacks(carouselRunnable);
+        }
     }
 
     private void initViews() {
+        toolbar = findViewById(R.id.toolbar);
         btnPesanan = findViewById(R.id.btnPesanan);
-        lnPilihanProduk = findViewById(R.id.lnPilihanProduk);
         rvProducts = findViewById(R.id.rvProducts);
         fmTotal = findViewById(R.id.fmTotal);
         tvTotal = findViewById(R.id.tvTotal);
@@ -97,6 +108,7 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
     }
 
     private void setupProductAdapter() {
+        // Pastikan ProductAdapter Anda adalah versi yang simpel (tanpa logika header)
         productAdapter = new ProductAdapter(productList, false, this);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         rvProducts.setAdapter(productAdapter);
@@ -116,11 +128,8 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
 
     @Override
     public void updateTotal(List<Product> updatedProducts) {
-        // Update setiap produk yang berubah ke DB di background
         for(Product p : updatedProducts) {
-            if (this.productList.contains(p)) { // Cek apakah produk ada di list utama
-                executorService.execute(() -> db.productDao().updateProduct(p));
-            }
+            executorService.execute(() -> db.productDao().updateProduct(p));
         }
         updateTotalDisplay();
     }
@@ -136,7 +145,6 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
                     totalPrice += Integer.parseInt(p.getPrice().replaceAll("[^\\d]", "")) * p.getQuantity();
                 } catch (NumberFormatException ignored) {}
             }
-
             int finalTotalQty = totalQty;
             int finalTotalPrice = totalPrice;
             mainThreadHandler.post(() -> {
@@ -156,7 +164,6 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
     private void setupCarousel() {
         carouselViewPager.setAdapter(new ImageSliderAdapter(imageList));
         addDots(0);
-
         carouselViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -182,7 +189,9 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
     }
 
     private void startAutoSlide() {
-        carouselHandler.removeCallbacks(carouselRunnable); // Hapus callback lama sebelum memulai yang baru
+        if (carouselRunnable != null) {
+            carouselHandler.removeCallbacks(carouselRunnable);
+        }
         carouselRunnable = () -> {
             int currentItem = carouselViewPager.getCurrentItem();
             int nextItem = (currentItem + 1) % imageList.size();
@@ -192,24 +201,19 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         carouselHandler.postDelayed(carouselRunnable, 3000);
     }
 
-    // Inner class untuk adapter carousel
     private static class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder> {
         private final List<Integer> images;
         ImageSliderAdapter(List<Integer> images) { this.images = images; }
 
         @NonNull @Override
         public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // PERBAIKAN: Menggunakan layout XML untuk item banner
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_carousel_banner, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_carousel_banner, parent, false);
             return new ImageViewHolder(view);
         }
-
         @Override
         public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
             holder.bannerImage.setImageResource(images.get(position));
         }
-
         @Override
         public int getItemCount() { return images.size(); }
 
@@ -217,7 +221,6 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
             final ImageView bannerImage;
             ImageViewHolder(@NonNull View itemView) {
                 super(itemView);
-                // PERBAIKAN: Mencari ImageView dengan ID dari layout
                 bannerImage = itemView.findViewById(R.id.imageViewBanner);
             }
         }

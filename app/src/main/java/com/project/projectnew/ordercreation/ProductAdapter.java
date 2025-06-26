@@ -6,12 +6,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.project.projectnew.R;
-
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
@@ -21,22 +18,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private final OnCartChangedListener cartChangedListener;
     private boolean isKeranjangMode;
 
-    // Interface untuk update total qty dan harga
-    public interface TotalUpdateListener {
-        void updateTotal(List<Product> products);
-    }
+    public interface TotalUpdateListener { void updateTotal(List<Product> products); }
+    public interface OnCartChangedListener { void onCartChanged(List<Product> updatedProducts); }
 
-    // Interface untuk menyimpan data keranjang ke SharedPreferences
-    public interface OnCartChangedListener {
-        void onCartChanged(List<Product> updatedProducts);
-    }
-
-    // Constructor biasa (untuk BerandaActivity)
     public ProductAdapter(List<Product> list, boolean isKeranjangMode, TotalUpdateListener listener) {
         this(list, isKeranjangMode, listener, null);
     }
 
-    // Constructor lengkap (untuk KeranjangActivity)
     public ProductAdapter(List<Product> list, boolean isKeranjangMode, TotalUpdateListener listener, OnCartChangedListener cartChangedListener) {
         this.productList = list;
         this.isKeranjangMode = isKeranjangMode;
@@ -44,8 +32,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.cartChangedListener = cartChangedListener;
     }
 
-    @NonNull
-    @Override
+    @NonNull @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(v);
@@ -54,7 +41,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
-
         holder.tvName.setText(product.getName());
         holder.tvUnit.setText(product.getUnit());
         holder.tvPrice.setText(product.getPrice());
@@ -86,7 +72,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 triggerUpdate();
             }
         });
-
         holder.btnPlus.setOnClickListener(v -> {
             if (product.getQuantity() < product.getStock()) {
                 product.setQuantity(product.getQuantity() + 1);
@@ -94,7 +79,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 triggerUpdate();
             }
         });
-
         holder.btnMinus.setOnClickListener(v -> {
             if (product.getQuantity() > 1) {
                 product.setQuantity(product.getQuantity() - 1);
@@ -102,7 +86,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 triggerUpdate();
             }
         });
-
         holder.btnTrash.setOnClickListener(v -> {
             if (isKeranjangMode) {
                 productList.remove(position);
@@ -126,31 +109,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @Override
-    public int getItemCount() {
-        return productList.size();
-    }
-
-    // Digunakan untuk update data dari SharedPreferences (jika perlu)
-    public void updateSelectedProducts(List<Product> updatedList) {
-        for (Product item : productList) {
-            item.setQuantity(0);
-        }
-
-        for (Product updated : updatedList) {
-            for (Product item : productList) {
-                if (item.getId().equals(updated.getId())) {
-                    item.setQuantity(updated.getQuantity());
-                    break;
-                }
-            }
-        }
-
-        notifyDataSetChanged();
-        triggerUpdate();
-    }
+    public int getItemCount() { return productList.size(); }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
-
         TextView tvName, tvUnit, tvPrice, tvStock, tvQuantity;
         Button btnTambah;
         ImageButton btnPlus, btnMinus, btnTrash;
