@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar; // Import Toolbar
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +32,10 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
     private RecyclerView rvProducts;
     private FrameLayout fmTotal;
     private TextView tvTotal, tvQty;
-    private Toolbar toolbar; // Tambahkan variabel Toolbar
+    private Toolbar toolbar;
+
+    // PENAMBAHAN 1: Variabel untuk search bar
+    private LinearLayout searchBarLayout;
 
     private List<Product> productList = new ArrayList<>();
     private ProductAdapter productAdapter;
@@ -59,9 +61,7 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         setContentView(R.layout.activity_beranda);
 
         initViews();
-        // Setup Toolbar sebagai Action Bar aplikasi
         setSupportActionBar(toolbar);
-        // Hapus judul default dari Toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
@@ -79,20 +79,25 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         });
 
         btnPesanan.setOnClickListener(v -> startActivity(new Intent(this, PesananActivity.class)));
+
+        // PENAMBAHAN 3: Set OnClickListener untuk search bar
+        searchBarLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(BerandaActivity.this, CariProdukActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         loadProductsFromDb();
-        startAutoSlide();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (carouselRunnable != null) {
-            carouselHandler.removeCallbacks(carouselRunnable);
+        if (carouselHandler != null) {
+            carouselHandler.removeCallbacksAndMessages(null);
         }
     }
 
@@ -105,10 +110,13 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         tvQty = findViewById(R.id.tvQty);
         carouselViewPager = findViewById(R.id.carouselViewPager);
         carouselDots = findViewById(R.id.carouselDots);
+
+        // PENAMBAHAN 2: Inisialisasi search bar
+        searchBarLayout = findViewById(R.id.search_bar_layout);
     }
 
+    // ... sisa kode Anda tetap sama ...
     private void setupProductAdapter() {
-        // Pastikan ProductAdapter Anda adalah versi yang simpel (tanpa logika header)
         productAdapter = new ProductAdapter(productList, false, this);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         rvProducts.setAdapter(productAdapter);
@@ -162,23 +170,28 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
     }
 
     private void setupCarousel() {
-        carouselViewPager.setAdapter(new ImageSliderAdapter(imageList));
-        addDots(0);
-        carouselViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                addDots(position);
-            }
-        });
+        ImageSliderAdapter sliderAdapter = new ImageSliderAdapter(imageList);
+        carouselViewPager.setAdapter(sliderAdapter);
+
+        int realCount = imageList.size();
+        if (realCount > 0) {
+            int middlePosition = Integer.MAX_VALUE / 2;
+            int initialPosition = middlePosition - (middlePosition % realCount);
+            carouselViewPager.setCurrentItem(initialPosition, false);
+            carouselViewPager.post(() -> addDots(initialPosition));
+        }
+
+        startAutoSlide();
     }
 
     private void addDots(int position) {
+        if (carouselDots == null || imageList.isEmpty()) return;
+        int realPosition = position % imageList.size();
         carouselDots.removeAllViews();
         dots = new ImageView[imageList.size()];
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new ImageView(this);
-            dots[i].setImageResource(i == position ? R.drawable.dot_active : R.drawable.dot_inactive);
+            dots[i].setImageResource(i == realPosition ? R.drawable.dot_active : R.drawable.dot_inactive);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -189,15 +202,25 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
     }
 
     private void startAutoSlide() {
-        if (carouselRunnable != null) {
-            carouselHandler.removeCallbacks(carouselRunnable);
+        if (carouselHandler != null) {
+            carouselHandler.removeCallbacksAndMessages(null);
         }
+
         carouselRunnable = () -> {
-            int currentItem = carouselViewPager.getCurrentItem();
-            int nextItem = (currentItem + 1) % imageList.size();
+            int nextItem = carouselViewPager.getCurrentItem() + 1;
             carouselViewPager.setCurrentItem(nextItem, true);
-            carouselHandler.postDelayed(carouselRunnable, 3000);
         };
+
+        carouselViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                addDots(position);
+                carouselHandler.removeCallbacks(carouselRunnable);
+                carouselHandler.postDelayed(carouselRunnable, 3000);
+            }
+        });
+
         carouselHandler.postDelayed(carouselRunnable, 3000);
     }
 
@@ -212,10 +235,15 @@ public class BerandaActivity extends AppCompatActivity implements ProductAdapter
         }
         @Override
         public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-            holder.bannerImage.setImageResource(images.get(position));
+            if (images != null && !images.isEmpty()) {
+                int realPosition = position % images.size();
+                holder.bannerImage.setImageResource(images.get(realPosition));
+            }
         }
         @Override
-        public int getItemCount() { return images.size(); }
+        public int getItemCount() {
+            return images.isEmpty() ? 0 : Integer.MAX_VALUE;
+        }
 
         static class ImageViewHolder extends RecyclerView.ViewHolder {
             final ImageView bannerImage;

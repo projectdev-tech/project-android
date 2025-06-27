@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class PesananPagerAdapter extends FragmentPagerAdapter {
 
-    // Menambahkan "Dikirim" ke dalam judul tab
+    // Judul tab tetap sama
     private final String[] tabTitles = new String[]{"Belum Bayar", "Dalam Proses", "Dikirim", "Selesai"};
 
     public PesananPagerAdapter(@NonNull FragmentManager fm) {
@@ -18,18 +18,24 @@ public class PesananPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        // Menambahkan case untuk DikirimFragment
+        // Logika di sini diubah total untuk menggunakan satu Fragment yang sama
+        // dengan argumen yang berbeda untuk setiap tab.
         switch (position){
             case 0:
-                return new BelumBayarFragment();
+                // Mengirim status "Menunggu Pembayaran" untuk tab pertama
+                return OrderListFragment.newInstance("Menunggu Pembayaran");
             case 1:
-                return new DalamProsesFragment();
+                // Mengirim status "Menunggu Konfirmasi" untuk tab kedua
+                return OrderListFragment.newInstance("Menunggu Konfirmasi");
             case 2:
-                return new DikirimFragment(); // Fragment baru
+                // Mengirim status "Pesanan Dikirim" untuk tab ketiga
+                return OrderListFragment.newInstance("Pesanan Dikirim");
             case 3:
-                return new SelesaiFragment();
+                // Mengirim status "Pesanan Diterima" untuk tab keempat
+                return OrderListFragment.newInstance("Pesanan Diterima");
             default:
-                return null;
+                // Seharusnya tidak pernah terjadi, tapi baik untuk memiliki fallback
+                return new Fragment();
         }
     }
 

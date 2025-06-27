@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectNew">
 
-        <!-- Hanya BerandaActivity yang dijalankan pertama -->
         <activity
             android:name=".ordercreation.BerandaActivity"
             android:exported="true">
@@ -19,13 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ordercreation.CariProdukActivity"
+            android:exported="false" />
+
         <activity android:name=".ordercreation.KeranjangActivity" android:exported="false" />
         <activity android:name=".ordercreation.PesananActivity" android:exported="false" />
         <activity android:name=".ordercreation.CheckoutActivity" />
         <activity android:name=".ordercreation.PesananSuksesActivity" />
         <activity android:name=".ordercreation.PembayaranActivity" />
         <activity android:name=".ordercreation.RincianPesananActivity" />
-
         <activity android:name=".ordercreation.PesananDiterimaActivity" />
     </application>
 

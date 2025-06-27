@@ -6,11 +6,8 @@ import android.os.CountDownTimer;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.project.projectnew.R;
-
 import java.util.concurrent.TimeUnit;
 
 public class RincianPesananActivity extends AppCompatActivity {
@@ -21,12 +18,13 @@ public class RincianPesananActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pembayaran);
+        // PERUBAHAN: Menggunakan layout baru yang sudah kita buat
+        setContentView(R.layout.activity_rincian_pesanan);
 
         tvTotalPembayaran = findViewById(R.id.tvtotalpembayaran);
         tvBayarDalam = findViewById(R.id.tvBayarDalam);
         ImageButton imgbtnBack = findViewById(R.id.imgbtnBack);
-        Button btnMenungguPembayaran = findViewById(R.id.btnMenungguPembayaran); // pastikan ID ini ada di XML
+        Button btnMenungguPembayaran = findViewById(R.id.btnMenungguPembayaran);
 
         imgbtnBack.setOnClickListener(v -> finish());
 
@@ -36,7 +34,9 @@ public class RincianPesananActivity extends AppCompatActivity {
         tvTotalPembayaran.setText(totalHarga);
 
         long now = System.currentTimeMillis();
-        long diff = (checkoutTimestamp + 24 * 60 * 60 * 1000) - now;
+        long twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
+        long deadline = checkoutTimestamp + twentyFourHoursInMillis;
+        long diff = deadline - now;
 
         if (diff > 0) {
             startCountdown(diff);
