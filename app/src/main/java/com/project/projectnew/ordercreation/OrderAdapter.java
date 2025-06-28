@@ -165,10 +165,10 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvDesc.setText(status.getStatusDescription());
 
             if (status.isActive()) {
-                ivIcon.setImageResource(R.drawable.tick_circle_active);
+                ivIcon.setImageResource(R.drawable.ic_tick_circle_active);
                 tvDate.setTextColor(ContextCompat.getColor(context, android.R.color.black));
             } else {
-                ivIcon.setImageResource(R.drawable.tick_circle);
+                ivIcon.setImageResource(R.drawable.ic_tick_circle);
                 tvDate.setTextColor(Color.GRAY);
             }
 
@@ -181,7 +181,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (productListSize > 1) {
             btnLihatLainnya.setVisibility(View.VISIBLE);
             tvLihatLainnya.setText(isExpanded ? "Lihat Lebih Sedikit" : "Lihat Lainnya");
-            icLihatLainnya.setImageResource(isExpanded ? R.drawable.arrow_up : R.drawable.arrow_down);
+            icLihatLainnya.setImageResource(isExpanded ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
             btnLihatLainnya.setOnClickListener(v -> {
                 expandStates.set(position, !isExpanded);
                 notifyItemChanged(position);

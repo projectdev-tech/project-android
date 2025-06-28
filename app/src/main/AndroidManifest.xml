@@ -11,7 +11,7 @@
         android:theme="@style/Theme.ProjectNew">
 
         <activity
-            android:name=".ordercreation.BerandaActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,10 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ordercreation.CariProdukActivity"
-            android:exported="false" />
-
+        <activity android:name=".ordercreation.CariProdukActivity" android:exported="false" />
         <activity android:name=".ordercreation.KeranjangActivity" android:exported="false" />
         <activity android:name=".ordercreation.PesananActivity" android:exported="false" />
         <activity android:name=".ordercreation.CheckoutActivity" />

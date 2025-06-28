@@ -7,9 +7,10 @@ import android.os.CountDownTimer;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+// PENAMBAHAN: Import MainActivity yang baru
+import com.project.projectnew.MainActivity;
 import com.project.projectnew.R;
 
 import java.util.concurrent.TimeUnit;
@@ -26,21 +27,18 @@ public class PembayaranActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pembayaran);
 
-        // Inisialisasi view
         tvTotalHargaPembayaran = findViewById(R.id.tvtotalpembayaran);
         tvBayarDalam = findViewById(R.id.tvBayarDalam);
         btnMenungguPembayaran = findViewById(R.id.btnMenungguPembayaran);
         imgbtnBack = findViewById(R.id.imgbtnBack);
 
-        // Ambil total harga dari intent
         String totalHarga = getIntent().getStringExtra("total_harga");
         if (totalHarga != null) {
             tvTotalHargaPembayaran.setText(totalHarga);
         }
 
-        // Ambil waktu mulai dari SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("checkout_data", MODE_PRIVATE);
-        long startTime = prefs.getLong("start_time_millis", 0);
+        // Mengambil waktu mulai dari Intent PesananSuksesActivity, bukan SharedPreferences
+        long startTime = getIntent().getLongExtra("waktu_pembayaran", 0);
 
         if (startTime != 0) {
             long endTime = startTime + TimeUnit.HOURS.toMillis(24);
@@ -52,21 +50,30 @@ public class PembayaranActivity extends AppCompatActivity {
                 tvBayarDalam.setText("Waktu pembayaran habis");
             }
         } else {
-            tvBayarDalam.setText("Waktu tidak tersedia");
+            // Fallback jika waktu tidak terkirim
+            long checkoutTimestamp = getIntent().getLongExtra("waktu_pembayaran", System.currentTimeMillis());
+            long diff = (checkoutTimestamp + 24 * 60 * 60 * 1000) - System.currentTimeMillis();
+            if (diff > 0) {
+                startCountdown(diff);
+            } else {
+                tvBayarDalam.setText("Waktu pembayaran telah habis");
+            }
         }
 
-        // Tombol kembali: hanya kembali ke PesananSuksesActivity
-        imgbtnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(PembayaranActivity.this, PesananSuksesActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        // Tombol kembali: Cukup tutup halaman ini
+        imgbtnBack.setOnClickListener(v -> finish());
 
-        // Tombol lanjutkan: ke PesananActivity, dan hapus semua back stack (tidak bisa kembali lagi)
+        // --- PERUBAHAN UTAMA DI SINI ---
+        // Tombol ini sekarang mengarah ke MainActivity
         btnMenungguPembayaran.setOnClickListener(v -> {
-            Intent intent = new Intent(PembayaranActivity.this, PesananActivity.class);
-            intent.putExtra("fragment", "belum_bayar"); // buka fragment belum bayar
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // hapus backstack
+            // Intent lama yang menyebabkan error dihapus:
+            // Intent intent = new Intent(PembayaranActivity.this, PesananActivity.class);
+
+            // Intent baru yang benar:
+            Intent intent = new Intent(PembayaranActivity.this, MainActivity.class);
+            intent.putExtra("FRAGMENT_TO_LOAD", "PESANAN");
+            intent.putExtra("TAB_INDEX", 0); // 0 = Tab "Belum Bayar"
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
     }

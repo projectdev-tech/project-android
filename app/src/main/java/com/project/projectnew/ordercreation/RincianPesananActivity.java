@@ -7,7 +7,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.project.projectnew.MainActivity;
 import com.project.projectnew.R;
+
 import java.util.concurrent.TimeUnit;
 
 public class RincianPesananActivity extends AppCompatActivity {
@@ -18,13 +21,12 @@ public class RincianPesananActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // PERUBAHAN: Menggunakan layout baru yang sudah kita buat
         setContentView(R.layout.activity_rincian_pesanan);
 
         tvTotalPembayaran = findViewById(R.id.tvtotalpembayaran);
         tvBayarDalam = findViewById(R.id.tvBayarDalam);
         ImageButton imgbtnBack = findViewById(R.id.imgbtnBack);
-        Button btnMenungguPembayaran = findViewById(R.id.btnMenungguPembayaran);
+        Button btnKembaliKePesanan = findViewById(R.id.btnMenungguPembayaran); // ID dari layout
 
         imgbtnBack.setOnClickListener(v -> finish());
 
@@ -44,9 +46,11 @@ public class RincianPesananActivity extends AppCompatActivity {
             tvBayarDalam.setText("Waktu pembayaran telah habis");
         }
 
-        btnMenungguPembayaran.setOnClickListener(v -> {
-            Intent intent = new Intent(RincianPesananActivity.this, PesananActivity.class);
-            intent.putExtra("fragment", "belum_bayar");
+        btnKembaliKePesanan.setOnClickListener(v -> {
+            // Mengarahkan ke MainActivity dengan instruksi untuk membuka PesananFragment
+            Intent intent = new Intent(RincianPesananActivity.this, MainActivity.class);
+            intent.putExtra("FRAGMENT_TO_LOAD", "PESANAN");
+            intent.putExtra("TAB_INDEX", 0); // 0 = Tab "Belum Bayar"
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });

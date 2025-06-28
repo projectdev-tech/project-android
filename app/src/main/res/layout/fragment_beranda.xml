@@ -35,17 +35,23 @@
                     android:orientation="vertical"
                     android:paddingBottom="8dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center|left"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
                         android:paddingLeft="16dp"
                         android:paddingTop="8dp"
                         android:paddingRight="16dp"
-                        android:paddingBottom="8dp"
-                        android:text="Kategori"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold" />
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:text="Kategori"
+                            android:textColor="#404040"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
@@ -57,7 +63,9 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingLeft="32dp"
-                            android:paddingRight="32dp">
+                            android:paddingTop="8dp"
+                            android:paddingRight="32dp"
+                            android:paddingBottom="8dp">
 
                             <LinearLayout
                                 android:layout_width="62dp"
@@ -70,7 +78,7 @@
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
                                     android:layout_marginBottom="4dp"
-                                    app:srcCompat="@drawable/menu_icon" />
+                                    app:srcCompat="@drawable/img_category_placeholder" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -93,7 +101,7 @@
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
                                     android:layout_marginBottom="4dp"
-                                    app:srcCompat="@drawable/menu_icon" />
+                                    app:srcCompat="@drawable/img_category_placeholder" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -116,7 +124,7 @@
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
                                     android:layout_marginBottom="4dp"
-                                    app:srcCompat="@drawable/menu_icon" />
+                                    app:srcCompat="@drawable/img_category_placeholder" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -139,7 +147,7 @@
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
                                     android:layout_marginBottom="4dp"
-                                    app:srcCompat="@drawable/menu_icon" />
+                                    app:srcCompat="@drawable/img_category_placeholder" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -161,7 +169,7 @@
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
                                     android:layout_marginBottom="4dp"
-                                    app:srcCompat="@drawable/menu_icon" />
+                                    app:srcCompat="@drawable/img_category_placeholder" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -186,17 +194,23 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start|center_vertical"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
                         android:paddingLeft="16dp"
                         android:paddingTop="8dp"
                         android:paddingRight="16dp"
-                        android:paddingBottom="8dp"
-                        android:text="Banner Promo"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold" />
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|center_vertical"
+                            android:text="Banner Promo"
+                            android:textColor="#404040"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/carouselViewPager"
@@ -218,11 +232,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:background="#fff"
+                android:clipToPadding="false"
                 android:minHeight="0dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
                 app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin"
                 app:maxButtonHeight="0dp">
@@ -231,8 +243,13 @@
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clipToPadding="false"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp">
 
                     <LinearLayout
                         android:id="@+id/search_bar_layout"
@@ -240,27 +257,30 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/rounded_border"
+                        android:background="@drawable/bg_rounded_border"
                         android:clickable="true"
+                        android:clipToPadding="false"
                         android:focusable="true"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingStart="12dp"
-                        android:paddingTop="6dp"
+                        android:paddingTop="8dp"
                         android:paddingEnd="12dp"
-                        android:paddingBottom="6dp">
+                        android:paddingBottom="8dp">
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
-                            android:src="@drawable/search"
+                            android:src="@drawable/ic_search"
                             app:tint="#8A8A8A" />
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="Cari Produk..."
+                            android:gravity="center"
+                            android:text="Cari produk..."
+                            android:textAlignment="center"
                             android:textColor="#8A8A8A"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -270,10 +290,10 @@
                         android:layout_height="24dp"
                         android:background="@null"
                         android:contentDescription="Notifikasi"
-                        android:src="@drawable/notification" />
-
+                        android:src="@drawable/ic_notification" />
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <LinearLayout
@@ -281,17 +301,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
-            android:orientation="vertical">
-            <TextView
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:paddingLeft="16dp"
-                android:paddingTop="16dp"
+                android:paddingTop="8dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="8dp"
-                android:text="Pilihan Produk"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pilihan Produk"
+                    android:textColor="#404040"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -301,9 +330,10 @@
         android:layout_height="match_parent"
         android:background="#fff"
         android:clipToPadding="false"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="76dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
@@ -311,18 +341,19 @@
         android:id="@+id/fmTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_anchor="@id/bottom_nav"
-        app:layout_anchorGravity="top">
+        android:layout_gravity="bottom"
+        android:padding="13dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_total"
+            android:background="@drawable/bg_button_total"
             android:orientation="horizontal"
-            android:padding="12dp">
+            android:paddingLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -332,7 +363,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="24dp"
                     android:gravity="center_vertical">
 
                     <TextView
@@ -355,7 +386,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="16dp"
                     android:gravity="center_vertical">
 
                     <TextView
@@ -381,22 +412,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/arrow_right" />
+                android:tint="#FFFFFF"
+                app:srcCompat="@drawable/ic_arrow_right" />
         </LinearLayout>
     </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@drawable/normal_border"
-        android:elevation="8dp"
-        android:orientation="horizontal">
-        <LinearLayout android:id="@+id/btnBeranda" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:paddingVertical="12dp"><ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/home_active" /><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="sans-serif-medium" android:text="Beranda" android:textColor="#FF9502" android:textSize="10sp" /></LinearLayout>
-        <LinearLayout android:id="@+id/btnPesanan" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:clickable="true" android:focusable="true" android:gravity="center" android:orientation="vertical" android:paddingVertical="12dp"><ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/shopping_cart" app:tint="#9E9E9E" /><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="sans-serif-medium" android:text="Pesanan" android:textColor="#9E9E9E" android:textSize="10sp" /></LinearLayout>
-        <LinearLayout android:id="@+id/btnNotifikasi" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:paddingVertical="12dp"><ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/notification" app:tint="#9E9E9E" /><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="sans-serif-medium" android:text="Notifikasi" android:textColor="#9E9E9E" android:textSize="10sp" /></LinearLayout>
-        <LinearLayout android:id="@+id/btnProfil" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:paddingVertical="12dp"><ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/profile" app:tint="#9E9E9E" /><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="sans-serif-medium" android:text="Profil" android:textColor="#9E9E9E" android:textSize="10sp" /></LinearLayout>
-    </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

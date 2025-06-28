@@ -19,7 +19,7 @@
             android:id="@+id/ivStatusIcon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:srcCompat="@drawable/tick_circle_active" />
+            app:srcCompat="@drawable/ic_tick_circle_active" />
 
         <View
             android:id="@+id/viewLine"

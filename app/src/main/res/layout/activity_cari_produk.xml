@@ -38,13 +38,13 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="10dp"
                     android:backgroundTint="#00FFFFFF"
-                    app:srcCompat="@drawable/arrow_left" />
+                    app:srcCompat="@drawable/ic_arrow_left" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/border_blue"
+                    android:background="@drawable/bg_border_blue"
                     android:forceHasOverlappingRendering="true"
                     android:orientation="horizontal"
                     android:padding="1dp">
@@ -75,13 +75,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
 
-                        android:background="@drawable/button_background_yellow"
+                        android:background="@drawable/bg_button_yellow"
                         android:paddingLeft="16dp"
                         android:paddingTop="6dp"
                         android:paddingRight="16dp"
                         android:paddingBottom="6dp"
                         android:tint="#FFf"
-                        app:srcCompat="@drawable/search" />
+                        app:srcCompat="@drawable/ic_search" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -200,7 +200,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginBottom="4dp"
-                            app:srcCompat="@drawable/menu_icon" />
+                            app:srcCompat="@drawable/img_category_placeholder" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -223,7 +223,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginBottom="4dp"
-                            app:srcCompat="@drawable/menu_icon" />
+                            app:srcCompat="@drawable/img_category_placeholder" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -246,7 +246,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginBottom="4dp"
-                            app:srcCompat="@drawable/menu_icon" />
+                            app:srcCompat="@drawable/img_category_placeholder" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -269,7 +269,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginBottom="4dp"
-                            app:srcCompat="@drawable/menu_icon" />
+                            app:srcCompat="@drawable/img_category_placeholder" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -291,7 +291,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginBottom="4dp"
-                            app:srcCompat="@drawable/menu_icon" />
+                            app:srcCompat="@drawable/img_category_placeholder" />
 
                         <TextView
                             android:layout_width="match_parent"

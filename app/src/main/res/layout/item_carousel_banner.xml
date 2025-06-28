@@ -6,12 +6,20 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="0dp">
 
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageViewBanner"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:scaleType="centerCrop" />-->
     <ImageView
         android:id="@+id/imageViewBanner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:layout_width="328dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="false"
+        android:contentDescription="Banner Iklan"
+        android:scaleType="fitXY" />
 
 </androidx.cardview.widget.CardView>

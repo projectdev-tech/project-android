@@ -25,7 +25,7 @@
             android:layout_height="24dp"
             android:layout_marginRight="20dp"
             android:background="@null"
-            app:srcCompat="@drawable/arrow_left" />
+            app:srcCompat="@drawable/ic_arrow_left" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_height="0dp"
         android:background="#fff"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@id/ProdukOrder"
+        app:layout_constraintBottom_toTopOf="@id/layoutProdukOrder"
         app:layout_constraintTop_toBottomOf="@id/header">
 
 
@@ -85,7 +85,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:elevation="4dp"
-                    android:padding="16dp"/>
+                    android:paddingLeft="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp" />
 
 
             </LinearLayout>
@@ -108,7 +110,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="16dp"
-                        android:background="@drawable/rounded_border"
+                        android:background="@drawable/bg_rounded_border"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -119,9 +121,10 @@
 
                             <TextView
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="20dp"
                                 android:layout_marginBottom="2dp"
                                 android:text="Tujuan Pengiriman"
+                                android:textColor="#0A0A0A"
                                 android:textSize="12dp"
                                 android:textStyle="bold" />
 
@@ -130,19 +133,21 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="2dp"
                                 android:text="(Alamat Toko)"
-                                android:textSize="12dp" />
+                                android:textSize="12dp"
+                                app:lineHeight="16dp" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Jl. Diklat Pemda No.184, Bojong Nangka, Kec. Klp. Dua, Tangerang, Banten 15810"
-                                android:textSize="12dp" />
+                                android:textSize="12dp"
+                                app:lineHeight="16dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/bottom_corners_radius"
+                            android:background="@drawable/bg_bottom_corners_radius"
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:paddingLeft="16dp"
@@ -154,7 +159,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="8dp"
-                                app:srcCompat="@drawable/info_circle" />
+                                app:srcCompat="@drawable/ic_info_circle" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -169,7 +174,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="16dp"
-                        android:background="@drawable/rounded_border"
+                        android:background="@drawable/bg_rounded_border"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="16dp">
@@ -178,7 +183,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginRight="8dp"
-                            app:srcCompat="@drawable/ticket_discount" />
+                            app:srcCompat="@drawable/ic_ticket_discount" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -190,13 +195,13 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:tint="#C2C2C2"
-                            app:srcCompat="@drawable/arrow_right" />
+                            app:srcCompat="@drawable/ic_arrow_right" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_border"
+                        android:background="@drawable/bg_rounded_border"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="16dp">
@@ -205,7 +210,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginRight="8dp"
-                            app:srcCompat="@drawable/usd_coin__usdc_" />
+                            app:srcCompat="@drawable/ic_usd_coin" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -224,7 +229,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:tint="#C2C2C2"
-                            app:srcCompat="@drawable/arrow_right" />
+                            app:srcCompat="@drawable/ic_arrow_right" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -234,23 +239,30 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/ProdukOrder"
+        android:id="@+id/layoutProdukOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/top_rouded_border"
+        android:background="@drawable/bg_top_rounded_border"
+        android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="2dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="Produk Order"
-            android:textColor="#0A0A0A"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Produk Order"
+                android:textColor="#0A0A0A"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -277,7 +289,7 @@
                     android:id="@+id/tvqtyorder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2"
+                    tools:text="2"
                     android:textColor="#0A0A0A"
                     android:textSize="12dp"
                     android:textStyle="bold" />
@@ -302,7 +314,7 @@
                     android:id="@+id/tvsubtotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rp. 50.000"
+                    tools:text="Rp. 50.000"
                     android:textColor="#0A0A0A"
                     android:textSize="12dp"
                     android:textStyle="bold" />
@@ -381,7 +393,7 @@
                 android:id="@+id/tvtotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rp. 50.000"
+                tools:text="Rp. 50.000"
                 android:textColor="#0A0A0A"
                 android:textSize="12dp"
                 android:textStyle="bold" />
@@ -390,15 +402,21 @@
         <Button
             android:id="@+id/btnlanjutkan"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="54dp"
+            android:layout_marginLeft="-3dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginRight="-3dp"
+            android:layout_marginBottom="-3dp"
             android:backgroundTint="#FF9502"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:paddingLeft="19dp"
+            android:paddingRight="19dp"
             android:text="Lanjutkan"
             android:textAlignment="textStart"
             android:textSize="14dp"
             app:cornerRadius="12dp"
-            app:icon="@drawable/arrow_right"
+            app:icon="@drawable/ic_arrow_right"
             app:iconGravity="end"
             app:iconPadding="0dp"
             app:iconSize="24dp"

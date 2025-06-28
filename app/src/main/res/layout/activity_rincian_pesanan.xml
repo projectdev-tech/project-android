@@ -25,7 +25,7 @@
             android:layout_height="24dp"
             android:layout_marginRight="16dp"
             android:backgroundTint="#00FFFFFF"
-            app:srcCompat="@drawable/arrow_left" />
+            app:srcCompat="@drawable/ic_arrow_left" />
 
         <TextView
             android:id="@+id/textView20"
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@id/MenungguPembayaran"
+        app:layout_constraintBottom_toTopOf="@id/layoutMenungguPembayaran"
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
@@ -69,7 +69,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_border"
+                        android:background="@drawable/bg_rounded_border"
                         android:orientation="vertical"
                         android:paddingLeft="16dp"
                         android:paddingTop="8dp"
@@ -85,7 +85,6 @@
                             android:paddingBottom="8dp">
 
                             <TextView
-                                android:id="@+id/textView22"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -119,10 +118,8 @@
                             android:paddingBottom="8dp">
 
                             <TextView
-                                android:id="@+id/textView22"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="Bayar Dalam"
                                 android:textSize="12sp" />
@@ -144,20 +141,15 @@
                                     android:textColor="#FF9502" />
 
                                 <TextView
-                                    android:id="@+id/textView24"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="center_vertical"
                                     android:text="Jatuh tempo pembayaran"
                                     android:textSize="12sp" />
-
                             </LinearLayout>
-
                         </LinearLayout>
-
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -179,7 +171,7 @@
                         android:id="@+id/imageView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/screenshot_2025_04_22_at_15_22_59_1" />
+                        app:srcCompat="@drawable/img_qris_payment_guide" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -200,7 +192,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_border"
+                        android:background="@drawable/bg_rounded_border"
                         android:orientation="vertical"
                         android:paddingLeft="16dp"
                         android:paddingTop="8dp"
@@ -222,7 +214,6 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/textView26"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -231,7 +222,6 @@
                                     android:textSize="12sp" />
 
                                 <TextView
-                                    android:id="@+id/textView25"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -241,7 +231,6 @@
                             </LinearLayout>
 
                             <TextView
-                                android:id="@+id/textView23"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -251,7 +240,6 @@
                         </LinearLayout>
 
                         <View
-                            android:id="@+id/view"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_weight="1"
@@ -266,7 +254,6 @@
                             android:paddingBottom="8dp">
 
                             <TextView
-                                android:id="@+id/textView23"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -275,29 +262,25 @@
                                 android:textColor="#FF9502" />
 
                             <TextView
-                                android:id="@+id/textView22"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:text="Pastikan nominal transaksi sudah sesuai. Transaksi dengan QRIS akan langsung mendebet dari rekening Anda."
                                 android:textSize="12sp" />
-
                         </LinearLayout>
-
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/MenungguPembayaran"
+        android:id="@+id/layoutMenungguPembayaran"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/top_rouded_border"
+        android:background="@drawable/bg_top_rounded_border"
+        android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -306,17 +289,22 @@
         <Button
             android:id="@+id/btnMenungguPembayaran"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="54dp"
+            android:layout_marginLeft="-3dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginRight="-3dp"
+            android:layout_marginBottom="-3dp"
             android:backgroundTint="#FF9502"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:paddingLeft="19dp"
+            android:paddingRight="19dp"
             android:text="Kembali Ke Halaman Pesanan"
             android:textAlignment="center"
             android:textSize="14dp"
             app:cornerRadius="12dp"
             app:strokeColor="#FFDEB1"
             app:strokeWidth="3dp" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:elevation="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
@@ -26,7 +25,7 @@
             android:layout_height="24dp"
             android:layout_marginRight="20dp"
             android:background="@null"
-            app:srcCompat="@drawable/arrow_left" />
+            app:srcCompat="@drawable/ic_arrow_left" />
 
         <TextView
             android:id="@+id/tvHeaderTitle"
@@ -35,6 +34,7 @@
             android:layout_weight="1"
             android:height="28dp"
             android:text="Keranjang"
+            android:textColor="#404040"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -87,21 +87,22 @@
                     android:text="Tambah Barang"
                     android:textColor="#FF9502"
                     android:textSize="14dp"
-                    app:icon="@drawable/add"
+                    app:icon="@drawable/ic_add"
                     app:iconPadding="4dp"
                     app:iconSize="16dp"
                     app:iconTint="#FF9502" />
             </LinearLayout>
 
 
-
-                <com.project.projectnew.ordercreation.NonScrollRecyclerView
-                    android:id="@+id/rvProducts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:padding="16dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            <com.project.projectnew.ordercreation.NonScrollRecyclerView
+                android:id="@+id/rvProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
         </LinearLayout>
@@ -111,21 +112,29 @@
         android:id="@+id/layoutProdukOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/top_rouded_border"
+        android:background="@drawable/bg_top_rounded_border"
+        android:clipToPadding="false"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="2dp">
 
-        <TextView
-            android:id="@+id/tvProdukOrderTitle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="Produk Order"
-            android:textColor="#0A0A0A"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvProdukOrderTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Produk Order"
+                android:textColor="#0A0A0A"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -195,15 +204,21 @@
         <Button
             android:id="@+id/btnLanjutkan"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="54dp"
+            android:layout_marginLeft="-3dp"
+            android:layout_marginTop="-3dp"
+            android:layout_marginRight="-3dp"
+            android:layout_marginBottom="-3dp"
             android:backgroundTint="#FF9502"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:paddingLeft="19dp"
+            android:paddingRight="19dp"
             android:text="Lanjutkan"
             android:textAlignment="textStart"
             android:textSize="14dp"
             app:cornerRadius="12dp"
-            app:icon="@drawable/arrow_right"
+            app:icon="@drawable/ic_arrow_right"
             app:iconGravity="end"
             app:iconPadding="0dp"
             app:iconSize="24dp"

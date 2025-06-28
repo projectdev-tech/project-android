@@ -49,7 +49,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
         holder.tvProductPrice.setText(format.format(hargaSatuan));
 
         // Gambar placeholder
-        holder.ivProductImage.setImageResource(R.drawable.product);
+        holder.ivProductImage.setImageResource(R.drawable.img_product_placeholder);
     }
 
     @Override
