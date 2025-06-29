@@ -45,17 +45,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvUnit.setText(product.getUnit());
         holder.tvPrice.setText(product.getPrice());
 
+        // Logika ini sudah benar, saya hanya merapikannya agar lebih jelas
+        // dan memastikan tombol sampah muncul dengan benar di mode keranjang
+        if (isKeranjangMode) {
+            holder.btnTrash.setVisibility(View.VISIBLE);
+            holder.tvStock.setVisibility(View.GONE);
+        } else {
+            holder.btnTrash.setVisibility(product.getQuantity() > 0 ? View.VISIBLE : View.GONE);
+            holder.tvStock.setVisibility(product.getQuantity() > 0 ? View.GONE : View.VISIBLE);
+        }
+
         if (product.getQuantity() > 0) {
             holder.btnTambah.setVisibility(View.GONE);
             holder.layoutJumlah.setVisibility(View.VISIBLE);
             holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
-            holder.tvStock.setVisibility(View.GONE);
-            holder.btnTrash.setVisibility(View.VISIBLE);
         } else {
             holder.layoutJumlah.setVisibility(View.GONE);
-            holder.btnTrash.setVisibility(View.GONE);
-            holder.tvStock.setVisibility(View.VISIBLE);
-
             if (product.getStock() > 0) {
                 holder.btnTambah.setVisibility(View.VISIBLE);
                 holder.tvStock.setText("Tersedia");
@@ -67,11 +72,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         holder.btnTambah.setOnClickListener(v -> {
             if (product.getQuantity() < product.getStock()) {
-                product.setQuantity(product.getQuantity() + 1);
+                product.setQuantity(1); // Langsung set ke 1 saat pertama kali tambah
                 notifyItemChanged(position);
                 triggerUpdate();
             }
         });
+
         holder.btnPlus.setOnClickListener(v -> {
             if (product.getQuantity() < product.getStock()) {
                 product.setQuantity(product.getQuantity() + 1);
@@ -79,24 +85,46 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 triggerUpdate();
             }
         });
+
         holder.btnMinus.setOnClickListener(v -> {
             if (product.getQuantity() > 1) {
                 product.setQuantity(product.getQuantity() - 1);
                 notifyItemChanged(position);
                 triggerUpdate();
+            } else { // Jika kuantitas 1 lalu diminus, maka jadi 0
+                product.setQuantity(0);
+                if (isKeranjangMode) {
+                    // Di keranjang, item akan dihapus dari list
+                    productList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, productList.size());
+                } else {
+                    // Di halaman lain, hanya mengubah tampilan
+                    notifyItemChanged(position);
+                }
+                triggerUpdate();
             }
         });
+
+        // Logika tombol sampah tidak diubah, hanya dirapikan
         holder.btnTrash.setOnClickListener(v -> {
+            product.setQuantity(0);
             if (isKeranjangMode) {
                 productList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, productList.size());
             } else {
-                product.setQuantity(0);
                 notifyItemChanged(position);
             }
             triggerUpdate();
         });
+    }
+
+    // Metode ini ditambahkan untuk mempermudah update data dari luar
+    public void updateData(List<Product> newProductList) {
+        this.productList.clear();
+        this.productList.addAll(newProductList);
+        notifyDataSetChanged();
     }
 
     private void triggerUpdate() {
@@ -109,7 +137,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @Override
-    public int getItemCount() { return productList.size(); }
+    public int getItemCount() { return productList != null ? productList.size() : 0; }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvUnit, tvPrice, tvStock, tvQuantity;
