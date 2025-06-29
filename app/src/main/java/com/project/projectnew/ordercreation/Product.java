@@ -17,15 +17,17 @@ public class Product implements Serializable {
     private String price;
     private int stock;
     private int quantity; // Kuantitas di keranjang
+    private String category; // PENAMBAHAN FIELD KATEGORI
 
     // Konstruktor harus ada untuk Room
-    public Product(@NonNull String id, String name, String unit, String price, int stock, int quantity) {
+    public Product(@NonNull String id, String name, String unit, String price, int stock, int quantity, String category) {
         this.id = id;
         this.name = name;
         this.unit = unit;
         this.price = price;
         this.stock = stock;
         this.quantity = quantity;
+        this.category = category; // PENAMBAHAN FIELD KATEGORI
     }
 
     // Getters
@@ -36,6 +38,7 @@ public class Product implements Serializable {
     public String getPrice() { return price; }
     public int getStock() { return stock; }
     public int getQuantity() { return quantity; }
+    public String getCategory() { return category; } // PENAMBAHAN GETTER
 
     // Setter
     public void setQuantity(int quantity) { this.quantity = quantity; }

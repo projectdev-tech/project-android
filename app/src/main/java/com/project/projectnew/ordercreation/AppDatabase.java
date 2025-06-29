@@ -9,7 +9,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// PERHATIKAN: Semua metode untuk generate data dummy sudah hilang dari sini.
 @Database(entities = {Product.class, Order.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -26,6 +25,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "app_database")
                             .addCallback(sRoomDatabaseCallback)
+                            // --- PENAMBAHAN BARIS INI ---
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
@@ -41,7 +42,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 ProductDao productDao = INSTANCE.productDao();
                 OrderDao orderDao = INSTANCE.orderDao();
 
-                // PERUBAHAN: Memanggil metode dari kelas DummyDataGenerator
                 productDao.insertAll(DummyDataGenerator.generateDummyProducts());
                 orderDao.insertOrder(DummyDataGenerator.createOrderDalamProses());
                 orderDao.insertOrder(DummyDataGenerator.createOrderDikirim());

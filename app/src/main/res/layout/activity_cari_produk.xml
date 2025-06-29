@@ -79,11 +79,15 @@
                             android:paddingBottom="8dp">
 
                             <LinearLayout
+                                android:id="@+id/kategori_cari_makanan_minuman"
                                 android:layout_width="62dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="28dp"
                                 android:gravity="center_horizontal"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="?attr/selectableItemBackground">
 
                                 <ImageView
                                     android:layout_width="48dp"
@@ -102,11 +106,15 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/kategori_cari_perawatan_rumah"
                                 android:layout_width="62dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="28dp"
                                 android:gravity="center_horizontal"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="?attr/selectableItemBackground">
 
                                 <ImageView
                                     android:layout_width="48dp"
@@ -125,11 +133,15 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/kategori_cari_perlengkapan_mandi"
                                 android:layout_width="62dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="28dp"
                                 android:gravity="center_horizontal"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="?attr/selectableItemBackground">
 
                                 <ImageView
                                     android:layout_width="48dp"
@@ -148,11 +160,15 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/kategori_cari_gas_air"
                                 android:layout_width="62dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="28dp"
                                 android:gravity="center_horizontal"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="?attr/selectableItemBackground">
 
                                 <ImageView
                                     android:layout_width="48dp"
@@ -171,10 +187,14 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/kategori_cari_perlengkapan_listrik"
                                 android:layout_width="62dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="?attr/selectableItemBackground">
 
                                 <ImageView
                                     android:layout_width="48dp"

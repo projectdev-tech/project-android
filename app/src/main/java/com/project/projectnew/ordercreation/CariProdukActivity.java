@@ -66,13 +66,16 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         customizeSearchView(searchView);
         setupSearchViewListener();
         setupFocusListener();
+        setupCategoryClickListeners();
 
-        // --- PERBAIKAN DI SINI ---
-        // Memanggil metode untuk menampilkan riwayat/sugesti saat activity pertama kali dibuat
-        displayInitialSuggestions();
-        // -------------------------
-
-        loadInitialProducts();
+        loadInitialProducts(() -> {
+            String categoryQuery = getIntent().getStringExtra("CATEGORY_QUERY");
+            if (categoryQuery != null && !categoryQuery.isEmpty()) {
+                handleCategoryClick(categoryQuery);
+            } else {
+                displayInitialSuggestions();
+            }
+        });
 
         fmTotal.setOnClickListener(v -> {
             Intent intent = new Intent(CariProdukActivity.this, KeranjangActivity.class);
@@ -84,15 +87,36 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         });
     }
 
+    private void setupCategoryClickListeners() {
+        findViewById(R.id.kategori_cari_makanan_minuman).setOnClickListener(v -> handleCategoryClick("Makanan & Minuman"));
+        findViewById(R.id.kategori_cari_perawatan_rumah).setOnClickListener(v -> handleCategoryClick("Perawatan Rumah"));
+        findViewById(R.id.kategori_cari_perlengkapan_mandi).setOnClickListener(v -> handleCategoryClick("Perlengkapan Mandi"));
+        findViewById(R.id.kategori_cari_gas_air).setOnClickListener(v -> handleCategoryClick("Gas & Air"));
+        findViewById(R.id.kategori_cari_perlengkapan_listrik).setOnClickListener(v -> handleCategoryClick("Perlengkapan Listrik"));
+    }
+
+    private void handleCategoryClick(String categoryName) {
+        searchView.setQuery(categoryName, false);
+        performSearch(categoryName, true);
+
+        rvSuggestions.setVisibility(View.GONE);
+        layoutPilihanProduk.setVisibility(View.GONE);
+        layoutKategori.setVisibility(View.GONE);
+        searchView.clearFocus();
+
+        searchView.post(this::hideDefaultCloseButton);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        loadInitialProducts();
-
-        // Pastikan sugesti juga diperbarui saat kembali ke halaman ini
-        if (searchView.getQuery().toString().isEmpty()){
+        if (searchView.getQuery().toString().isEmpty()) {
+            loadInitialProducts(null);
             displayInitialSuggestions();
+        } else {
+            updateTotalDisplay();
         }
+        hideDefaultCloseButton();
     }
 
     private void initViews() {
@@ -117,18 +141,21 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         rvProducts.setAdapter(productAdapter);
     }
 
-    private void loadInitialProducts() {
+    private void loadInitialProducts(Runnable onFinished) {
         executorService.execute(() -> {
-            List<Product> productsFromDb = db.productDao().getAllProducts();
+            if (originalProductList.isEmpty()) {
+                originalProductList.addAll(db.productDao().getAllProducts());
+            }
             mainThreadHandler.post(() -> {
-                originalProductList.clear();
-                originalProductList.addAll(productsFromDb);
-
-                if (searchView.getQuery().toString().isEmpty()) {
+                String currentQuery = searchView.getQuery().toString();
+                if (currentQuery.isEmpty()) {
                     productAdapter.updateData(new ArrayList<>(originalProductList));
                 }
 
                 updateTotalDisplay();
+                if (onFinished != null) {
+                    onFinished.run();
+                }
             });
         });
     }
@@ -196,9 +223,9 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
                 }
 
                 rvSuggestions.setVisibility(View.GONE);
-                layoutKategori.setVisibility(View.GONE);
                 layoutPilihanProduk.setVisibility(View.GONE);
-                performSearch(query);
+                layoutKategori.setVisibility(View.GONE);
+                performSearch(query, false);
 
                 searchView.clearFocus();
                 hideDefaultCloseButton();
@@ -208,6 +235,7 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
             @Override
             public boolean onQueryTextChange(String newText) {
                 hideDefaultCloseButton();
+
                 if (newText.isEmpty()) {
                     rvSuggestions.setVisibility(View.VISIBLE);
                     layoutKategori.setVisibility(View.VISIBLE);
@@ -225,14 +253,26 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         });
     }
 
-    private void performSearch(String query) {
+    private void performSearch(String query, boolean isCategorySearch) {
         List<Product> filteredList = new ArrayList<>();
         if (query.isEmpty()) {
             filteredList.addAll(originalProductList);
         } else {
+            String lowerCaseQuery = query.toLowerCase();
             for (Product product : originalProductList) {
-                if (product.getName().toLowerCase().contains(query.toLowerCase())) {
-                    filteredList.add(product);
+                if (isCategorySearch) {
+                    // Blok ini untuk klik kategori langsung (pencarian eksak)
+                    if (product.getCategory() != null && product.getCategory().equalsIgnoreCase(query)) {
+                        filteredList.add(product);
+                    }
+                } else {
+                    // --- PERUBAHAN UTAMA DI SINI ---
+                    // Blok ini untuk pencarian manual oleh pengguna
+                    // Cek apakah query cocok dengan nama ATAU kategori produk
+                    if (product.getName().toLowerCase().contains(lowerCaseQuery) ||
+                            (product.getCategory() != null && product.getCategory().toLowerCase().contains(lowerCaseQuery))) {
+                        filteredList.add(product);
+                    }
                 }
             }
         }
@@ -290,6 +330,8 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         int closeBtnId = getResources().getIdentifier("android:id/search_close_btn", null, null);
         ImageView closeBtn = searchView.findViewById(closeBtnId);
         if (closeBtn != null) {
+            closeBtn.setEnabled(false);
+            closeBtn.setImageDrawable(null);
             closeBtn.setVisibility(View.GONE);
         }
     }

@@ -51,7 +51,6 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
             R.drawable.img_banner_2,
             R.drawable.img_banner_3
     );
-    // PENAMBAHAN 1: Simpan padding asli
     private int originalBottomPadding;
 
 
@@ -61,8 +60,8 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         View view = inflater.inflate(R.layout.fragment_beranda, container, false);
 
         initViews(view);
+        setupCategoryClickListeners(view); // PANGGIL METODE BARU
 
-        // PENAMBAHAN 2: Simpan padding asli saat view dibuat
         originalBottomPadding = rvProducts.getPaddingBottom();
 
         if (getActivity() != null) {
@@ -92,6 +91,23 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         return view;
     }
 
+    // --- METODE BARU UNTUK SETUP LISTENER KATEGORI ---
+    private void setupCategoryClickListeners(View view) {
+        view.findViewById(R.id.kategori_makanan_minuman).setOnClickListener(v -> navigateToSearchWithCategory("Makanan & Minuman"));
+        view.findViewById(R.id.kategori_perawatan_rumah).setOnClickListener(v -> navigateToSearchWithCategory("Perawatan Rumah"));
+        view.findViewById(R.id.kategori_perlengkapan_mandi).setOnClickListener(v -> navigateToSearchWithCategory("Perlengkapan Mandi"));
+        view.findViewById(R.id.kategori_gas_air).setOnClickListener(v -> navigateToSearchWithCategory("Gas & Air"));
+        view.findViewById(R.id.kategori_perlengkapan_listrik).setOnClickListener(v -> navigateToSearchWithCategory("Perlengkapan Listrik"));
+    }
+
+    // --- METODE BARU UNTUK NAVIGASI ---
+    private void navigateToSearchWithCategory(String categoryName) {
+        if (getActivity() == null) return;
+        Intent intent = new Intent(getActivity(), CariProdukActivity.class);
+        intent.putExtra("CATEGORY_QUERY", categoryName);
+        startActivity(intent);
+    }
+
     private void updateTotalDisplay() {
         if(executorService == null) return;
         executorService.execute(() -> {
@@ -108,14 +124,12 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
             int finalTotalPrice = totalPrice;
             mainThreadHandler.post(() -> {
                 if(isAdded()) {
-                    // --- PERUBAHAN UTAMA DI SINI ---
                     if (finalTotalQty > 0) {
                         fmTotal.setVisibility(View.VISIBLE);
                         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
                         formatter.setMaximumFractionDigits(0);
                         tvTotal.setText(formatter.format(finalTotalPrice));
                         tvQty.setText(finalTotalQty + " Produk");
-                        // Atur padding bawah RecyclerView menjadi 96dp
                         rvProducts.setPadding(
                                 rvProducts.getPaddingLeft(),
                                 rvProducts.getPaddingTop(),
@@ -124,7 +138,6 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
                         );
                     } else {
                         fmTotal.setVisibility(View.GONE);
-                        // Kembalikan padding bawah RecyclerView ke nilai semula
                         rvProducts.setPadding(
                                 rvProducts.getPaddingLeft(),
                                 rvProducts.getPaddingTop(),
@@ -137,7 +150,6 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         });
     }
 
-    // PENAMBAHAN 3: Metode helper untuk konversi dp ke pixel
     private int dpToPx(int dp) {
         if (getContext() == null) {
             return dp;
@@ -148,8 +160,6 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
                 getContext().getResources().getDisplayMetrics()
         );
     }
-
-    // --- Sisa kode tidak berubah ---
 
     @Override
     public void onResume() {
