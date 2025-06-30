@@ -3,6 +3,7 @@ package com.project.projectnew.ordercreation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class KeranjangActivity extends AppCompatActivity {
     private ProductAdapter productAdapter;
     private AppDatabase db;
     private ExecutorService executorService;
-    private Handler mainThreadHandler = new Handler();
+    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,21 +62,16 @@ public class KeranjangActivity extends AppCompatActivity {
     }
 
     private void setupAdapter() {
+        // --- PERBAIKAN UTAMA DI SINI ---
         productAdapter = new ProductAdapter(
                 selectedProducts,
                 true, // Mode Keranjang
-                updatedList -> {
-                    for(Product p : updatedList) {
-                        executorService.execute(() -> db.productDao().updateProduct(p));
-                    }
-                    updateTotalDisplay(updatedList);
-                },
-                updatedList -> { // Hapus item dari list dan set kuantitas jadi 0 di DB
-                    for(Product p : updatedList) {
-                        if(p.getQuantity() == 0) {
-                            executorService.execute(() -> db.productDao().updateProduct(p));
-                        }
-                    }
+                // Implementasi listener baru yang lebih sederhana
+                product -> {
+                    // Setiap ada perubahan kuantitas (termasuk jadi 0), update DB
+                    executorService.execute(() -> db.productDao().updateProduct(product));
+                    // Hitung ulang total tampilan berdasarkan list saat ini
+                    updateTotalDisplay(selectedProducts);
                 }
         );
         rvProducts.setLayoutManager(new LinearLayoutManager(this));

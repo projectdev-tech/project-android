@@ -29,7 +29,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpdateListener {
+// --- PERUBAHAN DI SINI: Mengimplementasikan listener yang baru ---
+public class BerandaFragment extends Fragment implements ProductAdapter.OnQuantityChangedListener {
 
     private RecyclerView rvProducts;
     private FrameLayout fmTotal;
@@ -60,9 +61,7 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         View view = inflater.inflate(R.layout.fragment_beranda, container, false);
 
         initViews(view);
-        setupCategoryClickListeners(view); // PANGGIL METODE BARU
-
-        originalBottomPadding = rvProducts.getPaddingBottom();
+        setupCategoryClickListeners(view);
 
         if (getActivity() != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -91,7 +90,6 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         return view;
     }
 
-    // --- METODE BARU UNTUK SETUP LISTENER KATEGORI ---
     private void setupCategoryClickListeners(View view) {
         view.findViewById(R.id.kategori_makanan_minuman).setOnClickListener(v -> navigateToSearchWithCategory("Makanan & Minuman"));
         view.findViewById(R.id.kategori_perawatan_rumah).setOnClickListener(v -> navigateToSearchWithCategory("Perawatan Rumah"));
@@ -100,7 +98,6 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         view.findViewById(R.id.kategori_perlengkapan_listrik).setOnClickListener(v -> navigateToSearchWithCategory("Perlengkapan Listrik"));
     }
 
-    // --- METODE BARU UNTUK NAVIGASI ---
     private void navigateToSearchWithCategory(String categoryName) {
         if (getActivity() == null) return;
         Intent intent = new Intent(getActivity(), CariProdukActivity.class);
@@ -185,19 +182,22 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         carouselViewPager = view.findViewById(R.id.carouselViewPager);
         carouselDots = view.findViewById(R.id.carouselDots);
         searchBarLayout = view.findViewById(R.id.search_bar_layout);
+        originalBottomPadding = rvProducts.getPaddingBottom();
     }
 
     private void setupProductAdapter() {
+        // --- PERUBAHAN DI SINI: Menggunakan 'this' karena fragment sudah implement listener yg benar ---
         productAdapter = new ProductAdapter(productList, false, this);
         rvProducts.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProducts.setAdapter(productAdapter);
     }
 
     private void loadProductsFromDb() {
+        if (executorService == null) return;
         executorService.execute(() -> {
             List<Product> productsFromDb = db.productDao().getAllProducts();
             mainThreadHandler.post(() -> {
-                if(isAdded()) {
+                if(isAdded() && productAdapter != null) {
                     productList.clear();
                     productList.addAll(productsFromDb);
                     productAdapter.notifyDataSetChanged();
@@ -207,14 +207,16 @@ public class BerandaFragment extends Fragment implements ProductAdapter.TotalUpd
         });
     }
 
+    // --- PERUBAHAN DI SINI: Metode updateTotal diganti dengan onQuantityChanged ---
     @Override
-    public void updateTotal(List<Product> updatedProducts) {
-        if(executorService == null) return;
-        for(Product p : updatedProducts) {
-            executorService.execute(() -> db.productDao().updateProduct(p));
-        }
+    public void onQuantityChanged(Product product) {
+        if (executorService == null) return;
+        // Langsung update produk yang berubah ke database
+        executorService.execute(() -> db.productDao().updateProduct(product));
+        // Hitung ulang dan perbarui tampilan total
         updateTotalDisplay();
     }
+
 
     private void setupCarousel() {
         ImageSliderAdapter sliderAdapter = new ImageSliderAdapter(imageList);

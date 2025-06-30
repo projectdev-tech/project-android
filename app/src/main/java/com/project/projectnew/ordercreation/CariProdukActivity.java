@@ -1,5 +1,6 @@
 package com.project.projectnew.ordercreation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -17,6 +19,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.project.projectnew.R;
@@ -28,7 +31,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CariProdukActivity extends AppCompatActivity implements ProductAdapter.TotalUpdateListener {
+// --- PERUBAHAN DI SINI: Mengimplementasikan listener yang baru ---
+public class CariProdukActivity extends AppCompatActivity implements ProductAdapter.OnQuantityChangedListener {
 
     private SearchView searchView;
     private RecyclerView rvSuggestions;
@@ -51,6 +55,9 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
     private ExecutorService executorService;
     private Handler mainThreadHandler;
 
+    private int originalRvPaddingLeft, originalRvPaddingTop, originalRvPaddingRight, originalRvPaddingBottom;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +75,7 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         setupFocusListener();
         setupCategoryClickListeners();
 
-        loadInitialProducts(() -> {
+        reloadDataAndApplyFilter(() -> {
             String categoryQuery = getIntent().getStringExtra("CATEGORY_QUERY");
             if (categoryQuery != null && !categoryQuery.isEmpty()) {
                 handleCategoryClick(categoryQuery);
@@ -102,20 +109,16 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         rvSuggestions.setVisibility(View.GONE);
         layoutPilihanProduk.setVisibility(View.GONE);
         layoutKategori.setVisibility(View.GONE);
+        applyResultsOnlyStyleToRvProducts();
         searchView.clearFocus();
 
         searchView.post(this::hideDefaultCloseButton);
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        if (searchView.getQuery().toString().isEmpty()) {
-            loadInitialProducts(null);
-            displayInitialSuggestions();
-        } else {
-            updateTotalDisplay();
-        }
+        reloadDataAndApplyFilter(null);
         hideDefaultCloseButton();
     }
 
@@ -133,26 +136,32 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         fmTotal = findViewById(R.id.fmTotal);
         tvTotal = findViewById(R.id.tvTotal);
         tvQty = findViewById(R.id.tvQty);
+
+        originalRvPaddingLeft = rvProducts.getPaddingLeft();
+        originalRvPaddingTop = rvProducts.getPaddingTop();
+        originalRvPaddingRight = rvProducts.getPaddingRight();
+        originalRvPaddingBottom = rvProducts.getPaddingBottom();
     }
 
     private void setupProductRecyclerView() {
+        // --- PERUBAHAN DI SINI: Menggunakan 'this' karena activity sudah implement listener yg benar ---
         productAdapter = new ProductAdapter(productListForAdapter, false, this);
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
         rvProducts.setAdapter(productAdapter);
     }
 
-    private void loadInitialProducts(Runnable onFinished) {
+    private void reloadDataAndApplyFilter(Runnable onFinished) {
+        if (executorService == null) return;
         executorService.execute(() -> {
-            if (originalProductList.isEmpty()) {
-                originalProductList.addAll(db.productDao().getAllProducts());
-            }
+            originalProductList.clear();
+            originalProductList.addAll(db.productDao().getAllProducts());
+
             mainThreadHandler.post(() -> {
                 String currentQuery = searchView.getQuery().toString();
-                if (currentQuery.isEmpty()) {
-                    productAdapter.updateData(new ArrayList<>(originalProductList));
-                }
-
+                boolean isCategorySearch = (layoutKategori.getVisibility() == View.GONE) && !currentQuery.isEmpty();
+                performSearch(currentQuery, isCategorySearch);
                 updateTotalDisplay();
+
                 if (onFinished != null) {
                     onFinished.run();
                 }
@@ -160,14 +169,14 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
         });
     }
 
+    // --- PERUBAHAN DI SINI: Metode updateTotal diganti dengan onQuantityChanged ---
     @Override
-    public void updateTotal(List<Product> updatedProducts) {
-        executorService.execute(() -> {
-            for (Product updatedProduct : updatedProducts) {
-                db.productDao().updateProduct(updatedProduct);
-            }
-            mainThreadHandler.post(this::updateTotalDisplay);
-        });
+    public void onQuantityChanged(Product product) {
+        if (executorService == null) return;
+        // Langsung update produk yang berubah ke database
+        executorService.execute(() -> db.productDao().updateProduct(product));
+        // Hitung ulang dan perbarui tampilan total
+        updateTotalDisplay();
     }
 
     private void updateTotalDisplay() {
@@ -191,8 +200,22 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
                     formatter.setMaximumFractionDigits(0);
                     tvTotal.setText(formatter.format(finalTotalPrice));
                     tvQty.setText(finalTotalQty + " Produk");
+
+                    rvProducts.setPadding(
+                            rvProducts.getPaddingLeft(),
+                            rvProducts.getPaddingTop(),
+                            rvProducts.getPaddingRight(),
+                            dpToPx(80, this)
+                    );
+
                 } else {
                     fmTotal.setVisibility(View.GONE);
+                    rvProducts.setPadding(
+                            rvProducts.getPaddingLeft(),
+                            rvProducts.getPaddingTop(),
+                            rvProducts.getPaddingRight(),
+                            originalRvPaddingBottom
+                    );
                 }
             });
         });
@@ -225,6 +248,7 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
                 rvSuggestions.setVisibility(View.GONE);
                 layoutPilihanProduk.setVisibility(View.GONE);
                 layoutKategori.setVisibility(View.GONE);
+                applyResultsOnlyStyleToRvProducts();
                 performSearch(query, false);
 
                 searchView.clearFocus();
@@ -240,12 +264,14 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
                     rvSuggestions.setVisibility(View.VISIBLE);
                     layoutKategori.setVisibility(View.VISIBLE);
                     layoutPilihanProduk.setVisibility(View.VISIBLE);
-                    displayInitialSuggestions();
+                    resetRvProductsStyle();
                     productAdapter.updateData(new ArrayList<>(originalProductList));
+                    displayInitialSuggestions();
                 } else {
                     rvSuggestions.setVisibility(View.VISIBLE);
                     layoutKategori.setVisibility(View.VISIBLE);
                     layoutPilihanProduk.setVisibility(View.VISIBLE);
+                    resetRvProductsStyle();
                     displayKeywordRecommendations(newText);
                 }
                 return true;
@@ -261,14 +287,10 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
             String lowerCaseQuery = query.toLowerCase();
             for (Product product : originalProductList) {
                 if (isCategorySearch) {
-                    // Blok ini untuk klik kategori langsung (pencarian eksak)
                     if (product.getCategory() != null && product.getCategory().equalsIgnoreCase(query)) {
                         filteredList.add(product);
                     }
                 } else {
-                    // --- PERUBAHAN UTAMA DI SINI ---
-                    // Blok ini untuk pencarian manual oleh pengguna
-                    // Cek apakah query cocok dengan nama ATAU kategori produk
                     if (product.getName().toLowerCase().contains(lowerCaseQuery) ||
                             (product.getCategory() != null && product.getCategory().toLowerCase().contains(lowerCaseQuery))) {
                         filteredList.add(product);
@@ -280,32 +302,59 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
     }
 
     private void displayInitialSuggestions() {
+        List<String> combinedSuggestions = new ArrayList<>();
         List<String> history = historyManager.getSearchHistory();
-        if (history.isEmpty()) {
-            suggestionsList = getFrequentlySearched();
-        } else {
-            suggestionsList = history;
+        combinedSuggestions.addAll(history);
+
+        List<String> frequent = getFrequentlySearched();
+        for (String keyword : frequent) {
+            if (combinedSuggestions.size() >= 4) {
+                break;
+            }
+            if (!combinedSuggestions.contains(keyword)) {
+                combinedSuggestions.add(keyword);
+            }
         }
-        suggestionsAdapter.updateData(suggestionsList);
+
+        suggestionsAdapter.updateData(combinedSuggestions);
     }
 
     private void displayKeywordRecommendations(String query) {
         List<String> recommendations = new ArrayList<>();
-        if (query.toLowerCase().contains("kopi")) {
-            recommendations.add("Kopi Kapal Api");
-            recommendations.add("Kopi ABC Susu");
-        } else if (query.toLowerCase().contains("indo")) {
-            recommendations.add("Indomie Goreng");
-            recommendations.add("Indomilk Coklat");
-        } else {
+        String lowerCaseQuery = query.toLowerCase();
+
+        for (String historyItem : historyManager.getSearchHistory()) {
+            if (recommendations.size() >= 4) break;
+            if (historyItem.toLowerCase().contains(lowerCaseQuery) && !recommendations.contains(historyItem)) {
+                recommendations.add(historyItem);
+            }
+        }
+
+        for (Product product : originalProductList) {
+            if (recommendations.size() >= 4) break;
+            if (product.getName().toLowerCase().contains(lowerCaseQuery) && !recommendations.contains(product.getName())) {
+                recommendations.add(product.getName());
+            }
+        }
+
+        for (Product product : originalProductList) {
+            if (recommendations.size() >= 4) break;
+            String category = product.getCategory();
+            if (category != null && category.toLowerCase().contains(lowerCaseQuery) && !recommendations.contains(category)) {
+                recommendations.add(category);
+            }
+        }
+
+        if (recommendations.isEmpty()) {
             recommendations.add(query + " murah");
             recommendations.add("Promo " + query);
         }
+
         suggestionsAdapter.updateData(recommendations);
     }
 
     private List<String> getFrequentlySearched() {
-        return Arrays.asList("Indomie", "Beras", "Minyak Goreng", "Kopi", "Gula");
+        return Arrays.asList("Indomie", "Beras", "Minyak Goreng", "Kopi");
     }
 
     private void customizeSearchView(SearchView searchView) {
@@ -334,5 +383,35 @@ public class CariProdukActivity extends AppCompatActivity implements ProductAdap
             closeBtn.setImageDrawable(null);
             closeBtn.setVisibility(View.GONE);
         }
+    }
+
+    private void applyResultsOnlyStyleToRvProducts() {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) rvProducts.getLayoutParams();
+        params.topMargin = dpToPx(8, this);
+        rvProducts.setLayoutParams(params);
+
+        rvProducts.setPadding(
+                originalRvPaddingLeft,
+                dpToPx(16, this),
+                originalRvPaddingRight,
+                rvProducts.getPaddingBottom()
+        );
+    }
+
+    private void resetRvProductsStyle() {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) rvProducts.getLayoutParams();
+        params.topMargin = 0;
+        rvProducts.setLayoutParams(params);
+
+        rvProducts.setPadding(
+                originalRvPaddingLeft,
+                originalRvPaddingTop,
+                originalRvPaddingRight,
+                rvProducts.getPaddingBottom()
+        );
+    }
+
+    private int dpToPx(int dp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 }

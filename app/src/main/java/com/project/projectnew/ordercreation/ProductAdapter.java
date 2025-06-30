@@ -14,22 +14,17 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> productList;
-    private final TotalUpdateListener totalUpdateListener;
-    private final OnCartChangedListener cartChangedListener;
-    private boolean isKeranjangMode;
+    private final boolean isKeranjangMode;
+    private final OnQuantityChangedListener quantityChangedListener;
 
-    public interface TotalUpdateListener { void updateTotal(List<Product> products); }
-    public interface OnCartChangedListener { void onCartChanged(List<Product> updatedProducts); }
-
-    public ProductAdapter(List<Product> list, boolean isKeranjangMode, TotalUpdateListener listener) {
-        this(list, isKeranjangMode, listener, null);
+    public interface OnQuantityChangedListener {
+        void onQuantityChanged(Product product);
     }
 
-    public ProductAdapter(List<Product> list, boolean isKeranjangMode, TotalUpdateListener listener, OnCartChangedListener cartChangedListener) {
+    public ProductAdapter(List<Product> list, boolean isKeranjangMode, OnQuantityChangedListener listener) {
         this.productList = list;
         this.isKeranjangMode = isKeranjangMode;
-        this.totalUpdateListener = listener;
-        this.cartChangedListener = cartChangedListener;
+        this.quantityChangedListener = listener;
     }
 
     @NonNull @Override
@@ -45,25 +40,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvUnit.setText(product.getUnit());
         holder.tvPrice.setText(product.getPrice());
 
-        // Logika ini sudah benar, saya hanya merapikannya agar lebih jelas
-        // dan memastikan tombol sampah muncul dengan benar di mode keranjang
-        if (isKeranjangMode) {
-            holder.btnTrash.setVisibility(View.VISIBLE);
-            holder.tvStock.setVisibility(View.GONE);
-        } else {
-            holder.btnTrash.setVisibility(product.getQuantity() > 0 ? View.VISIBLE : View.GONE);
-            holder.tvStock.setVisibility(product.getQuantity() > 0 ? View.GONE : View.VISIBLE);
-        }
-
+        // --- PERBAIKAN UTAMA PADA BLOK LOGIKA INI ---
         if (product.getQuantity() > 0) {
+            // Tampilan jika produk ada di keranjang
             holder.btnTambah.setVisibility(View.GONE);
             holder.layoutJumlah.setVisibility(View.VISIBLE);
             holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
+            holder.tvStock.setVisibility(View.GONE);
+            // Tombol sampah selalu muncul jika kuantitas > 0
+            holder.btnTrash.setVisibility(View.VISIBLE);
         } else {
+            // Tampilan jika produk belum ada di keranjang
             holder.layoutJumlah.setVisibility(View.GONE);
+            holder.btnTrash.setVisibility(View.GONE); // Sembunyikan tombol sampah
+            holder.tvStock.setVisibility(View.VISIBLE);
+
             if (product.getStock() > 0) {
                 holder.btnTambah.setVisibility(View.VISIBLE);
                 holder.tvStock.setText("Tersedia");
+                holder.btnTambah.setEnabled(true);
             } else {
                 holder.btnTambah.setVisibility(View.GONE);
                 holder.tvStock.setText("Habis");
@@ -72,9 +67,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         holder.btnTambah.setOnClickListener(v -> {
             if (product.getQuantity() < product.getStock()) {
-                product.setQuantity(1); // Langsung set ke 1 saat pertama kali tambah
+                product.setQuantity(1);
+                // Cukup panggil notifyItemChanged, onBindViewHolder akan menangani sisanya
                 notifyItemChanged(position);
-                triggerUpdate();
+                if (quantityChangedListener != null) {
+                    quantityChangedListener.onQuantityChanged(product);
+                }
             }
         });
 
@@ -82,33 +80,42 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             if (product.getQuantity() < product.getStock()) {
                 product.setQuantity(product.getQuantity() + 1);
                 notifyItemChanged(position);
-                triggerUpdate();
+                if (quantityChangedListener != null) {
+                    quantityChangedListener.onQuantityChanged(product);
+                }
             }
         });
 
         holder.btnMinus.setOnClickListener(v -> {
-            if (product.getQuantity() > 1) {
-                product.setQuantity(product.getQuantity() - 1);
-                notifyItemChanged(position);
-                triggerUpdate();
-            } else { // Jika kuantitas 1 lalu diminus, maka jadi 0
-                product.setQuantity(0);
-                if (isKeranjangMode) {
-                    // Di keranjang, item akan dihapus dari list
+            int oldQuantity = product.getQuantity();
+            if (oldQuantity > 0) {
+                product.setQuantity(oldQuantity - 1);
+
+                // Panggil listener terlebih dahulu untuk update DB
+                if (quantityChangedListener != null) {
+                    quantityChangedListener.onQuantityChanged(product);
+                }
+
+                // Logika tampilan
+                if (isKeranjangMode && product.getQuantity() == 0) {
                     productList.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, productList.size());
                 } else {
-                    // Di halaman lain, hanya mengubah tampilan
                     notifyItemChanged(position);
                 }
-                triggerUpdate();
             }
         });
 
-        // Logika tombol sampah tidak diubah, hanya dirapikan
         holder.btnTrash.setOnClickListener(v -> {
             product.setQuantity(0);
+
+            // Panggil listener terlebih dahulu untuk update DB
+            if (quantityChangedListener != null) {
+                quantityChangedListener.onQuantityChanged(product);
+            }
+
+            // Logika tampilan
             if (isKeranjangMode) {
                 productList.remove(position);
                 notifyItemRemoved(position);
@@ -116,24 +123,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             } else {
                 notifyItemChanged(position);
             }
-            triggerUpdate();
         });
     }
 
-    // Metode ini ditambahkan untuk mempermudah update data dari luar
     public void updateData(List<Product> newProductList) {
         this.productList.clear();
         this.productList.addAll(newProductList);
         notifyDataSetChanged();
-    }
-
-    private void triggerUpdate() {
-        if (totalUpdateListener != null) {
-            totalUpdateListener.updateTotal(productList);
-        }
-        if (isKeranjangMode && cartChangedListener != null) {
-            cartChangedListener.onCartChanged(productList);
-        }
     }
 
     @Override
