@@ -19,43 +19,53 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView kuponTextView;
 
     private LinearLayout logoutSection;
-    private LinearLayout accountSection; // Tombol "Akun"
+    private LinearLayout accountSection;
+    private LinearLayout listingTransactionSection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile); // Pastikan file XML ini sesuai
+        setContentView(R.layout.activity_profile);
 
-        // Inisialisasi view berdasarkan ID yang ada di XML
+        // Inisialisasi komponen UI
         namaTokoTextView = findViewById(R.id.namaToko);
         namaPemilikTextView = findViewById(R.id.namaPemilik);
         kreditPointTextView = findViewById(R.id.kreditPointText);
         kuponTextView = findViewById(R.id.kuponText);
         logoutSection = findViewById(R.id.logoutSection);
-        accountSection = findViewById(R.id.accountSection); // Inisialisasi tombol "Akun"
+        accountSection = findViewById(R.id.accountSection);
+        listingTransactionSection = findViewById(R.id.listingTransactionSection);
 
-        // Dummy data (ganti dengan data nyata dari API, database, atau SharedPreferences)
+        // Dummy data
         String namaToko = "Toko Sumber Agung";
         String namaPemilik = "Agung Mulyana";
         int kreditPoint = 1000;
         int jumlahKupon = 10;
 
-        // Tampilkan data ke tampilan
         namaTokoTextView.setText(namaToko);
         namaPemilikTextView.setText(namaPemilik);
         kreditPointTextView.setText(kreditPoint + " Point");
         kuponTextView.setText(jumlahKupon + " Kupon");
 
-        // Event klik untuk tombol "Akun"
+        // Navigasi ke Akun
         accountSection.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, AccountActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(ProfileActivity.this, AccountActivity.class));
         });
 
-        // Event klik untuk tombol logout
+        // Navigasi ke Daftar Transaksi
+        listingTransactionSection.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(ProfileActivity.this, ListingTransactionActivity.class));
+            } catch (Exception e) {
+                Toast.makeText(ProfileActivity.this, "Gagal membuka transaksi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        });
+
+        // Logout
         logoutSection.setOnClickListener(v -> {
             Toast.makeText(ProfileActivity.this, "Logout berhasil", Toast.LENGTH_SHORT).show();
-            // Tambahkan logika logout (misalnya: clear SharedPreferences, redirect ke login, dll)
+            // Tambahkan logika logout jika dibutuhkan
         });
     }
 }

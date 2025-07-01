@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F9F9F9"
     android:padding="16dp">
 
     <LinearLayout
@@ -14,15 +15,17 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="16dp"
             android:elevation="4dp"
-            android:padding="16dp"
-            app:cardCornerRadius="12dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="16dp">
 
                 <!-- Info Agen -->
                 <LinearLayout
@@ -45,16 +48,20 @@
 
                         <TextView
                             android:id="@+id/namaToko"
+                            android:text="Nama Agen (Toko)"
                             android:textStyle="bold"
                             android:textSize="16sp"
+                            android:textColor="#222222"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <TextView
                             android:id="@+id/namaPemilik"
+                            android:text="Nama Pemilik"
                             android:textColor="#888888"
+                            android:textSize="14sp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -63,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="16dp"
+                    android:paddingTop="16dp"
                     android:gravity="center"
                     android:weightSum="2">
 
@@ -96,6 +103,7 @@
 
                             <TextView
                                 android:id="@+id/kreditPointText"
+                                android:text="1000 Point"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="#000000"
@@ -140,6 +148,7 @@
 
                             <TextView
                                 android:id="@+id/kuponText"
+                                android:text="10 Kupon"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="#000000"
@@ -148,214 +157,215 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
-                <!-- Menu -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="#FFFFFF">
-
-                    <!-- Akun -->
-                    <LinearLayout
-                        android:id="@+id/accountSection"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/profile"
-                            android:layout_marginEnd="16dp"
-                            android:contentDescription="Ikon Akun" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Akun"
-                            android:textSize="16sp"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Detail"
-                            android:textSize="14sp"
-                            android:textColor="#888888"
-                            android:layout_marginEnd="8dp" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/icon_kanan"
-                            android:contentDescription="Panah" />
-                    </LinearLayout>
-
-                    <!-- Daftar Transaksi -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/daftar"
-                            android:layout_marginEnd="16dp"
-                            android:contentDescription="Ikon Transaksi" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Daftar Transaksi"
-                            android:textSize="16sp"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Detail"
-                            android:textSize="14sp"
-                            android:textColor="#888888"
-                            android:layout_marginEnd="8dp" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/icon_kanan"
-                            android:contentDescription="Panah" />
-                    </LinearLayout>
-
-                    <!-- Inventory Tracking -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="45dp"
-                            android:src="@drawable/cube"
-                            android:layout_marginEnd="16dp"
-                            android:contentDescription="Ikon Inventory" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Inventory Tracking"
-                            android:textSize="16sp"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Soon"
-                            android:textSize="14sp"
-                            android:textColor="#888888"
-                            android:layout_marginEnd="8dp" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/icon_kanan"
-                            android:contentDescription="Panah" />
-                    </LinearLayout>
-
-                    <!-- Analytics and Report -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/graph"
-                            android:layout_marginEnd="16dp"
-                            android:contentDescription="Ikon Analytics" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Analytics and Report"
-                            android:textSize="16sp"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Soon"
-                            android:textSize="14sp"
-                            android:textColor="#888888"
-                            android:layout_marginEnd="8dp" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/icon_kanan"
-                            android:contentDescription="Panah" />
-                    </LinearLayout>
-
-                    <!-- Logout -->
-                    <LinearLayout
-                        android:id="@+id/logoutSection"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/logout"
-                            android:layout_marginEnd="16dp"
-                            android:contentDescription="Logout" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Logout"
-                            android:textSize="16sp"
-                            android:textColor="#000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Detail"
-                            android:textSize="14sp"
-                            android:textColor="#888888"
-                            android:layout_marginEnd="8dp" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/icon_kanan"
-                            android:contentDescription="Panah" />
-                    </LinearLayout>
-
-                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- MENU SECTION -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:elevation="1dp">
+
+            <!-- Template untuk tiap item menu -->
+            <!-- Akun -->
+            <LinearLayout
+                android:id="@+id/accountSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/profile"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Ikon Akun" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Akun"
+                    android:textSize="16sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detail"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_kanan"
+                    android:contentDescription="Panah" />
+            </LinearLayout>
+
+            <!-- Daftar Transaksi -->
+            <LinearLayout
+                android:id="@+id/listingTransactionSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/receipt"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Ikon Transaksi" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Daftar Transaksi"
+                    android:textSize="16sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detail"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_kanan"
+                    android:contentDescription="Panah" />
+            </LinearLayout>
+
+            <!-- Inventory Tracking -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/cube"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Ikon Inventory" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Inventory Tracking"
+                    android:textSize="16sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Soon"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_kanan"
+                    android:contentDescription="Panah" />
+            </LinearLayout>
+
+            <!-- Analytics and Report -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/graph"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Ikon Analytics" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Analytics and Report"
+                    android:textSize="16sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Soon"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_kanan"
+                    android:contentDescription="Panah" />
+            </LinearLayout>
+
+            <!-- Logout -->
+            <LinearLayout
+                android:id="@+id/logoutSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/logout"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="Logout" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:textSize="16sp"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detail"
+                    android:textSize="14sp"
+                    android:textColor="#888888"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_kanan"
+                    android:contentDescription="Panah" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

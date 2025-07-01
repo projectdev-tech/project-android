@@ -1,18 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- Konten scrollable -->
+    <!-- Toolbar -->
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/icon_kiri"
+            android:contentDescription="Kembali" />
+
+        <TextView
+            android:id="@+id/tv_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nomor KTP"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <!-- Konten Scrollable -->
     <ScrollView
-        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_simpan"
-        android:fillViewport="true">
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/btn_simpan">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,22 +45,14 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Tombol Kembali -->
-            <ImageView
-                android:id="@+id/btnBack"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/icon_kiri"
-                android:contentDescription="Kembali" />
-
-            <!-- Label KTP -->
+            <!-- Label -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nomor KTP"
                 android:textSize="16sp"
                 android:textColor="#000000"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="8dp" />
 
             <!-- Input KTP -->
             <EditText
@@ -47,7 +64,6 @@
                 android:hint="Masukkan nomor KTP"
                 android:inputType="number"
                 android:padding="12dp"
-                android:text="2010100010011"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -60,7 +76,7 @@
                 android:textSize="16sp"
                 android:textColor="#000000" />
 
-            <!-- KTP CardView -->
+            <!-- Card Upload KTP -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_ktp_photo"
                 android:layout_width="match_parent"
@@ -105,21 +121,30 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Format file deskripsi -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SVG, PNG, JPG or GIF (max. 1MB)"
+                android:textSize="12sp"
+                android:textColor="#808080"
+                android:layout_marginTop="4dp" />
+
             <!-- Tombol Ambil Foto -->
             <Button
                 android:id="@+id/btn_ambil_foto"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Ambil Foto"
                 android:textColor="#000000"
                 android:drawableStart="@drawable/ic_camera"
                 android:drawablePadding="8dp"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
         </LinearLayout>
     </ScrollView>
 
-    <!-- Tombol Simpan Fixed di Bawah -->
+    <!-- Tombol Simpan di Bawah -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_simpan"
         android:layout_width="match_parent"

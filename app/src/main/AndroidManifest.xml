@@ -41,6 +41,7 @@
         <activity android:name=".profile.AccountEmailActivity" />
         <activity android:name=".profile.AccountPasswordActivity" />
         <activity android:name=".profile.AddressFormActivity"/>
+        <activity android:name=".profile.ListingTransactionActivity" />
 
     </application>
 
