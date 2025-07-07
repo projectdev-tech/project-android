@@ -199,12 +199,15 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layoutMetodePembayaran"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_rounded_border"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -216,14 +219,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
+                            android:layout_weight="1"
                             android:text="Metode Pembayaran" />
 
                         <TextView
+                            android:id="@+id/tvMetodePembayaranValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
-                            android:layout_weight="1"
-                            android:text="Transfer - QRIS" />
+                            android:text="Transfer - QRIS"
+                            android:textColor="#616161"
+                            android:textStyle="normal" />
 
                         <ImageView
                             android:layout_width="24dp"

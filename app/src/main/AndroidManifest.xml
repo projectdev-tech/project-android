@@ -27,6 +27,7 @@
         <activity android:name=".ordercreation.PembayaranActivity" />
         <activity android:name=".ordercreation.RincianPesananActivity" />
         <activity android:name=".ordercreation.PesananDiterimaActivity" />
+        <activity android:name=".ordercreation.MetodePembayaranActivity" />
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity(tableName = "orders")
-@TypeConverters({Converters.class}) // Memberitahu Room cara menangani List
+@TypeConverters({Converters.class})
 public class Order implements Serializable {
 
     @PrimaryKey
@@ -20,6 +20,7 @@ public class Order implements Serializable {
     private long waktuPembayaran;
     private String tanggalPembelian;
     private String status;
+    private String metodePembayaran; // <-- FIELD BARU
 
     // Properti untuk detail pengiriman
     private String noTracking;
@@ -28,14 +29,15 @@ public class Order implements Serializable {
     private String pembeli;
     private List<ShippingStatus> shippingStatusList;
 
-    // Konstruktor harus ada untuk Room
-    public Order(@NonNull String noOrder, List<Product> productList, String totalHarga, long waktuPembayaran, String tanggalPembelian, String status) {
+    // Konstruktor diperbarui
+    public Order(@NonNull String noOrder, List<Product> productList, String totalHarga, long waktuPembayaran, String tanggalPembelian, String status, String metodePembayaran) {
         this.noOrder = noOrder;
         this.productList = productList;
         this.totalHarga = totalHarga;
         this.waktuPembayaran = waktuPembayaran;
         this.tanggalPembelian = tanggalPembelian;
         this.status = status;
+        this.metodePembayaran = metodePembayaran; // <-- PENAMBAHAN
     }
 
     // Getters & Setters
@@ -52,6 +54,8 @@ public class Order implements Serializable {
     public void setTanggalPembelian(String tanggalPembelian) { this.tanggalPembelian = tanggalPembelian; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public String getMetodePembayaran() { return metodePembayaran; } // <-- GETTER BARU
+    public void setMetodePembayaran(String metodePembayaran) { this.metodePembayaran = metodePembayaran; } // <-- SETTER BARU
     public String getNoTracking() { return noTracking; }
     public void setNoTracking(String noTracking) { this.noTracking = noTracking; }
     public String getTanggalPengiriman() { return tanggalPengiriman; }

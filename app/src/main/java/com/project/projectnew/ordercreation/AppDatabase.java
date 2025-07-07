@@ -25,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "app_database")
                             .addCallback(sRoomDatabaseCallback)
-                            // --- PENAMBAHAN BARIS INI ---
+                            // PASTIKAN BARIS INI ADA
                             .fallbackToDestructiveMigration()
                             .build();
                 }

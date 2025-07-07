@@ -99,9 +99,11 @@
                     app:lineHeight="20dp" />
 
                 <RadioButton
-                    android:id="@+id/radioCod"
+                    android:id="@+id/radioQris"
                     android:layout_width="27dp"
                     android:layout_height="20dp"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:gravity="center" />
 
             </LinearLayout>
@@ -130,15 +132,17 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="BCA Vitrual Account"
+                    android:text="BCA Virtual Account"
                     android:textColor="#404040"
                     app:lineHeight="20dp" />
 
                 <RadioButton
-                    android:id="@+id/radioCod"
+                    android:id="@+id/radioBca"
                     android:layout_width="27dp"
                     android:layout_height="20dp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:clickable="false"
+                    android:focusable="false"/>
 
             </LinearLayout>
 
@@ -166,14 +170,16 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="Bayar di tempat"
+                    android:text="Bayar di Tempat (COD)"
                     android:textColor="#404040" />
 
                 <RadioButton
                     android:id="@+id/radioCod"
                     android:layout_width="27dp"
                     android:layout_height="20dp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:clickable="false"
+                    android:focusable="false"/>
 
             </LinearLayout>
 
@@ -208,6 +214,5 @@
             app:strokeWidth="3dp" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,17 +7,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Kelas ini bertanggung jawab untuk membuat data dummy (contoh)
- * untuk mengisi database saat pertama kali aplikasi dibuat.
- */
 public class DummyDataGenerator {
-
-    // --- Metode Publik untuk Dipanggil dari Luar ---
 
     public static List<Product> generateDummyProducts() {
         List<Product> products = new ArrayList<>();
-        // PERUBAHAN: Menambahkan argumen kategori di setiap produk
         products.add(new Product("p001", "Kopi Kapal Api Special", "1 renceng", "Rp 13.000", 10, 0, "Makanan & Minuman"));
         products.add(new Product("p002", "Indomie Goreng", "5 pcs", "Rp 15.000", 20, 0, "Makanan & Minuman"));
         products.add(new Product("p003", "Sabun Lifebuoy", "4 batang", "Rp 18.000", 15, 0, "Perlengkapan Mandi"));
@@ -36,14 +29,16 @@ public class DummyDataGenerator {
     public static Order createOrderDalamProses() {
         List<Product> productList = new ArrayList<>();
         productList.add(new Product("p003", "Sabun Lifebuoy", "4 batang", "Rp 18.000", 15, 1, "Perlengkapan Mandi"));
-        return new Order(getDummyNoOrder(2), productList, "Rp 18.000", System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2), getFormattedDate(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2)), "Menunggu Konfirmasi");
+        // PERUBAHAN: Menambahkan metode pembayaran
+        return new Order(getDummyNoOrder(2), productList, "Rp 18.000", System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2), getFormattedDate(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2)), "Menunggu Konfirmasi", "QRIS");
     }
 
     public static Order createOrderDikirim() {
         List<Product> productList = new ArrayList<>();
         productList.add(new Product("p004", "Beras Rojolele Super", "Karung 5kg", "Rp 68.000", 10, 1, "Makanan & Minuman"));
         productList.add(new Product("p005", "Minyak Goreng Sania", "Pouch 2L", "Rp 35.000", 15, 2, "Makanan & Minuman"));
-        Order order = new Order(getDummyNoOrder(3), productList, "Rp 138.000", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1), getFormattedDate(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)), "Pesanan Dikirim");
+        // PERUBAHAN: Menambahkan metode pembayaran
+        Order order = new Order(getDummyNoOrder(3), productList, "Rp 138.000", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1), getFormattedDate(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)), "Pesanan Dikirim", "BCA Virtual Account");
         order.setNoTracking("JNE-TGR-2500184");
         order.setTanggalPengiriman("25 Jun 2025");
         order.setEstimasiTiba("26 - 27 Jun 2025");
@@ -58,11 +53,9 @@ public class DummyDataGenerator {
     public static Order createOrderSelesai() {
         List<Product> productList = new ArrayList<>();
         productList.add(new Product("p006", "Kecap Bango Manis", "Botol 520ml", "Rp 21.000", 50, 3, "Makanan & Minuman"));
-        return new Order(getDummyNoOrder(4), productList, "Rp 63.000", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3), getFormattedDate(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3)), "Pesanan Diterima");
+        // PERUBAHAN: Menambahkan metode pembayaran
+        return new Order(getDummyNoOrder(4), productList, "Rp 63.000", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3), getFormattedDate(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3)), "Pesanan Diterima", "Bayar di Tempat (COD)");
     }
-
-
-    // --- Metode Bantuan (Helper Methods) ---
 
     private static String getDummyNoOrder(int sequence) {
         String datePart = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -70,7 +63,6 @@ public class DummyDataGenerator {
     }
 
     private static String getFormattedDate(long timestamp) {
-        // Menggunakan Locale Indonesia untuk format tanggal
         return new SimpleDateFormat("dd MMMM yyyy, HH.mm.ss", new Locale("in", "ID")).format(new Date(timestamp));
     }
 }
