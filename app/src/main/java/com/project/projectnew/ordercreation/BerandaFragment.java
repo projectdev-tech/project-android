@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,7 +30,6 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// --- PERUBAHAN DI SINI: Mengimplementasikan listener yang baru ---
 public class BerandaFragment extends Fragment implements ProductAdapter.OnQuantityChangedListener {
 
     private RecyclerView rvProducts;
@@ -53,7 +53,7 @@ public class BerandaFragment extends Fragment implements ProductAdapter.OnQuanti
             R.drawable.img_banner_3
     );
     private int originalBottomPadding;
-
+    private ImageButton btnNotifikasi; // <-- Tambahkan variabel untuk tombol notifikasi
 
     @Nullable
     @Override
@@ -84,6 +84,12 @@ public class BerandaFragment extends Fragment implements ProductAdapter.OnQuanti
 
         searchBarLayout.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CariProdukActivity.class);
+            startActivity(intent);
+        });
+
+        // --- PERUBAHAN DI SINI ---
+        btnNotifikasi.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), NotifikasiActivity.class);
             startActivity(intent);
         });
 
@@ -183,10 +189,12 @@ public class BerandaFragment extends Fragment implements ProductAdapter.OnQuanti
         carouselDots = view.findViewById(R.id.carouselDots);
         searchBarLayout = view.findViewById(R.id.search_bar_layout);
         originalBottomPadding = rvProducts.getPaddingBottom();
+        // --- PERUBAHAN DI SINI ---
+        // Cari ID tombol notifikasi dari layout toolbar
+        btnNotifikasi = toolbar.findViewById(R.id.btnNotifikasi);
     }
 
     private void setupProductAdapter() {
-        // --- PERUBAHAN DI SINI: Menggunakan 'this' karena fragment sudah implement listener yg benar ---
         productAdapter = new ProductAdapter(productList, false, this);
         rvProducts.setLayoutManager(new LinearLayoutManager(getContext()));
         rvProducts.setAdapter(productAdapter);
@@ -207,13 +215,10 @@ public class BerandaFragment extends Fragment implements ProductAdapter.OnQuanti
         });
     }
 
-    // --- PERUBAHAN DI SINI: Metode updateTotal diganti dengan onQuantityChanged ---
     @Override
     public void onQuantityChanged(Product product) {
         if (executorService == null) return;
-        // Langsung update produk yang berubah ke database
         executorService.execute(() -> db.productDao().updateProduct(product));
-        // Hitung ulang dan perbarui tampilan total
         updateTotalDisplay();
     }
 
