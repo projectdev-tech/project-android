@@ -29,6 +29,7 @@
         <activity android:name=".ordercreation.PesananDiterimaActivity" />
         <activity android:name=".ordercreation.NotifikasiActivity" android:exported="false"/>
         <activity android:name=".ordercreation.DetailTransaksiActivity" android:exported="false" />
+        <activity android:name=".ordercreation.DetailPromoInfoActivity" android:exported="false" />
     </application>
 
 </manifest>

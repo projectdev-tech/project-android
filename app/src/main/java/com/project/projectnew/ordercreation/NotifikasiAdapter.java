@@ -35,14 +35,18 @@ public class NotifikasiAdapter extends RecyclerView.Adapter<NotifikasiAdapter.Vi
         holder.tvNotifDate.setText(notifikasi.getTanggal());
         holder.ivNotifIcon.setImageResource(notifikasi.getIkonResId());
 
-        // --- PERUBAHAN UTAMA DI SINI ---
         holder.itemView.setOnClickListener(v -> {
             Context context = v.getContext();
-            // Hanya bereaksi jika notifikasi adalah tipe "Transaksi"
+
+            // --- PERBAIKAN LOGIKA KLIK DI SINI ---
             if ("Transaksi".equalsIgnoreCase(notifikasi.getTipe())) {
                 Intent intent = new Intent(context, DetailTransaksiActivity.class);
-                // Kirim seluruh objek notifikasi ke halaman detail
                 intent.putExtra("NOTIFIKASI_EXTRA", notifikasi);
+                context.startActivity(intent);
+            } else {
+                // Untuk "Promo" dan "Info", buka activity baru
+                Intent intent = new Intent(context, DetailPromoInfoActivity.class);
+                intent.putExtra("NOTIFIKASI_PROMO_INFO_EXTRA", notifikasi);
                 context.startActivity(intent);
             }
         });
