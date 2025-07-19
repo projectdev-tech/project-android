@@ -29,7 +29,6 @@ public class DummyDataGenerator {
     public static Order createOrderDalamProses() {
         List<Product> productList = new ArrayList<>();
         productList.add(new Product("p003", "Sabun Lifebuoy", "4 batang", "Rp 18.000", 15, 1, "Perlengkapan Mandi"));
-        // PERUBAHAN: Menambahkan metode pembayaran
         return new Order(getDummyNoOrder(2), productList, "Rp 18.000", System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2), getFormattedDate(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2)), "Menunggu Konfirmasi", "QRIS");
     }
 
@@ -37,7 +36,6 @@ public class DummyDataGenerator {
         List<Product> productList = new ArrayList<>();
         productList.add(new Product("p004", "Beras Rojolele Super", "Karung 5kg", "Rp 68.000", 10, 1, "Makanan & Minuman"));
         productList.add(new Product("p005", "Minyak Goreng Sania", "Pouch 2L", "Rp 35.000", 15, 2, "Makanan & Minuman"));
-        // PERUBAHAN: Menambahkan metode pembayaran
         Order order = new Order(getDummyNoOrder(3), productList, "Rp 138.000", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1), getFormattedDate(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)), "Pesanan Dikirim", "BCA Virtual Account");
         order.setNoTracking("JNE-TGR-2500184");
         order.setTanggalPengiriman("25 Jun 2025");
@@ -53,13 +51,13 @@ public class DummyDataGenerator {
     public static Order createOrderSelesai() {
         List<Product> productList = new ArrayList<>();
         productList.add(new Product("p006", "Kecap Bango Manis", "Botol 520ml", "Rp 21.000", 50, 3, "Makanan & Minuman"));
-        // PERUBAHAN: Menambahkan metode pembayaran
-        return new Order(getDummyNoOrder(4), productList, "Rp 63.000", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3), getFormattedDate(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3)), "Pesanan Diterima", "Bayar di Tempat (COD)");
+        // Pastikan produk kedua ini ada
+        productList.add(new Product("p007", "Teh Celup Sariwangi", "Box 50", "Rp 10.000", 100, 1, "Makanan & Minuman"));
+        return new Order(getDummyNoOrder(4), productList, "Rp 73.000", System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3), getFormattedDate(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(3)), "Pesanan Diterima", "Bayar di Tempat (COD)");
     }
 
     private static String getDummyNoOrder(int sequence) {
-        String datePart = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        return String.format("306-%s-D%04d", datePart, sequence);
+        return String.format("DUMMY-ORDER-%d", sequence);
     }
 
     private static String getFormattedDate(long timestamp) {

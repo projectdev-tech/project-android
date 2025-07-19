@@ -16,4 +16,8 @@ public interface OrderDao {
 
     @Query("SELECT * FROM orders WHERE status = :status ORDER BY waktuPembayaran DESC")
     List<Order> getOrdersByStatus(String status);
+
+    // --- METODE BARU ---
+    @Query("SELECT * FROM orders WHERE noOrder = :noOrder LIMIT 1")
+    Order getOrderByNoOrder(String noOrder);
 }

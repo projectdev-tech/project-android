@@ -1,5 +1,7 @@
 package com.project.projectnew.ordercreation;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,18 @@ public class NotifikasiAdapter extends RecyclerView.Adapter<NotifikasiAdapter.Vi
         holder.tvNotifBody.setText(notifikasi.getIsi());
         holder.tvNotifDate.setText(notifikasi.getTanggal());
         holder.ivNotifIcon.setImageResource(notifikasi.getIkonResId());
+
+        // --- PERUBAHAN UTAMA DI SINI ---
+        holder.itemView.setOnClickListener(v -> {
+            Context context = v.getContext();
+            // Hanya bereaksi jika notifikasi adalah tipe "Transaksi"
+            if ("Transaksi".equalsIgnoreCase(notifikasi.getTipe())) {
+                Intent intent = new Intent(context, DetailTransaksiActivity.class);
+                // Kirim seluruh objek notifikasi ke halaman detail
+                intent.putExtra("NOTIFIKASI_EXTRA", notifikasi);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
