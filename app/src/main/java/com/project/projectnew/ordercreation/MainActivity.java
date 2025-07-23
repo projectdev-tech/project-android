@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.projectnew.ordercreation.BerandaFragment;
 import com.project.projectnew.ordercreation.PesananFragment;
+import com.project.projectnew.ordercreation.ProfilFragment; // <-- IMPORT BARU
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(navListener);
 
-        // Logika baru untuk menangani intent dari activity lain
         if (savedInstanceState == null) {
             handleIntent(getIntent());
         }
@@ -31,16 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (fragmentToLoad != null && fragmentToLoad.equals("PESANAN")) {
             PesananFragment pesananFragment = new PesananFragment();
-            // Cek apakah ada tab spesifik yang diminta
             int tabIndex = intent.getIntExtra("TAB_INDEX", 0);
             Bundle args = new Bundle();
             args.putInt("TAB_INDEX", tabIndex);
             pesananFragment.setArguments(args);
 
             loadFragment(pesananFragment);
-            bottomNav.setSelectedItemId(R.id.nav_pesanan); // Sorot item menu "Pesanan"
+            bottomNav.setSelectedItemId(R.id.nav_pesanan);
         } else {
-            // Default, muat BerandaFragment
             loadFragment(new BerandaFragment());
             bottomNav.setSelectedItemId(R.id.nav_beranda);
         }
@@ -58,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 } else if (itemId == R.id.nav_chat) {
                     // TODO: Buat ChatFragment
                 } else if (itemId == R.id.nav_profil) {
-                    // TODO: Buat ProfilFragment
+                    // --- PERUBAHAN DI SINI ---
+                    selectedFragment = new ProfilFragment();
                 }
 
                 if (selectedFragment != null) {
