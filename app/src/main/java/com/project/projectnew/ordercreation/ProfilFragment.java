@@ -22,15 +22,15 @@ public class ProfilFragment extends Fragment {
         View layoutDaftarTransaksi = view.findViewById(R.id.layoutDaftarTransaksi);
         View layoutLogout = view.findViewById(R.id.layoutLogout);
 
-        // --- PERUBAHAN DI SINI ---
         layoutDetailAkun.setOnClickListener(v -> {
-            // Buka halaman DetailAkunActivity yang baru
             Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
             startActivity(intent);
         });
 
+        // --- PERUBAHAN DI SINI ---
         layoutDaftarTransaksi.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Buka Daftar Transaksi", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), DaftarTransaksiActivity.class);
+            startActivity(intent);
         });
 
         layoutLogout.setOnClickListener(v -> {

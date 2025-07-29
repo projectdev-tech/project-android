@@ -10,15 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectNew">
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ordercreation.CariProdukActivity" android:exported="false" />
         <activity android:name=".ordercreation.KeranjangActivity" android:exported="false" />
         <activity android:name=".ordercreation.PesananActivity" android:exported="false" />
@@ -35,6 +32,7 @@
         <activity android:name=".ordercreation.UbahKtpActivity" android:exported="false" />
         <activity android:name=".ordercreation.UbahPasswordActivity" android:exported="false" />
         <activity android:name=".ordercreation.UbahAlamatActivity" android:exported="false" />
+        <activity android:name=".ordercreation.DaftarTransaksiActivity" android:exported="false" />
     </application>
 
 </manifest>

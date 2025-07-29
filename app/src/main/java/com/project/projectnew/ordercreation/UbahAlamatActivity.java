@@ -1,5 +1,6 @@
 package com.project.projectnew.ordercreation;
 
+// --- PASTIKAN SEMUA IMPORT INI ADA ---
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -8,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.project.projectnew.R;
+import com.project.projectnew.R; // <-- Import ini yang paling penting!
 
 public class UbahAlamatActivity extends AppCompatActivity {
 
@@ -25,9 +26,6 @@ public class UbahAlamatActivity extends AppCompatActivity {
         Spinner spinnerKota = findViewById(R.id.spinnerKota);
         Spinner spinnerKecamatan = findViewById(R.id.spinnerKecamatan);
         Spinner spinnerKelurahan = findViewById(R.id.spinnerKelurahan);
-
-        // PERUBAHAN DI SINI: Referensi ke tombol dihapus
-        // Button btnPilihLokasi = findViewById(R.id.btnPilihLokasi);
 
         // Ambil data alamat saat ini (jika ada) dan tampilkan
         String currentAddress = getIntent().getStringExtra("CURRENT_VALUE");
@@ -55,8 +53,5 @@ public class UbahAlamatActivity extends AppCompatActivity {
             Toast.makeText(this, "Alamat berhasil disimpan", Toast.LENGTH_SHORT).show();
             finish();
         });
-
-        // PERUBAHAN DI SINI: Listener tombol dihapus
-        // btnPilihLokasi.setOnClickListener(v -> { ... });
     }
 }

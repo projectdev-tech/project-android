@@ -14,10 +14,14 @@ public interface OrderDao {
     @Query("SELECT * FROM orders ORDER BY waktuPembayaran DESC")
     List<Order> getAllOrders();
 
+    // --- PERBAIKAN DI SINI ---
+    // Kembalikan metode ini agar bisa digunakan oleh PesananFragment
     @Query("SELECT * FROM orders WHERE status = :status ORDER BY waktuPembayaran DESC")
     List<Order> getOrdersByStatus(String status);
 
-    // --- METODE BARU ---
+    @Query("SELECT * FROM orders WHERE status = 'Pesanan Diterima' ORDER BY waktuPembayaran DESC")
+    List<Order> getCompletedOrders();
+
     @Query("SELECT * FROM orders WHERE noOrder = :noOrder LIMIT 1")
     Order getOrderByNoOrder(String noOrder);
 }

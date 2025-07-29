@@ -21,7 +21,6 @@ import java.util.concurrent.Executors;
 
 public class OrderListFragment extends Fragment {
 
-    // Kunci untuk menyimpan dan mengambil status pesanan dari arguments
     private static final String ARG_ORDER_STATUS = "order_status";
 
     private OrderAdapter orderAdapter;
@@ -31,13 +30,6 @@ public class OrderListFragment extends Fragment {
     private Handler handler;
     private String orderStatus;
 
-    /**
-     * Factory method untuk membuat instance baru dari fragment ini dengan status pesanan yang spesifik.
-     * Ini adalah cara yang direkomendasikan untuk meneruskan argumen ke Fragment.
-     *
-     * @param status Status pesanan yang akan ditampilkan (e.g., "Menunggu Pembayaran").
-     * @return Sebuah instance baru dari OrderListFragment.
-     */
     public static OrderListFragment newInstance(String status) {
         OrderListFragment fragment = new OrderListFragment();
         Bundle args = new Bundle();
@@ -49,7 +41,9 @@ public class OrderListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Ambil status pesanan dari arguments
+        db = AppDatabase.getDatabase(getContext());
+        executorService = Executors.newSingleThreadExecutor();
+        handler = new Handler(Looper.getMainLooper());
         if (getArguments() != null) {
             orderStatus = getArguments().getString(ARG_ORDER_STATUS);
         }
@@ -58,20 +52,10 @@ public class OrderListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Gunakan layout generik yang baru kita buat
         View view = inflater.inflate(R.layout.fragment_order_list, container, false);
 
-        Context context = getContext();
-        if (context != null) {
-            db = AppDatabase.getDatabase(context);
-            executorService = Executors.newSingleThreadExecutor();
-            handler = new Handler(Looper.getMainLooper());
-        }
-
         RecyclerView rvOrders = view.findViewById(R.id.rvOrders);
-        rvOrders.setLayoutManager(new LinearLayoutManager(context));
-
-        // Menambahkan jarak di atas item pertama
+        rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
         rvOrders.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -94,10 +78,9 @@ public class OrderListFragment extends Fragment {
     }
 
     private void loadOrdersFromDb() {
-        // Pastikan status tidak null dan komponen lain sudah siap
         if (orderStatus != null && executorService != null && db != null) {
             executorService.execute(() -> {
-                // Ambil data dari DB berdasarkan status yang diterima dari argumen
+                // Baris ini sekarang akan berfungsi setelah OrderDao diperbaiki
                 List<Order> ordersFromDb = db.orderDao().getOrdersByStatus(orderStatus);
                 handler.post(() -> {
                     if (orderList != null && orderAdapter != null) {
