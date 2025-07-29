@@ -1,5 +1,6 @@
 package com.project.projectnew.ordercreation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +18,15 @@ public class ProfilFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profil, container, false);
 
-        // Menambahkan listener agar tombol bisa diklik (untuk sementara menampilkan pesan)
         View layoutDetailAkun = view.findViewById(R.id.layoutDetailAkun);
         View layoutDaftarTransaksi = view.findViewById(R.id.layoutDaftarTransaksi);
         View layoutLogout = view.findViewById(R.id.layoutLogout);
 
+        // --- PERUBAHAN DI SINI ---
         layoutDetailAkun.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Buka Detail Akun", Toast.LENGTH_SHORT).show();
+            // Buka halaman DetailAkunActivity yang baru
+            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+            startActivity(intent);
         });
 
         layoutDaftarTransaksi.setOnClickListener(v -> {

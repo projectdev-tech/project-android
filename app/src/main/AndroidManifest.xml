@@ -30,6 +30,11 @@
         <activity android:name=".ordercreation.NotifikasiActivity" android:exported="false"/>
         <activity android:name=".ordercreation.DetailTransaksiActivity" android:exported="false" />
         <activity android:name=".ordercreation.DetailPromoInfoActivity" android:exported="false" />
+        <activity android:name=".ordercreation.DetailAkunActivity" android:exported="false" />
+        <activity android:name=".ordercreation.UbahDataActivity" android:exported="false" />
+        <activity android:name=".ordercreation.UbahKtpActivity" android:exported="false" />
+        <activity android:name=".ordercreation.UbahPasswordActivity" android:exported="false" />
+        <activity android:name=".ordercreation.UbahAlamatActivity" android:exported="false" />
     </application>
 
 </manifest>
